@@ -6,7 +6,7 @@
 }
 
 .logo {
-    width: 70px;
+    width: 65px;
     margin-left: 5rem;
     display: flex;
     align-items: center;
@@ -81,6 +81,7 @@
     }
 
     .img {
+        position: relative;
         width: 60px;
         height: 60px;
         margin-left: 2rem;
@@ -88,6 +89,55 @@
 
         img {
             width: 100%;
+            object-fit: cover;
         }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 6.5rem;
+            width: 150px;
+            font-size: 1.6rem;
+            text-shadow: none;
+            z-index: 2;
+
+            ul {
+                list-style: none;
+                padding: 1rem;
+                margin: 0;
+                border-radius: 1rem;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+            li {
+                padding: 0.6rem 1.5rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+            }
+
+            li:hover {
+                background-color: var(--third-color);
+            }
+
+            a {
+                color: #333;
+                text-decoration: none;
+            }
+        }
+
+        .dropdown::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            right: 0px;
+            width: 100px;
+            height: 30px;
+            background-color: transparent;
+        }
+    }
+    .img:hover > .dropdown {
+        display: block;
     }
 }

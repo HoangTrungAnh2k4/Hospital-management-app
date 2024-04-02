@@ -35,6 +35,13 @@ function Header() {
                 </div>
                 <div className={clsx(style.img)}>
                     <img src={Logo} alt="" />
+                    <div className={clsx(style.dropdown)}>
+                        <ul>
+                            <li>
+                                <Link to="">Log out</Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </header>
