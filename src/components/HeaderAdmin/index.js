@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import style from './Header.module.scss';
+import style from './HeaderAdmin.module.scss';
 import Logo from '~/img/logo.png';
 
 function Header() {
@@ -38,7 +38,7 @@ function Header() {
                     <div className={clsx(style.dropdown)}>
                         <ul>
                             <li>
-                                <Link to="">Log out</Link>
+                                <Link to="/">Log out</Link>
                             </li>
                         </ul>
                     </div>

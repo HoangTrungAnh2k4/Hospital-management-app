@@ -5,6 +5,7 @@ import Staffs from '~/pages/Staffs';
 import Patients from '~/pages/Patients';
 import Equipment from '~/pages/Equipment';
 import Medicine from '~/pages/Medicine';
+import Calendar from '~/components/Calendar';
 
 const publicRoutes = [
     {
@@ -17,15 +18,15 @@ const publicRoutes = [
         component: DashboardAdmin,
     },
     {
-        path: '/dashboard/staffs',
+        path: '/dashboard/staff',
         component: DashboardStaffs,
     },
     {
-        path: '/patients',
+        path: '/patient',
         component: Patients,
     },
     {
-        path: '/staffs',
+        path: '/staff',
         component: Staffs,
     },
     {
@@ -35,6 +36,10 @@ const publicRoutes = [
     {
         path: '/medicine',
         component: Medicine,
+    },
+    {
+        path: '/calendar',
+        component: Calendar,
     },
 ];
 

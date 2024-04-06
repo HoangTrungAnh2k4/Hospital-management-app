@@ -1,5 +1,14 @@
 import style from './Layout.module.scss';
-import Header from '../Header';
+import HeaderAdmin from '../HeaderAdmin';
+import HeaderStaff from '../HeaderStaff';
+
+function Header() {
+    if (localStorage.getItem('role') === 'admin') {
+        return <HeaderAdmin />;
+    } else if (localStorage.getItem('role') === 'user') {
+        return <HeaderStaff />;
+    }
+}
 
 function Layout({ children }) {
     return (
