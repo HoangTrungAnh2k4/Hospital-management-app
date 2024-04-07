@@ -23,11 +23,11 @@
         justify-content: center;
         text-align: center;
         height: 100px;
-        color: #fff;
+        color: #333;
         padding: 1rem;
         padding-right: 2rem;
         margin-right: 2rem;
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        // text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         border-radius: 1rem;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         background-color: #fff;
@@ -43,25 +43,25 @@
         }
     }
 
-    .boxInfor.khoa1 {
-        background-color: var(--color1);
-    }
+    // .boxInfor.khoa1 {
+    //     background-color: var(--color1);
+    // }
 
-    .boxInfor.khoa2 {
-        background-color: var(--color2);
-    }
+    // .boxInfor.khoa2 {
+    //     background-color: var(--color2);
+    // }
 
-    .boxInfor.khoa3 {
-        background-color: var(--color3);
-    }
+    // .boxInfor.khoa3 {
+    //     background-color: var(--color3);
+    // }
 
-    .boxInfor.khoa4 {
-        background-color: var(--color4);
-    }
+    // .boxInfor.khoa4 {
+    //     background-color: var(--color4);
+    // }
 
-    .boxInfor.khoa5 {
-        background-color: var(--color5);
-    }
+    // .boxInfor.khoa5 {
+    //     background-color: var(--color5);
+    // }
 
     .icon {
         font-size: 3rem;
@@ -91,10 +91,10 @@
         background: conic-gradient(
             var(--color4) 0deg,
             var(--color4) 120deg,
-            var(--color3) 120deg,
-            var(--color3) 240deg,
-            var(--color5) 240deg,
-            var(--color5) 360deg
+            var(--color1) 120deg,
+            var(--color1) 240deg,
+            var(--color2) 240deg,
+            var(--color2) 360deg
         );
 
         .center {
