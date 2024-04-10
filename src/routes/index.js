@@ -23,7 +23,7 @@ const publicRoutes = [
         component: DashboardStaffs,
     },
     {
-        path: '/patients',
+        path: '/patient',
         component: Patients,
     },
     {
@@ -31,7 +31,7 @@ const publicRoutes = [
         component: Information,
     },
     {
-        path: '/staffs',
+        path: '/staff',
         component: Staffs,
     },
     {
@@ -46,7 +46,6 @@ const publicRoutes = [
         path: '/calendar',
         component: Calendar,
     },
-
 ];
 
 const privateRoutes = [];
