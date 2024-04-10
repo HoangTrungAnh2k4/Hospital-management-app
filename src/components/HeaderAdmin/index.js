@@ -15,10 +15,10 @@ function Header() {
                         <Link to="/dashboard/admin">Dashboard</Link>
                     </li>
                     <li>
-                        <Link to="/staffs">Staffs</Link>
+                        <Link to="/staff">Staffs</Link>
                     </li>
                     <li>
-                        <Link to="/patients">Patients</Link>
+                        <Link to="/patient">Patients</Link>
                     </li>
                     <li>
                         <Link to="/medicine">Medicine</Link>
