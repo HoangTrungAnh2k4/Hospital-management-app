@@ -1,0 +1,152 @@
+:root {
+    --bg: #242526;
+    --bg-accent: #484a4d;
+    --text-color: #dadce1;
+    --nav-size: 60px;
+}
+
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .Search {
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 80%;
+    }
+
+    .searchBar {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        border: solid 1px #dadce1 !important;
+        border-radius: 10px;
+        margin-top: 20px;
+        padding: 5px;
+        background-color: white;
+        box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+        -webkit-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+        -moz-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+
+        .Button {
+            border: none;
+            background: none;
+        }
+        .searchInput {
+            width: 90%;
+            border: none;
+            background: none;
+            outline: none;
+        }
+        
+    }
+    .addPatient{
+        margin-top: 20px;
+        padding: 5px;
+        text-align: right;
+        width: 10%;
+        .addButton{
+            background-color: rgb(31, 165, 31);
+            color: white;
+            border:none;
+            border-radius: 10px;
+            height:60px;
+            width:80px;
+        }
+    }   
+}
+
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+
+.patient_table {
+    margin: 30px;
+    border: solid 1px rgb(191, 227, 234);
+    border-radius: 10px;
+    box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    -webkit-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    -moz-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    thead th {
+        border-bottom: 2px solid #dedede;
+    }
+    
+    tfoot th {
+        border-top: 2px solid #dedede;
+    }
+    
+    td {
+        border-bottom: 1px solid #dedede;
+    }
+    
+    th,
+    td {
+        text-align: left;
+        padding: 1.5rem;
+    }
+    .alignCenter{
+        text-align: center;
+    }
+    
+    caption {
+        padding: 1rem 0;
+        caption-side: bottom;
+        color: #ababab;
+    }
+    
+    .striped_table tbody tr:nth-child(odd) {
+        background-color: #f8f8f8;
+    }
+    
+    .contain_table {
+        overflow-x: auto;
+    }
+    
+    @media (min-width: 600px) {
+        .contain_table {
+            width: 100%;
+        }
+    }
+    
+    .paginationContainer {
+        padding-top:10px;
+        margin: auto;
+        display: flex;
+        width: fit-content;
+        height: fit-content;
+    }
+
+    .circleButton{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        align-items: "center";
+        justify-content: "center";
+        background-color: rgb(214, 239, 239);
+        transition: filter 300ms;
+    
+    }
+    .circleButton:hover{
+        filter: brightness(1.2);
+    }
+}
+
+
+
+
+
+
