@@ -1,0 +1,383 @@
+
+
+.HeadLine{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+
+    .colorButton, .navigateButton{
+        border: none;
+        background-color: #f5f7fb;
+        color: rgb(132, 132, 236);
+    }
+    
+    .colorButton{
+        background-color: white;
+    }
+
+    .buttonRight{
+        float:right;
+        margin-right:15px;
+    }
+
+    .navigatePattientName{
+        color:rgba(0, 0, 0, 0.51)
+    }
+}
+
+.mainInforContainer{
+    border: solid 1px rgb(214, 161, 161);
+    border-radius: 10px;
+    background-color: #faf3fb;
+    margin:10px;
+    padding: 10px;
+    height: 100%;
+    width: 99%;
+    min-width: min-content;
+    box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    -webkit-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    -moz-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+
+    .top, .bottom, .left, .right{
+        display: flex;
+    }
+    
+    .notes, .medical_history, .swaper1, .swaper2, .swaper3{
+        background-color: white;
+        border-radius: 10px;
+        min-width: 200px;
+        margin: 15px;
+        box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+        -webkit-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+        -moz-box-shadow: 2px 4px 6px -1px rgba(0, 0, 0, 0.51);
+    }
+
+    .top{ 
+        .notes, .medical_history, .swaper1{
+            height: 450px;
+        }   
+
+        .swaper1{
+            width:65%; 
+            .patientProfile{
+                overflow-x: auto;
+                width: 99%;
+                height: 99%;
+                display: flex;
+                flex-direction: row;
+
+            .profileWithPicture{ 
+                border-right: solid 2px #dedede;
+                height:90%;
+                margin-top:auto;
+                margin-bottom: auto;
+                width: fit-content;
+                padding:15px;
+
+                .picContainer{
+                    margin-top:20px;
+                    width: 100%;
+                    height: fit-content;
+                    .profile_pic{
+                        width: 100px;
+                        height: 100px;
+                        border-radius: 100%;
+                        display: block;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                }
+
+                .BelowPic{
+                    margin-top:20px;
+                    width: 100%;
+                    height: fit-content;
+                    text-align: center;
+
+                    .belowPicName{
+                        text-align: center !important;
+                    }
+                    
+                    table {
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        width: 100%;
+                        max-width: 100%;
+                        margin-top:20px;         
+                    }
+                    
+                    th,
+                    td {
+                        border-right: 2px solid #dedede; 
+                        text-align: center;
+                        width: 50%;
+                        
+                    }
+                    .colRight{
+                        border:none !important;
+                    }
+
+                    h1{
+                      font-size: 3rem;  
+                    }
+                    h3{
+                        margin-top:20px;
+                    }
+                }
+            }
+            .shortInfor{
+                height:100%;
+                width: 55%;
+                margin-top:20px;
+                height: fit-content;
+                text-align: center;
+                    
+                    table {
+                        height:100%;
+                        width: 100%;
+                        max-width: 100%;
+                        margin:30px;         
+                    }
+                    
+                    th,
+                    td {
+                        text-align: left;
+                        width: 50%;
+                    }
+                    td{
+                        padding-top: 40px;
+                    }
+                    .firstTd{
+                        padding-top: 0;
+                    }
+            }
+            }
+            
+        }
+
+        .notes{
+            width: 35%;
+            .noteHeader{
+                display: flex;
+                flex-direction: row;
+            }
+
+            .note{
+                background-color: #ade1e6;
+                border-radius: 10px;
+                width:90%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left:auto;
+                margin-right:auto;
+                padding: 1rem;
+                height: 270px;
+            }
+
+            .noteTail{
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding-left: 15px;
+
+                .noteDate, .noteDoctor{
+                    color: #C67D2E;
+                }
+                .noteDate{
+                    float:right;
+                    margin-right:15px;
+                }
+            }
+        }
+
+        .medical_history{
+            width:100%;
+            .medical, .allergies{
+                height: 50%;
+                width:100%;
+            }
+            .content{
+                height: 70%;
+                width: 90%;
+                margin-left:auto;
+                margin-right:auto;
+                background-color: #ade1e6;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .bottom{
+        .swaper2, .swaper3{
+            height: 300px;
+            width:100%;
+        }
+
+        .swaper2{
+            padding: 15px;
+            .payment{
+                overflow-x: scroll;
+                width:99%;
+                height:99%;
+                .paymentHeadLine{
+                    padding-top: 10px;
+                    .transactionLine, .amountLine{
+                        display: inline-block;
+                        color: rgb(183, 161, 137);
+                        height:fit-content;
+                    }
+                    .transactionLine{
+                        width:60%;
+                        height:fit-content;
+                    }
+                    .amountLine{
+                        float:right;
+                        width:40%;
+                        text-align: right;
+                    }
+                }
+    
+                .payContainer{
+                    display: grid;
+                    grid-template-columns: 140px 80px 50px;
+                    grid-template-rows: 10px 10px 10px;
+                }
+                .item_1{
+                    i{
+                        padding-right:10px;
+                    }
+                }
+                .item_3{
+                    padding-right:10px;
+                    text-align: left;
+                }
+            }
+        }
+
+        .swaper3{
+            align-items: center;
+            justify-content: center;
+            .appointment{
+                padding: 10px;
+                overflow-x: auto;
+                overflow-y: auto;
+                margin:auto;
+                width:98%;
+                height:98%;
+
+                .tabBoxHead, .tabContentBox{
+                    width: 100%;
+                    align-items: center;
+                }
+
+                .tabBoxHead{
+                    display:flex;
+                    flex-direction: row;
+                    height:20%;
+                    .tabBox{
+                        position: relative;
+                        width: 70%;
+                        border-radius: 10px;
+                        background-color: #ade1e6;
+                        padding:2px;
+                        .tabButton, .tabButton_active{
+                            width: 33.33%;
+                            padding: 5px;
+                            font-size: 15px;
+                            text-align: center;
+                            border: none;
+                            border-radius: 10px;
+                            opacity: 0.6;
+                            transition: all 0.5s ease;
+                        }
+                        .tabButton{
+                            color: #542312;
+                            background-color: #ade1e6;
+                            border: none;
+                            opacity: 0.6;
+                            transition: all 0.5s ease;
+                        }
+                        .tabButton_active{
+                            opacity: 1;
+                            background-color: #fff;
+                            color: #7AA2E3;
+                            border-color: rgba(194, 53, 100, 1);
+                        }
+                        .tab-item:hover {
+                            opacity: 1;
+                            background-color: rgba(194, 53, 100, 0.05);
+                            border-color: rgba(194, 53, 100, 0.1);
+                        }
+                        
+                    }
+                    .addAppointment{
+                        text-align: right;
+                        width: 30%;
+                        .colorButton{
+                            border: none;
+                            border-radius: 10px;
+                            background-color: rgb(132, 132, 236);
+                            color: white;
+                            padding-top: 10px; 
+                            padding-bottom: 10px;
+                            cursor: pointer;
+                        }
+                        .colorButton:hover{
+                            filter: brightness(1.2);
+                        }
+                    }
+                }
+                
+                .tabContentBox{
+                    border-radius:10px;
+                    background-color: #ade1e6;
+                    margin-top:10px;
+                    height: 76%;
+                    overflow-x: auto;
+                    overflow-y: auto;
+
+
+                    .appointmentContent{
+                        align-items: center;
+                        justify-content: center;
+                        margin:20px;
+                        border-radius: 10px;
+                        background-color: white;
+                        width:95%;
+                        overflow-x: auto;
+                                               
+                        table {
+                            height:100%;
+                            width: 95%;
+                            margin:10px;
+                        }
+                        
+                        th,
+                        td {
+                            text-align: left;
+                            width: 20%;
+                        }
+                        .firstTd{
+                            padding-top: 0;
+                        }
+
+                        button{
+                            color: #2b7fbf;
+                            background-color: white;
+                            border: none;
+                        }
+                    }
+                }
+                .unshowContent{
+                    display:none;
+                }
+            }
+        }
+    }
+    .left{
+        width: 75%;
+    }
+
+    .right{
+        width: 25%;
+    }
+}
