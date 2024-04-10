@@ -1,0 +1,17 @@
+.Equipment{
+    width: 90vw;
+    margin: auto;
+    padding-top: 15px;
+    display: flex
+}
+.SlicebarArea{
+    width: 23vw;
+    height: 100vh;
+    outline: solid 2px rgb(101, 197, 197);
+    button {
+        font-size: medium;
+    }
+    li {
+        padding-left: 4px;
+    }
+}

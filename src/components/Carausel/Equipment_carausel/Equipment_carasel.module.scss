@@ -1,0 +1,11 @@
+.equipmentArea{
+    width: 70vw;
+    margin: auto;
+    padding: 30px;
+    img {
+        max-width: 65%; /* Đảm bảo hình ảnh không vượt quá kích thước của card */
+        height: auto; /* Giữ tỉ lệ hình ảnh */
+        display: block; /* Làm cho img trở thành block-level, giúp margin:auto có hiệu lực */
+        margin: auto; /* Căn giữa hình ảnh theo chiều ngang trong card */
+    }
+}

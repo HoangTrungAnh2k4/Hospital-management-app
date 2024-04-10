@@ -1,0 +1,65 @@
+/*Login*/
+
+/* Set the height of the html and body */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(214, 239, 239);
+}
+
+/* Style the login container */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: rgb(101, 197, 197);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Display the form elements in a column */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style the form group */
+.form-group {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  margin-bottom: 20px;
+}
+
+/* Style the text and password input fields */
+input[type="text"],
+input[type="password"] {
+  padding: 10px;
+  width: 100%; 
+  border: 1px solid black;
+  border-radius: 25px;
+}
+
+h1 {
+  text-align: center; 
+}
+
+/* Style the button element */
+button {
+  padding: 10px;
+  background-color: rgb(30, 97, 97);
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%; 
+  box-sizing: border-box;
+  margin-top: 20px; 
+  border-radius: 25px;
+}
+
+/* Change the background color of the button on hover */
+button:hover {
+  background-color: #0056b3;
+}
