@@ -3,9 +3,10 @@ import HeaderAdmin from '../HeaderAdmin';
 import HeaderStaff from '../HeaderStaff';
 
 function Header() {
-    if (localStorage.getItem('role') === 'user') {
+    if (localStorage.getItem('auth') === 'staff') {
         return <HeaderStaff />;
-    } else {
+    }
+    if (localStorage.getItem('auth') === 'admin') {
         return <HeaderAdmin />;
     }
 }
