@@ -7,6 +7,7 @@ import Information from '~/pages/Patients/Information';
 import Equipment from '~/pages/Equipment';
 import Medicine from '~/pages/Medicine';
 import Calendar from '~/components/Calendar';
+import Blood from '~/pages/Blood';
 
 const publicRoutes = [
     {
@@ -45,6 +46,10 @@ const publicRoutes = [
     {
         path: '/calendar',
         component: Calendar,
+    },
+    {
+        path: '/blood',
+        component: Blood,
     },
 ];
 

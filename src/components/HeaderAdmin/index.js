@@ -26,6 +26,9 @@ function Header() {
                     <li>
                         <Link to="/equipment">Equipment</Link>
                     </li>
+                    <li>
+                        <Link to="/blood">Blood</Link>
+                    </li>
                 </ul>
             </nav>
             <div className={clsx(style.user)}>
