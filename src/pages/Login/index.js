@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import style from './Login.module.scss';
@@ -25,14 +25,19 @@ function Login() {
 
     return (
         <div className={clsx(style.wrapper)}>
-            <div className={clsx(style.login)}>
-                <h1>Login</h1>
-                <div>
-                    <input ref={Username} type="text" placeholder="Username" />
-                    <input ref={Password} type="password" placeholder="Password" />
-                    <button ref={loginRef} class="btn btn-primary btn-block btn-large" className={clsx(style.btn)}>
-                        Let me in.
-                    </button>
+            <div className={clsx(style.subwrapper)}>
+                <img src={logo} alt="Logo" className={clsx(style.logo)} />
+                <div className={clsx(style.login)}>
+                    <h1>Login</h1>
+                    <div>
+                        <input ref={Username} type="text" placeholder="Username" />
+                        <input ref={Password} type="password" placeholder="Password" />
+                        
+                        <button ref={loginRef} className={clsx(style.btn, "btn btn-primary btn-block btn-large")}>
+                            Login
+                        </button>
+                        <a href="/forgot-password" className={clsx(style.forgotPassword)}>Forgot password?</a>
+                    </div>
                 </div>
             </div>
         </div>
