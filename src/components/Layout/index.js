@@ -1,4 +1,4 @@
-import style from './Layout.module.scss';
+// import style from './Layout.module.scss';
 import HeaderAdmin from '../HeaderAdmin';
 import HeaderStaff from '../HeaderStaff';
 

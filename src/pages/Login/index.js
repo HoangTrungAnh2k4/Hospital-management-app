@@ -22,7 +22,7 @@ function Login() {
             console.log('running');
             cnt++;
             cnt = cnt + '';
-            const querySnapshot = await getDocs(collection(database, 'Accounts', 'admin', cnt));
+            const querySnapshot = await getDocs(collection(database, 'Accounts'));
             querySnapshot.forEach((doc) => {
                 if (doc.data().username === username && doc.data().password === password) {
                     localStorage.setItem('auth', 'admin');

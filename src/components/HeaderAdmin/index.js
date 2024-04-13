@@ -3,7 +3,18 @@ import clsx from 'clsx';
 import style from './HeaderAdmin.module.scss';
 import Logo from '~/img/logo.png';
 
+
 function Header() {
+    const navItems = document.querySelectorAll(`.${style.nav} ul li`);
+    navItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            navItems.forEach((item) => {
+                item.classList.remove(style.active);
+            });
+            item.classList.add(style.active);
+        });
+    });
+
     return (
         <header id={clsx(style.header)}>
             <div className={clsx(style.logo)}>
