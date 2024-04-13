@@ -1,18 +1,8 @@
 :root {
-    --correctblue-color: rgba(19, 137, 216, 0.701);
+    --correctblue-color: rgba(16, 106, 103, 0.701);
 }
-// .box {
-//     height: 60px;
-//     width: 90px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     background-color: var(--third-color);
-//     margin-top: 50px;
-//     border-radius: 0 40% 40% 0;
-// 
 .colum {
-    margin: 48px 20px;
+    margin: 20px;
     display: flex;
     flex-shrink: 1;
 }
@@ -23,117 +13,336 @@
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.col1__row1 {
-    margin: 5% 5%;
-}
-.col1__row2 {
-    margin: 5% 5%;
+    .col1__row {
+        margin: 5% 5%;
+    }
 }
 .col2 {
     flex: 2;
-}
-.col2__row1 {
-    flex: 1;
-    // width: auto; 
-    // height: 270px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-.col2__row2 {
-    flex: 1.5;
-    display: flex;
-    // flex-shrink: 1;
-    .col2__row2__col1{
-        flex: 2;
-        margin: 20px 10px 0 0;
-        background-color: white;
-        border-radius: 20px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    }
-    .col2__row2__col2{
+    .col2__row1 {
         flex: 1;
-        margin: 20px 0 0 10px;
+        // width: auto;
+        // height: 30rem;
+        display: flex;
+        flex-direction: column;
         background-color: white;
         border-radius: 20px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        .defaultCard {
+            display: flex;
+            .imgColum {
+                margin: auto;
+            }
+            .myimg {
+                display: block;
+                margin: auto;
+                width: 90%;
+                border-radius: 50%;
+                object-fit: cover;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+                border: 10px solid var(--second-color);
+            }
+            .cardbody {
+                padding: 0 0 15px 15px;
+                .cardtitle {
+                    display: flex;
+                    justify-content: flex-end;
+                    .headerCard {
+                        width: 80%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: var(--primary-color);
+                        padding: 8px 0;
+                        border-top-right-radius: 20px;
+                        border-bottom-left-radius: 20px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        transition: box-shadow 0.3s ease;
+
+                        &:hover {
+                            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+                        }
+
+                        h2 {
+                            font-size: 2rem;
+                            margin: 0;
+                        }
+                    }
+                }
+                .cardtext {
+                    margin-top: 1.5rem;
+                    margin-left: 2rem;
+                }
+            }
+        }
+        .cards {
+            display: none;
+            .imgColum {
+                margin: auto;
+            }
+            .myimg {
+                display: block;
+                margin: auto;
+                width: 90%;
+                border-radius: 50%;
+                object-fit: cover;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+                border: 10px solid var(--second-color);
+            }
+            .cardbody {
+                padding: 0 0 15px 15px;
+                .cardtitle {
+                    display: flex;
+                    justify-content: flex-end;
+                    .headerCard {
+                        width: 80%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: var(--primary-color);
+                        padding: 8px 0;
+                        border-top-right-radius: 20px;
+                        border-bottom-left-radius: 20px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        transition: box-shadow 0.3s ease;
+
+                        &:hover {
+                            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+                        }
+
+                        h2 {
+                            font-size: 2rem;
+                            margin: 0;
+                        }
+                    }
+                }
+                .cardtext {
+                    margin-top: 1.5rem;
+                    margin-left: 2rem;
+                }
+            }
+            .button__clear__mod,
+            .button__clear__close {
+                font-size: 14px;
+                font-weight: bold;
+                margin: 2px;
+                background-color: darkred;
+                border-color: darkred;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+            .button__clear__save,
+            .button__edit__mod {
+                font-size: 14px;
+                font-weight: bold;
+                margin: 2px;
+                background-color: var(--correctblue-color);
+                border-color: var(--correctblue-color);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+            .textform {
+                font-size: 14px;
+            }
+        }
+    }
+    .col2__row2 {
+        flex: 1.5;
+        display: flex;
+        // flex-shrink: 1;
+        .col2__row2__col1 {
+            flex: 2;
+            margin: 20px 10px 0 0;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .col2__row2__col2 {
+            flex: 1;
+            margin: 20px 0 0 10px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            .patientInfor {
+                margin: 2rem;
+            }
+        }
     }
 }
 li {
     list-style: none;
 }
 .searchbox {
-    position: relative; 
+    position: relative;
     display: flex;
+    input[type='text'] {
+        padding-left: 30px;
+        flex: 1;
+    }
+    i {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+    }
+    input[type='text'] {
+        border: 2px solid var(--second-color);
+    }
 }
-.searchbox input[type="text"] {
-    padding-left: 30px; 
-    flex: 1;
-}
-.searchbox i {
-    position: absolute; 
-    top: 50%; 
-    left: 5px; 
-    transform: translateY(-50%); 
-}
-.searchbox input[type="text"] {
-    border: 2px solid var(--second-color); 
-}
-.mydrop {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 2px;
-    background-color: var(--second-color);
-    border-color: var(--second-color);
-}
-.dropitem {
-    font-size: 14px;
-}
-.myimg {
-    display: block;
-    margin: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    width: auto; 
-    height: 220px; 
-    object-fit: cover;
-}
-.cardtext{
-    margin-top: 15px;
-    color: var(--second-color);
-    font-weight: bold;
-}
-.button__clear__mod, .button__clear__close {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 2px;
-    background-color: darkred;
-    border-color: darkred;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-.button__clear__save,.button__edit__mod {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 2px;
-    background-color: var(--correctblue-color);
-    border-color: var(--correctblue-color);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-.textform {
-    font-size: 13px;
-}
+
 .headerBox {
+    width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
     background-color: var(--primary-color);
-    text-align: center;
-    margin: 5%;
+    padding: 8px 0;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin: 0;
+    }
 }
-.patientInfor {
-    margin: 10px;
+
+.infoTable {
+    height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    scroll-snap-type: y mandatory;
+    .myTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th {
+        background-color: var(--second-color);
+        color: #ffffff;
+        text-align: left;
+        position: sticky;
+        top: 0;
+    }
+    th,
+    td {
+        padding: 6px 8px;
+        font-weight: normal;
+    }
+    tr {
+        scroll-snap-align: start;
+    }
+    tbody tr:nth-of-type(even) {
+        background-color: rgb(229, 237, 237);
+    }
+    tr:hover {
+        cursor: pointer;
+    }
+}
+.AddButton {
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .addButton {
+        background-color: var(--second-color);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        &:hover {
+            background-color: var(--correctblue-color);
+        }
+    }
+}
+
+.modal {
+    //display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    .modalContent {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s;
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            &:hover,
+            &:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
+
+        .modalHeader {
+            padding: 2px 16px;
+            background-color: var(--correctblue-color);
+            color: white;
+        }
+        .modalBody {
+            padding: 2px 16px;
+            label {
+                display: block;
+                font-weight: bold;
+            }
+            input {
+                display: flex;
+                width: 100%;
+            }
+        }
+
+        .modalFooter {
+            padding: 2px 16px;
+            background-color: var(--correctblue-color);
+            color: white;
+        }
+    }
+}
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
 }
