@@ -1,0 +1,52 @@
+.wrapper {
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+
+    table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+        border-radius: 1rem;
+        border: hidden;
+        // box-shadow: 0 0 0 2px #bbb;
+
+        th {
+            width: 14.28%;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        td {
+            height: 100px;
+            vertical-align: top;
+
+            .date {
+                text-align: center;
+                font-size: 1.8rem;
+                font-weight: bolder;
+                color: #777;
+                margin-bottom: 1rem;
+            }
+            .event {
+                padding: 8px 8px 8px 32px;
+                margin: 12px 0;
+                border-radius: 1rem;
+
+                p {
+                    padding: 0;
+                    margin: 0;
+                    font-weight: bolder;
+                }
+
+                span {
+                    display: block;
+                }
+            }
+        }
+    }
+    td,
+    th {
+        border: 2px solid #bbbbbb;
+        padding: 1rem;
+    }
+}

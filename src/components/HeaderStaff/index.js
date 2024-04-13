@@ -15,7 +15,7 @@ function HeaderStaff() {
                         <Link to="/dashboard/staff">Dashboard</Link>
                     </li>
                     <li>
-                        <Link to="/calendar">Calendar</Link>
+                        <Link to="/calendar/week">Calendar</Link>
                     </li>
                 </ul>
             </nav>

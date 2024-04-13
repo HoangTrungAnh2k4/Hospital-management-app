@@ -6,8 +6,9 @@ import Patients from '~/pages/Patients';
 import Information from '~/pages/Patients/Information';
 import Equipment from '~/pages/Equipment';
 import Medicine from '~/pages/Medicine';
-import Calendar from '~/components/Calendar';
 import Blood from '~/pages/Blood';
+import CalendarWeek from '~/components/Calendar/CalendarWeek';
+import CalendarDay from '~/components/Calendar/CalendarDay';
 
 const publicRoutes = [
     {
@@ -44,12 +45,16 @@ const publicRoutes = [
         component: Medicine,
     },
     {
-        path: '/calendar',
-        component: Calendar,
-    },
-    {
         path: '/blood',
         component: Blood,
+    },
+    {
+        path: '/calendar/week',
+        component: CalendarWeek,
+    },
+    {
+        path: '/calendar/day',
+        component: CalendarDay,
     },
 ];
 
