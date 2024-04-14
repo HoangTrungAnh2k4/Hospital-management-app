@@ -1,12 +1,153 @@
 import clsx from 'clsx';
 import style from './DashboardAmin.module.scss';
 import { useEffect, useRef, useState } from 'react';
+import CalendarWeek from '~/components/Calendar/CalendarWeek';
+
+function Chart1() {
+    return (
+        <div className={clsx(style.chart_1)}>
+            <p className={clsx(style.header)}>Biểu đồ độ tuổi</p>
+            <div className={clsx(style.chart1)}>
+                <div className={style.center}>1244</div>
+            </div>
+            <div className={clsx(style.detail1)}>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot1)}></div>
+                        <span>0-14 tuổi</span>
+                    </div>
+                    <span className={clsx(style.quantity1)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot2)}></div>
+                        <span>15-64 tuổi</span>
+                    </div>
+                    <span className={clsx(style.quantity2)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot3)}></div>
+                        <span>&gt; 65 tuổi</span>
+                    </div>
+                    <span className={clsx(style.quantity3)}>23% (427)</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chart2() {
+    return (
+        <div className={clsx(style.chart_2)}>
+            <p className={clsx(style.header)}>Kho máu</p>
+
+            {/* chart */}
+            <div className={clsx(style.chart2)}>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>A+</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>A-</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>B+</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>B-</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>O+</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>O-</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>AB+</p>
+                </div>
+                <div className={clsx(style.bloodWrap)}>
+                    <div className={clsx(style.bloodCol)}></div>
+                    <p className={clsx(style.type)}>AB-</p>
+                </div>
+            </div>
+            {/* detail */}
+            <div className={clsx(style.detail2)}>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>A+</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>B+</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>O+</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>AB+</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>A-</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>B-</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>O-</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+                <div className={clsx(style.item)}>
+                    <div className={clsx(style.wrap)}>
+                        <div className={clsx(style.dot)}></div>
+                        <span>AB-</span>
+                    </div>
+                    <span className={clsx(style.quantity)}>23% (427)</span>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function PatientQuantity() {
     return (
         <div className={clsx(style.quantityPatient)}>
             {/* quantity box */}
-            <div>
+            <div className={clsx(style.row1)}>
                 <div className={clsx(style.boxInfor, style.khoa1)}>
                     <div className={clsx(style.icon)}>
                         <i class="fa-solid fa-lungs"></i>
@@ -56,32 +197,9 @@ function PatientQuantity() {
 
             {/* chart */}
             <div className={clsx(style.boxChart)}>
-                <div className={clsx(style.chart)}>
-                    <div className={style.center}>1244</div>
-                </div>
-                <div className={clsx(style.detail)}>
-                    <div className={clsx(style.item)}>
-                        <div className={clsx(style.wrap)}>
-                            <div className={clsx(style.dot1)}></div>
-                            <span>0-14 tuổi</span>
-                        </div>
-                        <span className={clsx(style.quantity1)}>23% (427)</span>
-                    </div>
-                    <div className={clsx(style.item)}>
-                        <div className={clsx(style.wrap)}>
-                            <div className={clsx(style.dot2)}></div>
-                            <span>15-64 tuổi</span>
-                        </div>
-                        <span className={clsx(style.quantity2)}>23% (427)</span>
-                    </div>
-                    <div className={clsx(style.item)}>
-                        <div className={clsx(style.wrap)}>
-                            <div className={clsx(style.dot3)}></div>
-                            <span>&gt; 65 tuổi</span>
-                        </div>
-                        <span className={clsx(style.quantity3)}>23% (427)</span>
-                    </div>
-                </div>
+                <Chart1 />
+
+                <Chart2 />
             </div>
         </div>
     );
@@ -185,7 +303,7 @@ function ModalAddNotify({ addNotification }) {
                     </button>
                 </header>
                 <main>
-                    <textarea name="message" rows="4" cols="50" placeholder="Nhập thông báo"></textarea>
+                    <textarea name="message" rows="4" Cols="50" placeholder="Nhập thông báo"></textarea>
                 </main>
                 <footer>
                     <button type="button" className={clsx(style.rerender)} onClick={handleAddNotify}>
@@ -219,6 +337,10 @@ function DashboardAdmin() {
                 {/* Notification board */}
                 <BoardNotify listNotify={listNotify} />
             </div>
+
+            <header className={clsx(style.headerCalendar)}>Lịch làm việc trong tuần</header>
+
+            <CalendarWeek />
 
             <ModalAddNotify addNotification={addNotification} />
         </div>
