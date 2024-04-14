@@ -2,8 +2,22 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import style from './HeaderAdmin.module.scss';
 import Logo from '~/img/logo.png';
+import { useEffect } from 'react';
 
 function Header() {
+    useEffect(() => {
+        const navItems = document.querySelectorAll(`.${style.nav} ul li`);
+        console.log();
+        navItems.forEach((item) => {
+            item.addEventListener('click', () => {
+                navItems.forEach((item) => {
+                    item.classList.remove(style.active);
+                });
+                item.classList.add(style.active);
+            });
+        });
+    }, []);
+
     return (
         <header id={clsx(style.header)}>
             <div className={clsx(style.logo)}>

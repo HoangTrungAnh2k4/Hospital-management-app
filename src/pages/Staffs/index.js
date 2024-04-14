@@ -1,227 +1,89 @@
 import clsx from 'clsx';
 import style from './staffs.module.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import doctorImage from 'src/img/doctor.png';
+import { doctors_data } from './doctors_data';
+import { nurses_data } from './nurses_data';
 
 function StaffsDisplay() {
     return (
         <div className={clsx(style.colum)}>
+            {/* ----------------------------------- Danh sách nhân viên --------------------------------------------*/}
             <div className={clsx(style.col1)}>
                 <div className={clsx(style.headerBox)}>
                     <h2>Bác sĩ</h2>
                 </div>
-                <div className={clsx(style.col1__row1)}>
-                    <li>
-                        <div className={clsx(style.searchbox)}>
-                            <i className="fas fa-search"></i>
-                            <input type="text" placeholder="Tìm kiếm..." />
-                        </div>
-                    </li>
-                    <li>
-                        <div class="btn-group">
-                            <div class="dropdown">
-                                <button
-                                    type="button"
-                                    className={clsx('btn btn-primary dropdown-toggle', style.mydrop)}
-                                    data-bs-toggle="dropdown"
-                                >
-                                    Khoa
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa nội
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa ngoại
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa nhi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa sản
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa truyền nhiễm
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown">
-                                <button
-                                    type="button"
-                                    className={clsx('btn btn-primary dropdown-toggle', style.mydrop)}
-                                    data-bs-toggle="dropdown"
-                                >
-                                    Sắp xếp
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Thứ tự a-z
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Tuổi
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={clsx("container mt-3", style.listgroup)}>
-                            <div class="list-group" style={{ marginRight: '0px' }}>
-                                <a
-                                    href=" "
-                                    class="list-group-item list-group-item-action"
-                                    onClick={() => showCard('Marry Jane')}
-                                >
-                                    Marry Jane
-                                </a>
-                                <a
-                                    href=" "
-                                    class="list-group-item list-group-item-action"
-                                    onClick={() => showCard('Emma Jane')}
-                                >
-                                    Emma Jane
-                                </a>
-                                <a
-                                    href=" "
-                                    class="list-group-item list-group-item-action"
-                                    onClick={() => showCard('Trần Văn Tuấn')}
-                                >
-                                    Trần Văn Tuấn
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                </div>
+                <SortTable data={doctors_data} />
+                <AddStaffs />
                 <div className={clsx(style.headerBox)}>
                     <h2>Y tá</h2>
                 </div>
-                <div className={clsx(style.col1__row2)}>
-                    <li>
-                        <div className={clsx(style.searchbox)}>
-                            <i className="fas fa-search"></i>
-                            <input type="text" placeholder="Tìm kiếm..." />
-                        </div>
-                    </li>
-                    <li>
-                        <div class="btn-group">
-                            <div class="dropdown">
-                                <button
-                                    type="button"
-                                    className={clsx('btn btn-primary dropdown-toggle', style.mydrop)}
-                                    data-bs-toggle="dropdown"
-                                >
-                                    Khoa
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa nội
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa ngoại
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa nhi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa sản
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Khoa truyền nhiễm
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown">
-                                <button
-                                    type="button"
-                                    className={clsx('btn btn-primary dropdown-toggle', style.mydrop)}
-                                    data-bs-toggle="dropdown"
-                                >
-                                    Sắp xếp
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Thứ tự a-z
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a className={clsx('dropdown-item', style.dropitem)} href=" ">
-                                            Tuổi
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={clsx("container mt-3", style.listgroup)}>
-                            <div class="list-group" style={{ marginRight: '0' }}>
-                                <a href=" " class="list-group-item list-group-item-action">
-                                    Nguyễn Tấn Tài
-                                </a>
-                                <a href=" " class="list-group-item list-group-item-action">
-                                    Hồ Mỹ Hân
-                                </a>
-                                <a href=" " class="list-group-item list-group-item-action">
-                                    Trần Như Ngọc
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                </div>
+                <SortTable data={nurses_data} />
+                <AddStaffs />
             </div>
-            {/* Thông tin nhân viên */}
+            {/*---------------------------------------Thông tin nhân viên -----------------------------------------*/}
             <div className={clsx(style.col2)}>
                 <div className={clsx(style.col2__row1)}>
-                    <div class="row g-0">
-                        <div class="col-md-4">
+                    <div className={clsx(style.defaultCard)}>
+                        <div className={clsx('col-md-4', style.imgColum)}>
                             <img
-                                src={doctorImage}
-                                className={clsx('img-fluid rounded-start', style.myimg)}
-                                alt="Doctor"
+                                src="https://community.swordsandravens.net/ext/dark1/memberavatarstatus/image/avatar.png"
+                                className={clsx(style.myimg)}
+                                alt="defaultimg"
                             />
                         </div>
-                        <div class="col-md-8">
+                        <div className={clsx('col-md-8', style.bodyColum)}>
                             <div className={clsx('card-body', style.cardbody)}>
-                                <h2 class="card-title">Thông tin chi tiết</h2>
-                                <p className={clsx('card-text', style.cardtext)}>
-                                    Họ tên: Marry Jane <br />
-                                    Giới tính: Nữ <br />
-                                    Ngày sinh: 19/06/1990
-                                    <span style={{ marginLeft: '30px' }}>Nơi sinh: Đồng Nai</span> <br />
-                                    Quê quán: Dĩ An, Bình Dương <br />
-                                    Hộ khẩu: thành phố Dĩ An, tỉnh Bình Dương
+                                <div className={clsx(style.cardtitle)}>
+                                    <h2 className={clsx('card-title', style.headerCard)}>Thông tin chi tiết</h2>
+                                </div>
+                                <div className={clsx('card-text', style.cardtext)}>
+                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Giới tính: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Quê quán: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Email: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>SĐT: </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={clsx('row g-0', style.cards)}>
+                        <div className={clsx('col-md-4', style.imgColum)}>
+                            <img src={doctorImage} className={clsx(style.myimg)} alt="Doctor" />
+                        </div>
+                        <div className={clsx('col-md-8', style.bodyColum)}>
+                            <div className={clsx('card-body', style.cardbody)}>
+                                <div className={clsx(style.cardtitle)}>
+                                    <h2 className={clsx('card-title', style.headerCard)}>Thông tin chi tiết</h2>
+                                </div>
+                                <div className={clsx('card-text', style.cardtext)}>
+                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> Marry Jane <br />
+                                    <span style={{ fontWeight: 'bold' }}>Giới tính: </span> Nữ <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> 19/06/1990
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span>Đồng Nai{' '}
                                     <br />
-                                    Khoa nhi <br />
-                                    Chức vụ: Bác sĩ <br />
-                                    Email: mjane@gmail.com
-                                    <span style={{ marginLeft: '30px' }}>SĐT: 0988423367</span>{' '}
-                                </p>
-                                {/* <p className={clsx("card-text", style.cardtext)}>Họ tên: Marry Jane</p> */}
+                                    <span style={{ fontWeight: 'bold' }}>Quê quán: </span> Đồng Tháp <br />
+                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> Khoa nhi <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> Bác sĩ <br />
+                                    <span style={{ fontWeight: 'bold' }}>Email: </span> mjane@gmail.com
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>
+                                        SĐT:{' '}
+                                    </span> 0988423367{' '}
+                                    {/* <p><span style={{ fontWeight:'bold' }}>Full name: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Gender: </span> Female</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Birthdate </span> 10/12/1990</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
+                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p> */}
+                                </div>
                             </div>
                             <div class="d-flex justify-content-end" style={{ marginRight: '20px' }}>
                                 <div class="btn-group">
@@ -342,10 +204,7 @@ function StaffsDisplay() {
                                                             </div>
                                                             <button
                                                                 type="submit"
-                                                                className={clsx(
-                                                                    'btn btn-primary',
-                                                                    style.button__clear__save,
-                                                                )}
+                                                                className={clsx(style.button__clear__save)}
                                                             >
                                                                 Submit
                                                             </button>
@@ -391,20 +250,14 @@ function StaffsDisplay() {
                                                     <div class="modal-footer">
                                                         <button
                                                             type="button"
-                                                            className={clsx(
-                                                                'btn btn-primary',
-                                                                style.button__clear__close,
-                                                            )}
+                                                            className={clsx(style.button__clear__close)}
                                                             data-bs-dismiss="modal"
                                                         >
                                                             Close
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            className={clsx(
-                                                                'btn btn-primary',
-                                                                style.button__clear__save,
-                                                            )}
+                                                            className={clsx(style.button__clear__save)}
                                                         >
                                                             Save changes
                                                         </button>
@@ -419,11 +272,13 @@ function StaffsDisplay() {
                     </div>
                 </div>
                 <div className={clsx(style.col2__row2)}>
+                    {/* -------------------------------------------------- Calendar ------------------------------------------------ */}
                     <div className={clsx(style.col2__row2__col1)}>
-                    <div className={clsx(style.headerBox)}>
+                        <div className={clsx(style.headerBox)}>
                             <h2>Lịch</h2>
                         </div>
                     </div>
+                    {/* -------------------------------------------------- Bệnh nhân ------------------------------------------------ */}
                     <div className={clsx(style.col2__row2__col2)}>
                         <div className={clsx(style.headerBox)}>
                             <h2>Bệnh nhân</h2>
@@ -438,21 +293,215 @@ function StaffsDisplay() {
         </div>
     );
 }
-function showCard(name) {
-    hideAllCards();
+//-------------------------------------------------- ADD ------------------------------------------------------------------
 
-    var selectedCard = document.querySelector(`[data-name="${name}"]`);
-    if (selectedCard) {
-        selectedCard.style.display = 'block';
+// function AddStaffs() {
+//     var modal = document.getElementById('myModal');
+
+//     // Get the button that opens the modal
+//     var btn = document.getElementById('myBtn');
+
+//     // Get the <span> element that closes the modal
+//     var span = document.querySelector(`.${style.close}`)[0];
+
+//     // When the user clicks the button, open the modal
+//     btn.onclick = function () {
+//         modal.style.display = 'block';
+//     };
+
+//     // When the user clicks on <span> (x), close the modal
+//     span.onclick = function () {
+//         modal.style.display = 'none';
+//     };
+
+//     // When the user clicks anywhere outside of the modal, close it
+//     window.onclick = function (event) {
+//         if (event.target === modal) {
+//             modal.style.display = 'none';
+//         }
+//     };
+//     return (
+//         <div>
+//             <div className={clsx(style.AddButton)}>
+//                 <button id="myBtn" className={clsx(style.addButton)}>
+//                     ADD
+//                 </button>
+//             </div>
+//             <div id="myModal" className={clsx(style.modal)}>
+//                 <div className={clsx(style.modalContent)}>
+//                     <div className={clsx(style.modalHeader)}>
+//                         <span className={clsx(style.close)}>&times;</span>
+//                         <h3>Điền thông tin nhân viên</h3>
+//                     </div>
+//                     <div className={clsx(style.modalBody)}>
+//                         <p>Some text in the Modal..</p>
+//                     </div>
+//                     <div className={clsx(style.modalFooter)}>
+//                         <button>Submit</button>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+function AddStaffs() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    return (
+        <div>
+            <div className={clsx(style.AddButton)}>
+                <button onClick={handleOpenModal} className={clsx(style.addButton)}>
+                    ADD
+                </button>
+            </div>
+            {showModal && (
+                <div id="myModal" className={clsx(style.modal)}>
+                    <div className={clsx(style.modalContent)}>
+                        <div className={clsx(style.modalHeader)}>
+                            <span onClick={handleCloseModal} className={clsx(style.close)}>
+                                &times;
+                            </span>
+                            <h3>Điền thông tin nhân viên</h3>
+                        </div>
+                        <div className={clsx(style.modalBody)}>
+                            <label>
+                                ID: 
+                                <input type="text" name="id" placeholder="####" /> 
+                            </label>
+                            <label>
+                            Full Name:
+                                <input type="text" name="full_name" placeholder="Nguyen Van A" />
+                            </label>
+                            <label>
+                                Gender:
+                                <input type="text" name="gender" placeholder="Gender" />
+                            </label>
+                            <label>
+                                Faculty:
+                                <input type="text" name="faculty" placeholder="Faculty" />
+                            </label>
+                            <label>
+                                Birthdate:
+                                <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
+                            </label>
+                            <label>
+                                Position:
+                                <input type="text" name="job" placeholder="Position" />
+                            </label>
+                            <label>
+                                Email:
+                                <input type="text" name="email" placeholder="abc@gmail.com" />
+                            </label>
+                            <label>
+                                Hometown:
+                                <input type="text" name="hometown" placeholder="Hometown" />
+                            </label>
+                            <label>
+                                Phone number:
+                                <input type="text" name="phone" placeholder="Phone number" />
+                            </label>
+                            <label>
+                                Address:
+                                <input type="text" name="address" placeholder="Address" />
+                            </label>
+                        </div>
+                        <div className={clsx(style.modalFooter)}>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+//---------------------------------------------Show card ------------------------------------------------------------------
+
+function getCard() {
+    var cardSelected = document.querySelector(`.${style.cards}`);
+    var hideDefault = document.querySelector(`.${style.defaultCard}`);
+    if (cardSelected.style.display === 'flex') {
+        cardSelected.style.display = 'none';
+        hideDefault.style.display = 'flex';
+    } else {
+        cardSelected.style.display = 'flex';
+        hideDefault.style.display = 'none';
     }
 }
+//------------------------------------------------------ Sort ----------------------------------------------------------------
 
-function hideAllCards() {
-    var cards = document.querySelectorAll('.col2__row1');
-    cards.forEach((card) => {
-        card.style.display = 'none';
+const SortTable = ({ data }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortedColumn, setSortedColumn] = useState('');
+    const [sortDirection, setSortDirection] = useState('desc');
+
+    const filteredData = data.filter((item) =>
+        Object.values(item).some((value) => value.toString().toLowerCase().includes(searchTerm.toLowerCase())),
+    );
+
+    const sortedData = [...filteredData].sort((a, b) => {
+        if (!a[sortedColumn] || !b[sortedColumn]) {
+            return 0;
+        }
+
+        if (sortDirection === 'asc') {
+            return a[sortedColumn].toString().localeCompare(b[sortedColumn].toString());
+        } else {
+            return b[sortedColumn].toString().localeCompare(a[sortedColumn].toString());
+        }
     });
-}
+
+    const handleSort = (columnName) => {
+        setSortedColumn(columnName);
+        setSortDirection((prevDirection) => (prevDirection === 'desc' ? 'asc' : 'desc'));
+    };
+
+    return (
+        <div className={clsx(style.col1__row)}>
+            <div className={clsx(style.searchbox)}>
+                <i className="fas fa-search"></i>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+            <div className={clsx(style.infoTable)}>
+                <table className={clsx(style.myTable)}>
+                    <thead>
+                        <tr>
+                            <th onClick={() => handleSort('id')}>ID {<i class="fa-solid fa-sort"></i>} </th>
+                            <th onClick={() => handleSort('full_name')}>
+                                Full Name {<i class="fa-solid fa-sort"></i>}
+                            </th>
+                            <th onClick={() => handleSort('faculty')}>Faculty {<i class="fa-solid fa-sort"></i>}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sortedData.map((item) => (
+                            // <tr onClick={() => getCard(item.id)}></tr>
+                            <tr onClick={getCard}>
+                                <td>{item.id}</td>
+                                <td>{item.full_name}</td>
+                                <td>{item.faculty}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
+// --------------------------------------------------- main --------------------------------------------------------------
 function Staffs() {
     return (
         <div className={clsx(style.wrapper)}>
