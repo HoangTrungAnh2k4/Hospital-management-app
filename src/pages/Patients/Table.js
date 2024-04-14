@@ -3,10 +3,19 @@ import clsx from 'clsx';
 import style from './SCSS_module/Patients.module.scss';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { getDocs, collection, deleteDoc } from "firebase/firestore";
+import { database } from 'src/firebase'
+import EditForm from './Forms/editForm.js';
+import Popup from './Popup';
 
-const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
+
+
+const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, setConfirmDialog/*, handleEdit, handleDelete*/ }) => {
     //Order variables
     const [order, setOrder] = useState('ASC');
+    const [openPopup, setOpenPopup] = useState(false)
+    const [selectedPatient, setSelectedPatient] = useState(null);
+
     //Pagination variables
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 10;
@@ -71,19 +80,62 @@ const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
         switch (status) {
             case 'Recovered':
                 return 'success';
-                break;
             case 'New patient':
                 return 'warning';
-                break;
             case 'In treatment':
                 return 'danger';
-                break;
             default:
                 return 'succeeded';
         }
     };
 
+    const handleDelete = async (id) => {
+        // Đóng confirm dialog
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        });
+
+        try {
+            const querySnapshot = await getDocs(collection(database, "Patients"));
+    
+            const documentsToDelete = querySnapshot.docs.filter(doc => doc.data().ID === id);
+    
+            await Promise.all(documentsToDelete.map(async (doc) => {
+                await deleteDoc(doc.ref);
+            }));
+
+            const updatedPatientsSnapshot = await getDocs(collection(database, "Patients"));
+
+            const updatedPatients = updatedPatientsSnapshot.docs.map(doc => doc.data());
+
+            setPatients(updatedPatients);
+            getPatient();
+    
+            setNotify({
+                isOpen: true,
+                message: 'Deleted Successfully',
+                type: 'error'
+            });
+        } catch (error) {
+            console.error("Error deleting document: ", error);
+            setNotify({
+                isOpen: true,
+                message: 'Error deleting document',
+                type: 'error'
+            });
+        }
+    };
+    
+    const handleEdit = id => {
+        const [patient] = patients.filter(patient => patient.id === id);
+        setSelectedPatient(patient);
+        setOpenPopup(true); // Mở popup chỉnh sửa
+    };
+    
+
     return (
+        <>
         <div className={clsx(style.contain_table)}>
             <table className={clsx(style.striped_table)}>
                 <thead>
@@ -92,7 +144,7 @@ const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
                         <th onClick={() => sorting('Name')}>Patient Name {<i class="fa-solid fa-sort"></i>}</th>
                         <th onClick={() => sorting('Department')}>Department {<i class="fa-solid fa-sort"></i>}</th>
                         <th onClick={() => sorting('Doctor')}>Doctor Assgined {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('Date')}>Date Check In {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('RegistrationDate')}>Date Check In {<i class="fa-solid fa-sort"></i>}</th>
                         <th onClick={() => sorting('Status')}>Status {<i class="fa-solid fa-sort"></i>}</th>
                         <th colSpan={2} className="text-center">
                             Actions
@@ -102,13 +154,13 @@ const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
                 <tbody>
                     {patients ? (
                         records.map((patient, i) => (
-                            <tr key={patient.ID}>
+                            <tr key={patient.id}>
                                 <td>{patient.ID}</td>
                                 <td>{patient.Name}</td>
                                 <td>{patient.Department}</td>
                                 <td>{patient.Doctor}</td>
                                 <td>
-                                    {patient.Date /*.toDate().toLocaleString(undefined, { timeZoneName: 'short' })*/}{' '}
+                                {new Date(patient.RegistrationDate.seconds * 1000 + patient.RegistrationDate.nanoseconds / 1000000).toDateString()}
                                 </td>
                                 <td>
                                     <span className={`badge rounded-pill bg-${handleStatus(patient.Status)}`}>
@@ -121,31 +173,22 @@ const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
                                             <i class="fa-solid fa-user"></i>
                                         </button>
 
-                                        <button className={clsx(style.circleButton)}>
-                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        <button className={clsx(style.circleButton)} onClick={() => { handleEdit(patient.id)}}>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
-                                        <button className={clsx(style.circleButton)}>
+                                        <button className={clsx(style.circleButton)} onClick={() => {
+                                                setConfirmDialog({
+                                                    isOpen: true,
+                                                    title: 'Are you sure to delete this record?',
+                                                    subTitle: "You can't undo this operation",
+                                                    onConfirm: () => { handleDelete(patient.ID) }
+                                                })
+                                            }}>
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </span>        
                                 </td>
-                                {/*<td className="text-right">
-                  <button
-                    onClick={() => handleEdit(patient.ID)}
-                    className="button muted-button"
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td className="text-left">
-                  <button
-                    onClick={() => handleDelete(patient.ID)}
-                    className="button muted-button"
-                  >
-                    Delete
-                  </button>
-                </td>*/}
                             </tr>
                         ))
                     ) : (
@@ -179,6 +222,22 @@ const Table = ({ patients, setPatients /*, handleEdit, handleDelete*/ }) => {
                 </nav>
             </div>
         </div>
+            <Popup
+            title="Edit Patient Information"
+            openPopup={openPopup}
+            setOpenPopup={setOpenPopup}
+            >
+
+                <EditForm
+                    patients={patients}
+                    setPatients={setPatients}
+                    selectedPatient={selectedPatient}
+                    getPatient={getPatient}
+                    setOpenPopup={setOpenPopup}
+                    setNotify={setNotify}
+                />
+            </Popup>
+        </>
     );
 };
 
