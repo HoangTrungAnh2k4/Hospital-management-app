@@ -3,25 +3,24 @@
 import clsx from 'clsx';
 import style from './SCSS_module/Patients.module.scss';
 import React, { useState, useEffect } from 'react';
+import { query, getDocs, collection, orderBy } from 'firebase/firestore';
+import { database } from 'src/firebase'
 import Table from './Table'
-/*import { query, getDocs, collection, orderBy } from 'firebase/firestore';*/
-import MockData from './Mock_data.json';
-/*async function fecthDataFromFirebase() {
-    /*const q = query(collection(dbPatient, "Patient"), orderBy("ID"));
-    const querySnapshot = await getDocs(q);
+import Popup from './Popup';
+import AddForm from './Forms/addForm.js';
+import Notification from "./Forms/Notification";
+import ConfirmDialog from "./Forms/ConfirmDialog";
+import AddIcon from '@mui/icons-material/Add'
 
-    const data = [];
-    querySnapshot.forEach((doc) => {
-        data.push({ ID: doc.ID, ...doc.data() });
-    });
 
-    return data;
-}*/
 
 function Patients() {
     const [value, setValue] = useState([]);
-    const [patients, setPatients] = useState(MockData);
-    
+    const [patients, setPatients] = useState([]);
+    const [openPopup, setOpenPopup] = useState(false)
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+
     const search = (data)  => {
         return data.filter(item => 
             item.ID.toString().includes(value.toString()) ||
@@ -32,16 +31,16 @@ function Patients() {
         ) 
     };
 
+    const getPatient = async () => {
+        const q = query(collection(database, "Patients"), orderBy("ID"));
+        const querySnapshot = await getDocs(q);
+        const patients = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        setPatients(patients)
+    }
 
-    /*useEffect(() => {
-        async function fetchData() {
-            const data = await fecthDataFromFirebase();
-            setPatients(data);
-        }
-        fetchData();
-    }, []);*/
-
-
+    useEffect(() => {
+        getPatient()
+    },[]);
 
     return (
         <>
@@ -59,16 +58,45 @@ function Patients() {
                         </input>
                     </div>
                 </div>
-                <span className={clsx(style.addPatient)}><button className={clsx(style.addButton)}>New Patient</button></span>
-
+                <span className={clsx(style.addPatient)}> 
+                    <button className={clsx(style.addButton)}  onClick={() =>  setOpenPopup(true) }>
+                        <AddIcon /> 
+                        <span>New Patient</span>
+                    </button>
+                </span>
             </div>
 
             {<div className={clsx(style.patient_table)}>
                 <Table
                     patients={search(patients)}
                     setPatients={setPatients}
+                    getPatient={getPatient}
+                    setNotify={setNotify}
+                    confirmDialog={confirmDialog}
+                    setConfirmDialog={setConfirmDialog}
                 /> 
             </div>}
+            <Popup
+                title="Patient Form"
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}>
+
+                <AddForm
+                    patients={patients}
+                    setPatients={setPatients}
+                    setOpenPopup={setOpenPopup}
+                    setNotify={setNotify}
+                    getPatient={getPatient}
+                />
+            </Popup>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
         </>
     );
 }

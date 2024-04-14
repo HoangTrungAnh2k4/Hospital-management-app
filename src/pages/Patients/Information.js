@@ -50,6 +50,8 @@ const Information = () => {
     const location = useLocation();
     const navigate = useNavigate();
     console.log(location.state);
+    const registrationDate = new Date(location.state.patient.RegistrationDate.seconds * 1000 + location.state.patient.RegistrationDate.nanoseconds / 1000000);
+    const Birthday = new Date(location.state.patient.Birthday.seconds * 1000 + location.state.patient.Birthday.nanoseconds / 1000000);
 
     const [toggle, setToggle] = useState(1);
     function updateToggle(id) {
@@ -103,8 +105,8 @@ const Information = () => {
                                         <td className={clsx(style.firstTd)}>Birthday</td>                                                                                 
                                     </tr>
                                     <tr>
-                                        <th><span class="border-bottom">Female</span></th>
-                                        <th><span class="border-bottom">01/01/2000</span></th>
+                                        <th><span class="border-bottom">{location.state.patient.Gender}</span></th>
+                                        <th><span class="border-bottom">{Birthday.toDateString()}</span></th>
                                         
                                     </tr>
                                     <tr>
@@ -112,8 +114,8 @@ const Information = () => {
                                         <td>Adress</td>                                                                                 
                                     </tr>
                                     <tr>
-                                        <th><span class="border-bottom">123456789</span></th>
-                                        <th><span class="border-bottom">Quận 1</span></th>
+                                        <th><span class="border-bottom">{location.state.patient.PhoneNumber}</span></th>
+                                        <th><span class="border-bottom">{location.state.patient.Address}</span></th>
                                         
                                     </tr>
                                     <tr>
@@ -121,22 +123,23 @@ const Information = () => {
                                         <td>CCCD</td>                                                                                 
                                     </tr>
                                     <tr>
-                                        <th><span class="border-bottom">TP.HCM</span></th>
-                                        <th><span class="border-bottom">987654321</span></th>
+                                        <th><span class="border-bottom">{location.state.patient.City}</span></th>
+                                        <th><span class="border-bottom">{location.state.patient.CCCD}</span></th>
                                         
                                     </tr><tr>
                                         <td>Registration date</td>                                   
                                         <td>Member status</td>                                                                                 
                                     </tr>
                                     <tr>
-                                        <th><span class="border-bottom">{location.state.patient.Date.toString()}</span></th>
+                                        <th><span class="border-bottom">{registrationDate.toDateString()}</span></th>
                                         <th><span class="border-bottom">{location.state.patient.Status}</span></th>
-                                        
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         </div>
+
+
                         {/* This is the note*/}
                         <div className={clsx(style.notes)}>
                             <div className={clsx(style.HeadLine)}>
@@ -154,12 +157,13 @@ const Information = () => {
                                 <h4>Note 1</h4>
                                 <i class="fa-solid fa-user-doctor"></i>
                                 <span className={clsx(style.noteDoctor)}>{location.state.patient.Doctor}</span>
-                                <span className={clsx(style.noteDate)}>{location.state.patient.Date.toString()}</span>
+                                <span className={clsx(style.noteDate)}>{registrationDate.toDateString()}</span>
                             </div>
                         </div>
+                        
                     </div>
 
-
+                    {/** Tiền án và dị ứng */}
                     <div className={clsx(style.right)}>
                         <div className={clsx(style.medical_history)}>
                             <div className={clsx(style.medical)}>
@@ -186,14 +190,13 @@ const Information = () => {
                                 </div>
                                 <div className={clsx(style.content)}></div>
                             </div>
-
-
                         </div>
                     </div>
+
+
                 </div>
 
                 <div className={clsx(style.bottom)}>
-
                     {/* Appointment*/}
                     <div className={clsx(style.left)}>
                         <div className={clsx(style.swaper3)}>
@@ -207,7 +210,7 @@ const Information = () => {
                                 <span className={clsx(style.addAppointment)}><button className={clsx(style.colorButton)}><strong>Add Appointment</strong></button></span>
                             </div>
 
-
+                            {/* Upcomming Appointment*/}
                             <div className={toggle === 1 ? clsx(style.tabContentBox) : clsx(style.unshowContent)}>
                                 <div className={clsx(style.tabContent)}>
                                     {
@@ -239,6 +242,8 @@ const Information = () => {
                                     }
                                 </div>
                             </div>
+
+                            {/* Past Appointment */}
                             <div className={toggle === 2 ? clsx(style.tabContentBox) : clsx(style.unshowContent)}>
                                 <div className={clsx(style.tabContent)}>
                                     {
@@ -279,7 +284,7 @@ const Information = () => {
                         </div>
                     </div>
 
-
+                    {/** Payment */}                    
                     <div className={clsx(style.right)}>
                         <div className={clsx(style.swaper2)}>
                         <div className={clsx(style.payment)}>
