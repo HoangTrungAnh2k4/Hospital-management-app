@@ -45,11 +45,33 @@ function Equipment() {
                 <hr/>
                 <Edetail_1 equipments={Equipments}  setTarget={setTarget}/>
                 <hr/>
-                <button class="btn btn-toggle align-items-center rounded collapsed ps-3" aria-expanded="false">
+                <button class="btn btn-toggle align-items-center rounded collapsed ps-3" aria-expanded="false" data-bs-toggle="modal" data-bs-target="#addEquipModal">
                     <PlaylistAddOutlinedIcon/> Thêm
                 </button>
             </div>
             {checkData()}
+            <div className={"modal fade"} id="addEquipModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className={"modal-dialog"}>
+                    <div className={"modal-content"}>
+                    <div className={"modal-header"}>
+                        <h5 className={"modal-title"} id="exampleModalLabel">Thêm vật tư</h5>
+                        <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className={"modal-body"}>
+                        <input className={"form-control m-2"} type="text" name="catelogue_1" placeholder="Danh mục lớn"/>
+                        <input className={"form-control m-2"} type="text" name="catelogue_2" placeholder="Danh mục nhỏ"/>
+                        <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thiết bị"/>
+                        <input className={"form-control m-2"} type="text" name="produce" placeholder="Nơi sản xuất"/>
+                        <input className={"form-control m-2"} type="text" name="expiry" placeholder="Hạng sử dụng"/>
+                        <input className={"form-control m-2"} type="file" name="img_url" placeholder="Link ảnh"/>
+                    </div>
+                    <div className={"modal-footer"}>
+                        <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" className={"btn btn-primary"} data-bs-dismiss="modal">Lưu</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

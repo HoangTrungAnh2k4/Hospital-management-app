@@ -165,11 +165,11 @@ async function deleteWinBid(documentId, index) {
     }
 }
 
-function uploadImage(file, onChange) {
+function uploadImage(file, field, onChange) {
     if (!file) {
         return;
     }
-    const storageRef = ref(storage, `medicines/${file.name}`);
+    const storageRef = ref(storage, `${field}/${file.name}`);
     uploadBytes(storageRef, file).then((snapshot) => {
         getDownloadURL(snapshot.ref).then(downloadURL => {
             onChange(downloadURL);

@@ -84,7 +84,7 @@ function Medicine() {
         const { name, value, files } = event.target;
     
         if (name === "img_url" && files[0]) {
-            uploadImage(files[0], (downloadURL) => {
+            uploadImage(files[0], "medicines", (downloadURL) => {
                 setAddItem(prevState => ({
                     ...prevState,
                     [name]: downloadURL

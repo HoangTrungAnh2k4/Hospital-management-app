@@ -22,7 +22,7 @@ function MCard(props){
         const { name, value, files } = event.target;
         if (name === "img_url" && files && files.length > 0) {
             const file = files[0];
-            uploadImage(file, (downloadURL) => {
+            uploadImage(file, "medicines", (downloadURL) => {
                 setFixItem(prevState => {
                     return {
                         ...prevState,
