@@ -363,7 +363,7 @@ function AddStaffs() {
 
     async function generateId() {
         const querySnapshot = await getDocs(collection(database, 'Doctors'));
-        const querySnapshot2 = await getDocs(collection(database, 'Nurse'));
+        const querySnapshot2 = await getDocs(collection(database, 'Nurses'));
 
         const newId = Math.floor(100000 + Math.random() * 900000);
         let newIdString = newId.toString();
@@ -372,9 +372,9 @@ function AddStaffs() {
             querySnapshot.docs.find((doc) => doc.id === newIdString) ||
             querySnapshot2.docs.find((doc) => doc.id === newIdString)
         ) {
-            return newIdString;
-        } else {
             newIdString = generateId();
+        } else {
+            return newIdString;
         }
         return newIdString;
     }
@@ -389,6 +389,18 @@ function AddStaffs() {
         const phone = document.querySelector('input[name=phone]').value;
         const address = document.querySelector('input[name=address]').value;
         const job = document.querySelector('input[name=job]').value;
+        
+        document.querySelector('input[name="fullName"]').value = '';
+        document.querySelector('input[name=gender]').value='';
+        document.querySelector('input[name=faculty]').value='';
+        document.querySelector('input[name=birthdate]').value='';
+        document.querySelector('input[name=email]').value='';
+        document.querySelector('input[name=hometown]').value='';
+        document.querySelector('input[name=phone]').value='';
+        document.querySelector('input[name=address]').value='';
+        document.querySelector('input[name=job]').value='';
+        
+        
         const newId = await generateId();
 
         if (job === 'doctor') {
@@ -402,9 +414,10 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
+                calendar: [{}],
             });
         } else if (job === 'nurse') {
-            await addDoc(collection(database, 'Nurse'), {
+            await addDoc(collection(database, 'Nurses'), {
                 id: newId,
                 fullName: fullName,
                 gender: gender,
@@ -414,6 +427,7 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
+                calendar: [{}],
             });
         }
     }

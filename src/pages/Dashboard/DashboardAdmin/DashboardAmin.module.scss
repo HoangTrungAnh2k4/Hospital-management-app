@@ -13,25 +13,23 @@
     padding: 2rem;
     padding-bottom: 6rem;
 
-    .headerCalendar{
+    .headerCalendar {
         font-size: 3rem;
         font-weight: 700;
         color: #333;
-        margin: 6rem 0 1rem ;
+        margin: 6rem 0 1rem;
         padding-left: 0.5rem;
         border-left: 0.6rem solid var(--primary-color);
     }
 
-    .calendar{
+    .calendar {
         margin: 0rem -2rem;
     }
-    
 }
 
 .row1 {
     display: flex;
     justify-content: space-between;
-
 }
 
 .quantityPatient {
@@ -234,8 +232,8 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: end;
-                
-                .type{
+
+                .type {
                     position: absolute;
                     top: 12.5rem;
                     left: 4px;
@@ -243,7 +241,6 @@
                     font-weight: bolder;
                     color: #38416e;
                 }
-
             }
 
             .bloodWrap:nth-child(odd) .bloodCol {
@@ -301,8 +298,14 @@
     }
 }
 
-.notify {
+.boardNotifyWraper {
     width: 32.33%;
+}
+.notify {
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
+    overflow: hidden;
 
     .notify__header {
         height: 40px;
@@ -312,33 +315,43 @@
         font-size: 2rem;
         font-weight: 500;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        border-radius: 1rem 1rem 0 0;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
         background-color: var(--primary-color);
     }
 
     .notify__main {
+        padding-bottom: 1rem;
+        background-color: #fff;
+    }
+
+    .notify_list {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        align-items: flex-start;
+        max-height: 300px;
         height: 300px;
-        padding: 1rem;
-        border-radius: 0 0 1rem 1rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         background-color: #fff;
 
         ul {
+            width: 100%;
             list-style: none;
             margin: 0;
-            padding: 0;
-            overflow-y: auto;
+            padding: 0 2rem;
+            overflow: auto;
         }
 
-        li {
+        .item {
+            border-radius: 0.5rem;
+            background-color: var(--third-color);
+        }
+
+        .index {
+            color: #000;
             display: flex;
             align-items: center;
             padding: 0.5rem;
-            border-bottom: 1px solid #888888;
+            border-bottom: 3px solid #aaaaaa;
 
             .icon {
                 font-size: 3rem;
@@ -346,11 +359,11 @@
                 display: flex;
                 align-items: center;
             }
-
             .content {
                 width: 100%;
 
-                .row1 {
+                .row5 {
+                    padding-bottom: 1rem;
                     font-size: 1.8rem;
                     font-weight: 600;
                     display: flex;
@@ -362,33 +375,29 @@
                         margin-left: auto;
                     }
                 }
-                .row2 {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    p {
-                        width: 70%; /* Độ rộng tùy chỉnh */
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                }
             }
         }
-
-        li:hover {
-            background-color: #f0f0f0;
+        .index:hover {
+            //background-color: #f0f0f0;
             cursor: pointer;
+        }
+
+        .row6 {
+            padding: 1.5rem 0.5rem 0.5rem;
+            h4 {
+                margin-bottom: 1rem;
+                font-weight: bolder;
+            }
+            color: #000;
         }
     }
 
     .notify__footer {
         display: flex;
         justify-content: flex-end;
-        margin: 0 -1rem;
+        margin: 1rem;
         padding: 1rem 2rem 0rem;
         border-top: 2px solid #666;
-
         .addBtn {
             width: 60px;
             color: #fff;
@@ -435,10 +444,10 @@
         width: 45%;
         border: none;
         border-radius: 0.7rem;
-        box-shadow: 0 0 10px rgba(214, 239, 239, 0.5);
-        background-color: #eee;
         overflow: hidden;
         animation: fadeIn 0.25s ease-in-out;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        background-color: #dddddd;
 
         header {
             display: flex;
@@ -450,7 +459,7 @@
             font-weight: 600;
             color: #fff;
             text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-            background-color: #65c5b9;
+            background-color: var(--second-color);
 
             p {
                 margin: 0;
@@ -482,16 +491,34 @@
         main {
             height: 300px;
             padding: 2rem 2rem 1rem 2rem;
+
+            .title {
+                width: 100%;
+                font-size: 1.6rem;
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                padding: 0.5rem;
+                padding-left: 1rem;
+                outline: none;
+                border: none;
+                border-radius: 0.4rem;
+                background-color: #eeeeee;
+            }
+
             textarea {
                 width: 100%;
-                height: 100%;
+                height: 84%;
                 padding: 0.5rem;
+                padding-left: 1rem;
                 font-size: 1.6rem;
+                color: #111;
+                font-weight: 600;
                 resize: none;
                 border: none;
                 outline: none;
                 border-bottom: 2px solid #333;
-                border-radius: 0.7rem 0.7rem 0 0;
+                border-radius: 0.5rem 0.5rem 0 0;
+                background-color: #eeeeee;
             }
         }
 
@@ -506,7 +533,7 @@
                 margin-right: 2rem;
                 border: none;
                 border-radius: 0.5rem;
-                background-color: var(--primary-color);
+                background-color: var(--second-color);
                 filter: opacity(0.8);
             }
 
