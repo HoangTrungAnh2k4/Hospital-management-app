@@ -8,8 +8,19 @@ import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import MCarausel from '~/components/Carausel/Medicine_carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Medicine() {
+
+    const navigate = useNavigate();
+
+   useEffect(() => {
+        if (localStorage.getItem('auth') !== 'admin') {
+            navigate('/');
+        }
+    }, []);
+
     const [obFilter, setOjFilter] = useState("tên thuốc");
     const [data, setData] = useState(Medicines);
     const [searchItem, setSearchItem] = useState('');

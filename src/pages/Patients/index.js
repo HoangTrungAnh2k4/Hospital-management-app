@@ -10,11 +10,21 @@ import Popup from './Popup';
 import AddForm from './Forms/addForm.js';
 import Notification from "./Forms/Notification";
 import ConfirmDialog from "./Forms/ConfirmDialog";
-import AddIcon from '@mui/icons-material/Add'
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 function Patients() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+         if (localStorage.getItem('auth') !== 'admin') {
+             navigate('/');
+         }
+     }, []);
+    
     const [value, setValue] = useState([]);
     const [patients, setPatients] = useState([]);
     const [openPopup, setOpenPopup] = useState(false)

@@ -13,15 +13,14 @@ function CalendarDay() {
                     <div className={clsx(styles.event)} style={{ backgroundColor: 'aquamarine' }}>
                         <p>Phẫu thuật</p>
                         <span>8:00 - 13:30</span>
-                        <span>H6-408</span>
-                        <span>Hoang trung anh id:2210055</span>
+                        <span>H6 - 408</span>
                     </div>
                     <div className={clsx(styles.event)} style={{ backgroundColor: 'cornflowerblue' }}>
                         <p>Phẫu thuật</p>
                         <span>8:00 - 13:30</span>
-                        <span>H6-408</span>
-                        <span>Hoang trung anh id:2210055</span>
+                        <span>H6 - 408</span>
                     </div>
+                    
                 </td>
             </table>
         </div>

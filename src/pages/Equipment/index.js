@@ -6,8 +6,18 @@ import Edetail_1 from '~/components/Slicebar/Edetail_1';
 import { useState } from 'react';
 import ECarausel from '~/components/Carausel/Equipment_carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Equipment() {
+    const navigate = useNavigate();
+
+   useEffect(() => {
+        if (localStorage.getItem('auth') !== 'admin') {
+            navigate('/');
+        }
+    }, []);
+
     const [target, setTarget] = useState([0, 0]);
     const [data, setData] = useState(Equipments);
     const [searchItem, setSearchItem] = useState('')

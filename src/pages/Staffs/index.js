@@ -4,6 +4,11 @@ import React, { useState } from 'react';
 import doctorImage from 'src/img/doctor.png';
 import { doctors_data } from './doctors_data';
 import { nurses_data } from './nurses_data';
+import Calendar from 'src/components/Calendar/CalendarDay';
+import { database } from '~/firebase';
+import { collection, getDocs, setDoc, doc, addDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function StaffsDisplay() {
     return (
@@ -277,6 +282,7 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Lịch</h2>
                         </div>
+                        <Calendar />
                     </div>
                     {/* -------------------------------------------------- Bệnh nhân ------------------------------------------------ */}
                     <div className={clsx(style.col2__row2__col2)}>
@@ -355,6 +361,63 @@ function AddStaffs() {
         setShowModal(false);
     };
 
+    async function generateId() {
+        const querySnapshot = await getDocs(collection(database, 'Doctors'));
+        const querySnapshot2 = await getDocs(collection(database, 'Nurse'));
+
+        const newId = Math.floor(100000 + Math.random() * 900000);
+        let newIdString = newId.toString();
+
+        if (
+            querySnapshot.docs.find((doc) => doc.id === newIdString) ||
+            querySnapshot2.docs.find((doc) => doc.id === newIdString)
+        ) {
+            return newIdString;
+        } else {
+            newIdString = generateId();
+        }
+        return newIdString;
+    }
+
+    async function handleAdd() {
+        const fullName = document.querySelector('input[name="fullName"]').value;
+        const gender = document.querySelector('input[name=gender]').value;
+        const faculty = document.querySelector('input[name=faculty]').value;
+        const birthdate = document.querySelector('input[name=birthdate]').value;
+        const email = document.querySelector('input[name=email]').value;
+        const hometown = document.querySelector('input[name=hometown]').value;
+        const phone = document.querySelector('input[name=phone]').value;
+        const address = document.querySelector('input[name=address]').value;
+        const job = document.querySelector('input[name=job]').value;
+        const newId = await generateId();
+
+        if (job === 'doctor') {
+            await addDoc(collection(database, 'Doctors'), {
+                id: newId,
+                fullName: fullName,
+                gender: gender,
+                faculty: faculty,
+                birthdate: birthdate,
+                email: email,
+                hometown: hometown,
+                phone: phone,
+                address: address,
+            });
+        } else if (job === 'nurse') {
+            await addDoc(collection(database, 'Nurse'), {
+                id: newId,
+                fullName: fullName,
+                gender: gender,
+                faculty: faculty,
+                birthdate: birthdate,
+                email: email,
+                hometown: hometown,
+                phone: phone,
+                address: address,
+            });
+        }
+    }
+
     return (
         <div>
             <div className={clsx(style.AddButton)}>
@@ -372,13 +435,13 @@ function AddStaffs() {
                             <h3>Điền thông tin nhân viên</h3>
                         </div>
                         <div className={clsx(style.modalBody)}>
-                            <label>
+                            {/* <label>
                                 ID: 
                                 <input type="text" name="id" placeholder="####" /> 
-                            </label>
+                            </label> */}
                             <label>
-                            Full Name:
-                                <input type="text" name="full_name" placeholder="Nguyen Van A" />
+                                Full Name:
+                                <input type="text" name="fullName" placeholder="Nguyen Van A" />
                             </label>
                             <label>
                                 Gender:
@@ -394,7 +457,7 @@ function AddStaffs() {
                             </label>
                             <label>
                                 Position:
-                                <input type="text" name="job" placeholder="Position" />
+                                <input type="text" name="job" placeholder="doctor or nurse" />
                             </label>
                             <label>
                                 Email:
@@ -414,7 +477,7 @@ function AddStaffs() {
                             </label>
                         </div>
                         <div className={clsx(style.modalFooter)}>
-                            <button>Submit</button>
+                            <button onClick={handleAdd}>Submit</button>
                         </div>
                     </div>
                 </div>
@@ -503,6 +566,13 @@ const SortTable = ({ data }) => {
 
 // --------------------------------------------------- main --------------------------------------------------------------
 function Staffs() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem('auth') !== 'admin') {
+            navigate('/');
+        }
+    }, []);
     return (
         <div className={clsx(style.wrapper)}>
             <StaffsDisplay />

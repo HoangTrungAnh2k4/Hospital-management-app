@@ -13,31 +13,23 @@ function Login() {
     const navigate = useNavigate();
 
     async function checkAuth(username, password) {
-        let cnt = 0;
-
-        while (true) {
-            if (cnt > 10) {
-                break;
+        const querySnapshot = await getDocs(collection(database, 'AccountAdmin'));
+        querySnapshot.forEach((doc) => {
+            if (doc.data().username === username && doc.data().password === password) {
+                localStorage.setItem('auth', 'admin');
+                localStorage.setItem('name', doc.data().name);
+                navigate('/dashboard/admin');
             }
-            console.log('running');
-            cnt++;
-            cnt = cnt + '';
-            const querySnapshot = await getDocs(collection(database, 'Accounts'));
-            querySnapshot.forEach((doc) => {
-                if (doc.data().username === username && doc.data().password === password) {
-                    localStorage.setItem('auth', 'admin');
-                    navigate('/dashboard/admin');
-                }
-            });
+        });
 
-            const querySnapshot2 = await getDocs(collection(database, 'Accounts', 'staff', cnt));
-            querySnapshot2.forEach((doc) => {
-                if (doc.data().username === username && doc.data().password === password) {
-                    localStorage.setItem('auth', 'staff');
-                    navigate('/dashboard/staff');
-                }
-            });
-        }
+        const querySnapshot2 = await getDocs(collection(database, 'AccountStaff'));
+        querySnapshot2.forEach((doc) => {
+            if (doc.data().username === username && doc.data().password === password) {
+                localStorage.setItem('auth', 'staff');
+                localStorage.setItem('name', doc.data().name);
+                navigate('/dashboard/staff');
+            }
+        });
     }
 
     useEffect(() => {
