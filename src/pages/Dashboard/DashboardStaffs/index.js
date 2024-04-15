@@ -1,8 +1,19 @@
 import clsx from 'clsx';
 import style from './DashboardStaffs.module.scss';
-//import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function DashboardStaffs() {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+         if (localStorage.getItem('auth') !== 'staff') {
+             navigate('/');
+         }
+     }, []);
+
     const customStyle = {
         backgroundColor: 'rgb(101, 197, 197)',
         color: 'black',

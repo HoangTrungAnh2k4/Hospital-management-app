@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import style from './DashboardAmin.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import CalendarWeek from '~/components/Calendar/CalendarWeek';
+import { useNavigate } from 'react-router-dom';
 
 function Chart1() {
     return (
@@ -316,6 +317,13 @@ function ModalAddNotify({ addNotification }) {
 }
 
 function DashboardAdmin() {
+    const navigate = useNavigate();
+
+   useEffect(() => {
+        if (localStorage.getItem('auth') !== 'admin') {
+            navigate('/');
+        }
+    }, []);
     const [listNotify, setListNotify] = useState([]);
 
     const addNotification = (message) => {
@@ -340,7 +348,9 @@ function DashboardAdmin() {
 
             <header className={clsx(style.headerCalendar)}>Lịch làm việc trong tuần</header>
 
-            <CalendarWeek />
+            <div className={clsx(style.calendar)}>
+                <CalendarWeek />
+            </div>
 
             <ModalAddNotify addNotification={addNotification} />
         </div>

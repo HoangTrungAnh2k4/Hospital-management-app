@@ -3,12 +3,21 @@ import styles from "./Blood.module.scss";
 import SearchIcon from '@mui/icons-material/Search';
 
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Blood_type from './Blood_data';
 
 import MCarausel from '~/components/Carausel/Medicine_carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 
 function Blood() {
+    const navigate = useNavigate();
+
+   useEffect(() => {
+        if (localStorage.getItem('auth') !== 'admin') {
+            navigate('/');
+        }
+    }, []);
 
     const [data, setData] = useState(Blood_type);
     const [searchItem, setSearchItem] = useState('');

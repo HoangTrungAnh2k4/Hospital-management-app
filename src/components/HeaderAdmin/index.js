@@ -18,6 +18,12 @@ function Header() {
         });
     }, []);
 
+    function handleLogout() {
+        localStorage.removeItem('auth');
+        localStorage.removeItem('name');
+        window.location.href = '/';
+    }
+
     return (
         <header id={clsx(style.header)}>
             <div className={clsx(style.logo)}>
@@ -47,15 +53,17 @@ function Header() {
             </nav>
             <div className={clsx(style.user)}>
                 <div className={clsx(style.infor)}>
-                    <div className={clsx(style.name)}>This is a name</div>
+                    {/* <div className={clsx(style.name)}>This is a name</div> */}
                     <div>Admin</div>
                 </div>
                 <div className={clsx(style.img)}>
-                    <img src={Logo} alt="" />
+                    <div className={clsx(style.img)}>
+                        <i class="fa-solid fa-user-large"></i>
+                    </div>
                     <div className={clsx(style.dropdown)}>
                         <ul>
                             <li>
-                                <Link to="/">Log out</Link>
+                                <Link onClick={handleLogout}>Log out</Link>
                             </li>
                         </ul>
                     </div>

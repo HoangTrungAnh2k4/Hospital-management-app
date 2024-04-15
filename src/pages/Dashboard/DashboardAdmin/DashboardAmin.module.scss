@@ -21,6 +21,10 @@
         padding-left: 0.5rem;
         border-left: 0.6rem solid var(--primary-color);
     }
+
+    .calendar{
+        margin: 0rem -2rem;
+    }
     
 }
 
@@ -36,7 +40,7 @@
     .row1 {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
         margin-right: 2rem;
     }
 

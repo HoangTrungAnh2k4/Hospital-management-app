@@ -9,8 +9,18 @@ import MCarausel from '~/components/Carausel/Medicine_carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import { addMedicine, getMedicine, queryByFirstChar, queryMedByName, queryMedBCatOrAct} from '~/firebase';
 import { uploadImage } from '~/firebase';
+import { useNavigate } from 'react-router-dom';
 
 function Medicine() {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+         if (localStorage.getItem('auth') !== 'admin') {
+             navigate('/');
+         }
+     }, []);
+
     const initialState = {
         number: "",
         name: "",
