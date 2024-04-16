@@ -32,11 +32,11 @@ function Login() {
         });
     }
 
-    useEffect(() => {
-        loginRef.current.onclick = () => {
-            checkAuth(Username.current.value, Password.current.value);
-        };
-    }, []);
+    // useEffect(() => {
+    //     loginRef.current.onclick = () => {
+    //         checkAuth(Username.current.value, Password.current.value);
+    //     };
+    // }, []);
 
     return (
         <div className={clsx(style.wrapper)}>

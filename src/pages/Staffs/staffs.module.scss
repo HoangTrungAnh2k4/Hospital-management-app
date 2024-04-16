@@ -11,7 +11,7 @@
     overflow-y: auto;
     margin-right: 20px;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 1rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     .col1__row {
         margin: 5% 5%;
@@ -26,7 +26,7 @@
         display: flex;
         flex-direction: column;
         background-color: white;
-        border-radius: 20px;
+        border-radius: 1rem;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         .defaultCard {
             display: flex;
@@ -36,11 +36,10 @@
             .myimg {
                 display: block;
                 margin: auto;
-                width: 90%;
-                border-radius: 50%;
+                width: 60%;
                 object-fit: cover;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-                border: 10px solid var(--second-color);
+                //border: 10px solid var(--second-color);
             }
             .cardbody {
                 padding: 0 0 15px 15px;
@@ -54,8 +53,8 @@
                         justify-content: center;
                         background-color: var(--primary-color);
                         padding: 8px 0;
-                        border-top-right-radius: 20px;
-                        border-bottom-left-radius: 20px;
+                        border-top-right-radius: 1rem;
+                        border-bottom-left-radius: 1rem;
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                         transition: box-shadow 0.3s ease;
 
@@ -83,11 +82,11 @@
             .myimg {
                 display: block;
                 margin: auto;
-                width: 90%;
-                border-radius: 50%;
+                width: 60%;
+                // border-radius: 50%;
                 object-fit: cover;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-                border: 10px solid var(--second-color);
+                //border: 10px solid var(--second-color);
             }
             .cardbody {
                 padding: 0 0 15px 15px;
@@ -101,8 +100,8 @@
                         justify-content: center;
                         background-color: var(--primary-color);
                         padding: 8px 0;
-                        border-top-right-radius: 20px;
-                        border-bottom-left-radius: 20px;
+                        border-top-right-radius: 1rem;
+                        border-bottom-left-radius: 1rem;
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                         transition: box-shadow 0.3s ease;
 
@@ -121,27 +120,6 @@
                     margin-left: 2rem;
                 }
             }
-            .button__clear__mod,
-            .button__clear__close {
-                font-size: 14px;
-                font-weight: bold;
-                margin: 2px;
-                background-color: darkred;
-                border-color: darkred;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            }
-            .button__clear__save,
-            .button__edit__mod {
-                font-size: 14px;
-                font-weight: bold;
-                margin: 2px;
-                background-color: var(--correctblue-color);
-                border-color: var(--correctblue-color);
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            }
-            .textform {
-                font-size: 14px;
-            }
         }
     }
     .col2__row2 {
@@ -152,14 +130,14 @@
             flex: 2;
             margin: 20px 10px 0 0;
             background-color: white;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
         .col2__row2__col2 {
             flex: 1;
             margin: 20px 0 0 10px;
             background-color: white;
-            border-radius: 20px;
+            border-radius: 1rem;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
             .patientInfor {
                 margin: 2rem;
@@ -195,8 +173,8 @@ li {
     justify-content: center;
     background-color: var(--primary-color);
     padding: 8px 0;
-    border-top-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-top-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
 
@@ -237,29 +215,37 @@ li {
     tbody tr:nth-of-type(even) {
         background-color: rgb(229, 237, 237);
     }
-    tr:hover {
-        cursor: pointer;
+    td {
+        i {
+            font-size: 2rem;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 }
 .AddButton {
-    padding: 0 20px;
+    padding: 20px 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     .addButton {
         background-color: var(--second-color);
         border: none;
-        color: white;
-        padding: 10px 20px;
+        color: whitesmoke;
+        padding: 5px 10px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
+        //font-size: 16px;
         margin: 4px 2px;
         cursor: pointer;
-        border-radius: 8px;
+        border-radius: 50%;
         &:hover {
             background-color: var(--correctblue-color);
+        }
+        i {
+            font-size: 3rem;
         }
     }
 }
@@ -282,7 +268,7 @@ li {
         margin: auto;
         padding: 0;
         border: 1px solid #888;
-        width: 80%;
+        width: 60%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         -webkit-animation-name: animatetop;
         -webkit-animation-duration: 0.4s;
@@ -311,6 +297,7 @@ li {
             label {
                 display: block;
                 font-weight: bold;
+                margin: 8px;
             }
             input {
                 display: flex;
@@ -322,6 +309,13 @@ li {
             padding: 2px 16px;
             background-color: var(--correctblue-color);
             color: white;
+            .submitButton {
+                color: var(--second-color);
+                background-color: var(--third-color);
+                border-radius: 1rem;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+                font-weight: bold;
+            }
         }
     }
 }
@@ -344,5 +338,31 @@ li {
     to {
         top: 0;
         opacity: 1;
+    }
+}
+//.button__clear__mod,
+//.button__clear__close
+.EditButton {
+    padding: 20px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .clearButton {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 2px;
+        background-color: darkred;
+        border-color: darkred;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    // .button__clear__save,
+    // .button__edit__mod
+    .editButton {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 2px;
+        background-color: var(--correctblue-color);
+        border-color: var(--correctblue-color);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     }
 }
