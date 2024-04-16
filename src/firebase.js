@@ -30,6 +30,16 @@ async function addMedicine(medicine) {
     }
 }
 
+async function addBlood(blood) {
+    try {
+        const docRef = doc(collection(database, "blood"));
+        await setDoc(docRef, blood);
+        alert("Data saved successfully!")
+    } catch (error) {
+        alert("Error saving data: ", error);
+    }
+}
+
 function getMedicine(onChange) {
     const collectionRef = collection(database, "medicines");
 
@@ -45,8 +55,33 @@ function getMedicine(onChange) {
     });
 }
 
+function getBlood(onChange) {
+    const collectionRef = collection(database, "blood");
+
+    onSnapshot(collectionRef, (querySnapshot) => {
+        const documents = [];
+        querySnapshot.forEach((doc) => {
+            documents.push({ id: doc.id, ...doc.data() });
+        });
+
+        onChange(documents);
+    }, (error) => {
+        alert("Error to get data: ", error);
+    });
+}
+
 async function deleteMedicine(docId) {
     const docRef = doc(database, "medicines", docId);
+
+    try {
+        await deleteDoc(docRef);
+        alert('Data successfully deleted!');
+    } catch (error) {
+        alert('Error removing data: ', error);
+    }
+}
+async function deleteBlood(docIdBlood) {
+    const docRef = doc(database, "blood", docIdBlood);
 
     try {
         await deleteDoc(docRef);
@@ -84,6 +119,34 @@ async function queryByFirstChar(startChar, onChange) {
     }
 }
 
+async function queryByFirstChar_blood(startChar, onChange) {
+    const collectionRef = collection(database, "blood");
+    // Chuyển đổi ký tự đầu vào thành chữ hoa (hoặc chữ thường tùy thuộc vào yêu cầu)
+    const normalizedStartChar = startChar.toUpperCase();
+
+    // Tính toán ký tự tiếp theo sau startChar trong bảng chữ cái để giới hạn phạm vi truy vấn
+    const nextChar = String.fromCharCode(normalizedStartChar.charCodeAt(0) + 1);
+
+    const queryConstraint = query(
+        collectionRef,
+        where("name", ">=", normalizedStartChar),
+        where("name", "<", nextChar),
+        orderBy("name")
+    );
+
+    try {
+        const querySnapshot = await getDocs(queryConstraint);
+        const documents = [];
+        querySnapshot.forEach(doc => {
+            documents.push({ id: doc.id, ...doc.data() });
+        });
+        onChange(documents);  // Trả về danh sách các documents
+    } catch (error) {
+       alert("Error fetching blood: ", error);
+        onChange([]);  // Trả về mảng rỗng nếu có lỗi
+    }
+}
+
 async function queryMedByName(medicineName, onChange) {
     const medicinesCollectionRef = collection(database, "medicines");
     const q = query(medicinesCollectionRef, where("name", "==", medicineName));
@@ -95,6 +158,21 @@ async function queryMedByName(medicineName, onChange) {
             ...doc.data()
         }));
         onChange(medicines);
+    } catch (error) {
+        onChange([]);
+    }
+}
+async function queryMedByName_blood(bloodName, onChange) {
+    const bloodCollectionRef = collection(database, "blood");
+    const q = query(bloodCollectionRef, where("name", "==", bloodName));
+
+    try {
+        const querySnapshot = await getDocs(q);
+        const blood = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        onChange(blood);
     } catch (error) {
         onChange([]);
     }
@@ -117,6 +195,23 @@ async function queryMedBCatOrAct(key, option, onChange) {
     }
 }
 
+async function queryMedBCatOrAct_blood(key, option, onChange) {
+    const bloodCollectionRef = collection(database, "blood"); 
+    const q = query(bloodCollectionRef, where(option, "array-contains", key));
+
+    try {
+        const querySnapshot = await getDocs(q);
+        const blood = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        onChange(blood);
+    } catch (error) {
+        alert("Error fetching blood by catelogue: ", error);
+        onChange([]);
+    }
+}
+
 
 async function updateMedicine(docId, updateData) {
     const docRef = doc(database, "medicines", docId); // Tạo một tham chiếu đến document cần cập nhật
@@ -128,8 +223,33 @@ async function updateMedicine(docId, updateData) {
     }
 }
 
+async function updateBlood(docIdBlood, updateData) {
+    const docRef = doc(database, "blood", docIdBlood); // Tạo một tham chiếu đến document cần cập nhật
+
+    try {
+        await updateDoc(docRef, updateData); // Cập nhật document
+    } catch (error) {
+        alert('Error updating data: ', error);
+    }
+}
+
 async function addWinBid(documentId, newWinBid) {
     const docRef = doc(database, "medicines", documentId);
+    try {
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.data();
+        await updateDoc(docRef, {
+            win_bid: arrayUnion(newWinBid),
+            quantity: Number(data.quantity) + Number(newWinBid.wquantity)
+        });
+        alert("win_bid added successfully!");
+    } catch (error) {
+        alert("Error adding win_bid: ", error);
+    }
+}
+
+async function addWinBid_blood(documentId, newWinBid) {
+    const docRef = doc(database, "blood", documentId);
     try {
         const docSnap = await getDoc(docRef);
         const data = docSnap.data();
@@ -165,11 +285,46 @@ async function deleteWinBid(documentId, index) {
     }
 }
 
+async function deleteWinBid_blood(documentId, index) {
+    const docRef = doc(database, "blood", documentId);
+    try {
+        // Tải document hiện tại
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.data();
+
+        // Kiểm tra nếu index hợp lệ và xóa phần tử
+        const updatedWinBids = [...data.win_bid];
+        updatedWinBids.splice(index, 1);  // Xóa phần tử tại index
+
+        // Cập nhật document
+        await updateDoc(docRef, {
+            win_bid: updatedWinBids
+        });
+
+        alert("win_bid removed successfully!");
+    } catch (error) {
+        alert("Error updating document:", error);
+    }
+}
+
 function uploadImage(file, onChange) {
     if (!file) {
         return;
     }
     const storageRef = ref(storage, `medicines/${file.name}`);
+    uploadBytes(storageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then(downloadURL => {
+            onChange(downloadURL);
+        });
+    }).catch(error => {
+        alert('Upload failed: ' + error);
+    });
+}
+function uploadImageBlood(file, onChange) {
+    if (!file) {
+        return;
+    }
+    const storageRef = ref(storage, `blood/${file.name}`);
     uploadBytes(storageRef, file).then((snapshot) => {
         getDownloadURL(snapshot.ref).then(downloadURL => {
             onChange(downloadURL);
@@ -186,5 +341,13 @@ function deleteImage(img_url){
     deleteObject(imageRef);
 }
 
-export { database, addMedicine, getMedicine, deleteMedicine, queryByFirstChar, updateMedicine, addWinBid, deleteWinBid, queryMedByName, queryMedBCatOrAct};
-export {uploadImage, deleteImage};
+function deleteImage_blood(img_url){
+    if (!img_url) {
+        return;
+    }
+    const imageRef = ref(storage, img_url);
+    deleteObject(imageRef);
+}
+
+export { database, addMedicine,addBlood, getMedicine,getBlood, deleteMedicine,deleteBlood, queryByFirstChar,queryByFirstChar_blood, updateMedicine,updateBlood, addWinBid,addWinBid_blood, deleteWinBid,deleteWinBid_blood, queryMedByName,queryMedByName_blood, queryMedBCatOrAct,queryMedBCatOrAct_blood};
+export {uploadImage,uploadImageBlood, deleteImage,deleteImage_blood};
