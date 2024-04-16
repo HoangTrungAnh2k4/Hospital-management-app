@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { FormControl, FormLabel, RadioGroup as MuiRadioGroup, FormControlLabel, Radio, Grid, } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
 import { InputLabel, Select as MuiSelect, MenuItem, FormHelperText } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import { Button as MuiButton, makeStyles } from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 import DateFnsUtils from "@date-io/date-fns";
 import { query, getDocs, collection, addDoc } from 'firebase/firestore';
 import { database } from 'src/firebase'
-import { Button as MuiButton, makeStyles } from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
@@ -165,9 +165,9 @@ function Form(props) {
 }
 
 const GenderItems = [
-    { id: 'Male', title: 'Male' },
-    { id: 'Female', title: 'Female' },
-    { id: 'Other', title: 'Other' },
+    { id: 'Nam', title: 'Nam' },
+    { id: 'Nữ', title: 'Nữ' },
+    { id: 'Khác', title: 'Khác' },
 ]
 
 const getDepartment = () => ([
@@ -179,12 +179,12 @@ const getDepartment = () => ([
 ])
 
 const getStatus = () => ([
-    { id: 'New patient', title: 'New patient' },
-    { id: 'In treatment', title: 'In treatment' },
-    { id: 'Recovered', title: 'Recovered' },
+    { id: 'Bệnh nhân mới', title: 'Bệnh nhân mới' },
+    { id: 'Đang điều trị', title: 'Đang điều trị' },
+    { id: 'Đã phục hồi', title: 'Đã phục hồi' },
 ])
 
-export default function AddForm({ patients, setPatients, setOpenPopup, setNotify, getPatient}) {
+export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
     const initialFValues = useMemo(() => ({
         ID: 0,
         Name: '',
@@ -193,7 +193,7 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
         CCCD: '',
         Address: '',
         City: '',
-        Gender: 'Male',
+        Gender: 'Nam',
         Department: '',
         Status: '',
         Birthday: new Date(),
@@ -224,17 +224,17 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('Name' in fieldValues)
-            temp.Name = fieldValues.Name ? "" : "This field is required."
+            temp.Name = fieldValues.Name ? "" : "Không được bỏ trống."
         if ('Doctor' in fieldValues)
-            temp.Doctor = fieldValues.Doctor ? "" : "This field is required."
+            temp.Doctor = fieldValues.Doctor ? "" : "Không được bỏ trống."
         if ('PhoneNumber' in fieldValues)
-            temp.PhoneNumber = fieldValues.PhoneNumber.length > 9 ? "" : "Minimum 10 numbers required."
+            temp.PhoneNumber = fieldValues.PhoneNumber.length > 9 ? "" : "Yêu cầu tối thiểu 10 số."
         if ('CCCD' in fieldValues)
-            temp.CCCD = fieldValues.CCCD.length === 12 ? "" : "There is 12 numbers required."
+            temp.CCCD = fieldValues.CCCD.length === 12 ? "" : "Yêu cầu 12 số."
         if ('Department' in fieldValues)
-            temp.Department = fieldValues.Department.length !== 0 ? "" : "This field is required."
+            temp.Department = fieldValues.Department.length !== 0 ? "" : "Không được bỏ trống."
         if ('statusId' in fieldValues)
-            temp.Status = fieldValues.Status.length !== 0 ? "" : "This field is required."
+            temp.Status = fieldValues.Status.length !== 0 ? "" : "Không được bỏ trống."
         setErrors({
             ...temp
         })
@@ -255,14 +255,12 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
         e.preventDefault()
         if (validate()) {
             try {
-
                     // Gửi dữ liệu mới lên Firestore
-                    const docRef = await addDoc(collection(database, "Patients"), {
+                    await addDoc(collection(database, "Patients"), {
                         ...values
                     });
 
                     // Cập nhật state với thông tin mới được thêm vào Firestore
-                    setPatients([...patients, { id: docRef.id, ...values }]);
                     getPatient();
                     resetForm();
                     setOpenPopup(false);
@@ -273,7 +271,7 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
         }
         setNotify({
             isOpen: true,
-            message: 'Submitted Successfully',
+            message: 'Nhập thành công',
             type: 'success'
         })
     }
@@ -283,14 +281,14 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
             <Grid container>
                 <Grid item xs={6}>
                     <Input
-                        label="Full Name"
+                        label="Tên đầy đủ"
                         name="Name"
                         value={values.Name}
                         onChange={handleInputChange}
                         error={errors.Name}
                     />
                     <Input
-                        label="Doctor Name"
+                        label="Tên bác sĩ"
                         name="Doctor"
                         value={values.Doctor}
                         onChange={handleInputChange}
@@ -304,20 +302,20 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
                         error={errors.CCCD}
                     />
                     <Input
-                        label="PhoneNumber"
+                        label="Số điện thoại"
                         name="PhoneNumber"
                         value={values.PhoneNumber}
                         onChange={handleInputChange}
                         error={errors.PhoneNumber}
                     />
                     <Input
-                        label="City"
+                        label="Thành phố"
                         name="City"
                         value={values.City}
                         onChange={handleInputChange}
                     />
                     <Input
-                        label="Address"
+                        label="Địa chỉ"
                         name="Address"
                         value={values.Address}
                         onChange={handleInputChange}
@@ -327,20 +325,20 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
                 <Grid item xs={6}>
                     <RadioGroup
                         name="Gender"
-                        label="Gender"
+                        label="Giới tính"
                         value={values.Gender}
                         onChange={handleInputChange}
                         items={GenderItems}
                     />
                     <DatePicker
                         name="Birthday"
-                        label="Birthday"
+                        label="Ngày sinh"
                         value={values.Birthday}
                         onChange={handleInputChange}
                     />
                     {<Select
                         name="Department"
-                        label="Department"
+                        label="Khoa"
                         value={values.Department}
                         onChange={handleInputChange}
                         options={getDepartment()}
@@ -348,7 +346,7 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
                     />}
                     {<Select
                         name="Status"
-                        label="Status"
+                        label="Trạng thái"
                         value={values.Status}
                         onChange={handleInputChange}
                         options={getStatus()}
@@ -356,17 +354,17 @@ export default function AddForm({ patients, setPatients, setOpenPopup, setNotify
                     />}
                     <DatePicker
                         name="RegistrationDate"
-                        label="Registration Date"
+                        label="Ngày đăng kí"
                         value={values.RegistrationDate}
                         onChange={handleInputChange}
                     />
                     <div>
                         <Button
                             type="submit"
-                            text="Submit" 
+                            text="Gửi" 
                         />
                         <Button
-                            text="Reset"
+                            text="Đăt lại"
                             color="default"
                             onClick={resetForm} />
                     </div>

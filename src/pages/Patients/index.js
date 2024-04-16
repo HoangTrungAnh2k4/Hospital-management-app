@@ -64,14 +64,14 @@ function Patients() {
                         <input type="text" className={clsx(style.searchInput)} onChange={
                             (e) => setValue(e.target.value)
                         }
-                        placeholder="Search here ...">
+                        placeholder="Nhập để tìm kiếm ...">
                         </input>
                     </div>
                 </div>
                 <span className={clsx(style.addPatient)}> 
                     <button className={clsx(style.addButton)}  onClick={() =>  setOpenPopup(true) }>
                         <AddIcon /> 
-                        <span>New Patient</span>
+                        <span>Bệnh Nhân Mới</span>
                     </button>
                 </span>
             </div>
@@ -92,8 +92,6 @@ function Patients() {
                 setOpenPopup={setOpenPopup}>
 
                 <AddForm
-                    patients={patients}
-                    setPatients={setPatients}
                     setOpenPopup={setOpenPopup}
                     setNotify={setNotify}
                     getPatient={getPatient}
