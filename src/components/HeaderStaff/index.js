@@ -36,14 +36,14 @@ function HeaderStaff() {
                         <Link to="/dashboard/staff">Dashboard</Link>
                     </li>
                     <li>
-                        <Link to="/calendar/week">Calendar</Link>
+                        <Link to="/calendar/week">Lịch</Link>
                     </li>
                 </ul>
             </nav>
             <div className={clsx(style.user)}>
                 <div className={clsx(style.infor)}>
                     <div className={clsx(style.name)}>{userName}</div>
-                    <div>Doctor</div>
+                    <div>Bác sĩ</div>
                 </div>
                 <div className={clsx(style.img)}>
                     <div className={clsx(style.img)}>
@@ -52,7 +52,7 @@ function HeaderStaff() {
                     <div className={clsx(style.dropdown)}>
                         <ul>
                             <li>
-                                <Link onClick={handleLogout} >Log out</Link>
+                                <Link onClick={handleLogout} >Đăng xuất</Link>
                             </li>
                         </ul>
                     </div>
