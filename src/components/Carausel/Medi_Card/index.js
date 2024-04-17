@@ -110,12 +110,6 @@ function MCard(props){
             return { ...prevState, quantity: newQuantity };
         });
     }
-
-    /*useEffect(() => {
-        if (fixItem.quantity !== undefined) {
-            updateMedicine(fixItem.id, { quantity: fixItem.quantity });
-        }
-    }, [fixItem.quantity]);*/
     
     return (
         
