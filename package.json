@@ -16,7 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
     "clsx": "^2.1.0",
-    "date-fns": "^3.0.2-rc.1",
+    "date-fns": "^2.30.0",
     "firebase": "^10.10.0",
     "jquery": "^3.7.1",
     "normalize.css": "^8.0.1",

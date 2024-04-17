@@ -47,8 +47,10 @@ function ECard(props){
     }
     function submitFixItem(event){
         event.preventDefault();
-        deleteImage(prevImg, "equipments");
-        setPrevImg(fixItem.img_url);
+        if ( fixItem.img_url != prevImg){
+            deleteImage(prevImg, "equipments");
+            setPrevImg(fixItem.img_url);
+        }
         updateEquipment(props.equipment.catelogue_1, props.equipment.catelogue_2, props.equipmentid, fixItem);
     }
     function changFixWinBid(event, index){
