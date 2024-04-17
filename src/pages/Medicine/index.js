@@ -5,10 +5,10 @@ import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 import { useState, useEffect } from 'react';
 import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
-import MCarausel from '~/components/Carausel/Medicine_carausel';
+import Carausel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import { addMedicine, getMedicine, queryByFirstChar, queryMedByName, queryMedBCatOrAct} from '~/firebase';
-import { uploadImage } from '~/firebase';
+import { uploadImage, deleteImage, getHistory } from '~/firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Medicine() {
@@ -41,9 +41,15 @@ function Medicine() {
     const [data, setData] = useState([]);
     const [searchItem, setSearchItem] = useState('');
     const [addItem, setAddItem] =useState(initialState);
+    const [history, setHistory] = useState([]);
     useEffect(() => {
         getMedicine((documents) => {
             setData(documents);
+        });
+    }, []);
+    useEffect(() => {
+        getHistory( true, (documents) => {
+            setHistory(documents);
         });
     }, []);
 
@@ -67,7 +73,7 @@ function Medicine() {
         if (data.length === 0) {
           return <div class="d-flex justify-content-center p-5"><h1>Không tìm thấy thông tin...</h1></div>;
         }
-        return <MCarausel medicines={data} />;
+        return <Carausel elements={data} option="medicine" />;
     }
     function changeInput(event){
         setSearchItem(event.target.value);
@@ -90,16 +96,19 @@ function Medicine() {
             })
         }
     }
-    function changeSaveItem(event) {
+    async function changeSaveItem(event) {
         const { name, value, files } = event.target;
     
         if (name === "img_url" && files[0]) {
-            uploadImage(files[0], "medicines", (downloadURL) => {
+            try {
+                const downloadURL = await uploadImage(files[0], "medicines");
                 setAddItem(prevState => ({
                     ...prevState,
                     [name]: downloadURL
                 }));
-            });
+            } catch (error) {
+                alert('Upload failed: ' + error.message);
+            }
         } else {
             setAddItem(prevState => ({
                 ...prevState,
@@ -109,9 +118,13 @@ function Medicine() {
     }
     
     function submitAdd(event){
+        event.preventDefault();
         addMedicine(addItem).then(() => {
             setAddItem(initialState);
         })
+    }
+    function submitCancelAdd(event){
+        deleteImage(addItem.img_url, "medicines");
     }
 
     return (
@@ -148,6 +161,7 @@ function Medicine() {
                                     <button   type="button" class="btn btn-outline-info" id="X" onClick={searchByFirstChar}> X </button>
                                     <button   type="button" class="btn btn-outline-info" id="Y" onClick={searchByFirstChar}> Y </button>
                                     <button   type="button" class="btn btn-outline-info" id="Z" onClick={searchByFirstChar}> Z </button>
+                                    <button   type="button" class="btn btn-outline-warning" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử </button>
                                 </div>
                                 
                                 <form className={"ng-untouched ng-pristine ng-valid"} padding="5px" role="search" onSubmit={submitSearch}> 
@@ -184,7 +198,7 @@ function Medicine() {
                     <div className={"modal-content"}>
                     <div className={"modal-header"}>
                         <h5 className={"modal-title"} id="exampleModalLabel">Thêm thuốc</h5>
-                        <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelAdd}></button>
                     </div>
                     <div className={"modal-body"}>
                         <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thuốc" value={addItem.name} onChange={changeSaveItem}/>
@@ -204,9 +218,28 @@ function Medicine() {
                         </div>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
                         <button type="button" className={"btn btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
                     </div>
+                    </div>
+                </div>
+            </div>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                    <h3 id="offcanvasRightLabel">Lịch sử</h3>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                        {history.map((item, index) => { return(
+                            <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="mb-1">{item.field}</strong>
+                                <small class="text-muted">{item.time}</small>
+                                </div>
+                                <div class="col-10 mb-1 small">{item.content}</div>
+                            </a>)
+                        })}
                     </div>
                 </div>
             </div>

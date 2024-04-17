@@ -3,17 +3,18 @@ import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import React, {useState, useEffect} from 'react';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
-import { deleteMedicine, updateMedicine, addWinBid, deleteWinBid} from '~/firebase';
+import { deleteMedicine, updateMedicine, addWinBidMedicine, deleteWinBidMedicine} from '~/firebase';
 import { uploadImage, deleteImage } from '~/firebase';
 
 function MCard(props){
-    const [fixItem, setFixItem] =useState({});
-    const [newWin_bid, setNewWin_bid] = useState({
+    const initWinBid = {
         date: null,
         wprice: 0,
         wquantity: 0,
         wunit: null
-    });
+    };
+    const [fixItem, setFixItem] =useState({});
+    const [newWin_bid, setNewWin_bid] = useState(initWinBid);
     const [prevImg, setPrevImg] = useState(props.medicine.img_url);
     useEffect(() => {
         setFixItem(props.medicine);
@@ -66,12 +67,15 @@ function MCard(props){
     
     function submitFixItem(event){
         event.preventDefault();
-        deleteImage(prevImg);
-        setPrevImg(fixItem.img_url);
+        if ( fixItem.img_url != prevImg){
+            deleteImage(prevImg, "medicines");
+            setPrevImg(fixItem.img_url);
+        }
         updateMedicine(props.medicine.id, fixItem);
     }
     function submitDelete(event){
         event.preventDefault();
+        deleteImage(prevImg, "medicines");
         deleteMedicine(props.medicine.id);
     }
     function changeNewBid(event){
@@ -93,11 +97,12 @@ function MCard(props){
     }
     function submitNewBid(event) {
         event.preventDefault();
-        addWinBid(props.medicine.id, newWin_bid);
+        addWinBidMedicine(props.medicine.id, newWin_bid);
+        setNewWin_bid(initWinBid);
     }
     function submitDelBid(event, bidId){
         event.preventDefault();
-        deleteWinBid(props.medicine.id, bidId);
+        deleteWinBidMedicine(props.medicine.id, bidId);
     }
     function decreaseQuantity() {
         setFixItem(prevState => {
@@ -106,11 +111,11 @@ function MCard(props){
         });
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (fixItem.quantity !== undefined) {
             updateMedicine(fixItem.id, { quantity: fixItem.quantity });
         }
-    }, [fixItem.quantity]);
+    }, [fixItem.quantity]);*/
     
     return (
         

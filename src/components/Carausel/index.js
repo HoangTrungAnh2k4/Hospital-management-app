@@ -1,13 +1,14 @@
 import clsx from 'clsx';
-import styles from "./Medicine_carausel.module.scss"
+import styles from "./Carasel.module.scss"
+import ECard from './Equip_Card';
 import MCard from './Medi_Card';
 
-function MCarausel(props){
+function Carausel(props){
       
-    function MedicineCarousel() {
+    function carousel() {
         const chunkedArray = [];
-        for (let i = 0; i < (props.medicines).length; i += 8) {
-          chunkedArray.push((props.medicines).slice(i, i + 8));
+        for (let i = 0; i < (props.elements).length; i += 8) {
+          chunkedArray.push((props.elements).slice(i, i + 8));
         }
         return (
           <div className="carousel-inner">
@@ -15,10 +16,15 @@ function MCarausel(props){
               <div class="carousel-item active">
                 <div className="container">
                   <div className="row">
-                    {chunk.map((medicine, index) => (
-                      <MCard 
+                    {chunk.map((item, index) => (
+                      (props.option === "medicine")?
+                      <MCard
                         key={index}
-                        medicine={medicine}
+                        medicine={item}
+                      />:
+                      <ECard
+                        key={index}
+                        equipment={item}
                       />
                     ))}
                   </div>
@@ -29,9 +35,9 @@ function MCarausel(props){
         );
     }
     return (
-        <div className={clsx(styles.medicineArea)}>
+        <div className={clsx(styles.elementArea)}>
             <div id="carouselExample" class="carousel carousel-dark slide">
-                {MedicineCarousel()}
+                {carousel()}
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -45,4 +51,4 @@ function MCarausel(props){
          </div>
     );
 }
-export default MCarausel;
+export default Carausel;

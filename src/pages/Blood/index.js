@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Blood_type from './Blood_data';
 
-import MCarausel from '~/components/Carausel/Medicine_carausel';
+import Carausel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 
 function Blood() {
@@ -27,7 +27,7 @@ function Blood() {
 
             return <div class="d-flex justify-content-center p-5"><h1>Không tìm thấy thông tin...</h1></div>;
         }
-        return <MCarausel medicines={data} />;
+        return <Carausel elements={data} option="medicine" />;
     }
     function handleInputChange(event) {
         setSearchItem(event.target.value);
