@@ -141,7 +141,6 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         setErrors({})
     }
 
-
     return {
         values,
         setValues,
@@ -164,9 +163,9 @@ function Form(props) {
 }
 
 const GenderItems = [
-    { id: 'Male', title: 'Male' },
-    { id: 'Female', title: 'Female' },
-    { id: 'Other', title: 'Other' },
+    { id: 'Nam', title: 'Nam' },
+    { id: 'Nữ', title: 'Nữ' },
+    { id: 'Khác', title: 'Khác' },
 ]
 
 const getDepartment = () => ([
@@ -178,9 +177,9 @@ const getDepartment = () => ([
 ])
 
 const getStatus = () => ([
-    { id: 'New patient', title: 'New patient' },
-    { id: 'In treatment', title: 'In treatment' },
-    { id: 'Recovered', title: 'Recovered' },
+    { id: 'Bệnh nhân mới', title: 'Bệnh nhân mới' },
+    { id: 'Đang điều trị', title: 'Đang điều trị' },
+    { id: 'Đã phục hồi', title: 'Đã phục hồi' },
 ])
 
 
@@ -190,9 +189,6 @@ export default function EditForm({
     setOpenPopup,
     setNotify}) {
 
-    const id = selectedPatient.id;
-    console.log("ID: ", id); 
-    
     const initialFValues = {
         ID: selectedPatient.ID,
         Name: selectedPatient.Name,
@@ -211,17 +207,17 @@ export default function EditForm({
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('Name' in fieldValues)
-            temp.Name = fieldValues.Name ? "" : "This field is required."
+            temp.Name = fieldValues.Name ? "" : "Không được bỏ trống."
         if ('Doctor' in fieldValues)
-            temp.Doctor = fieldValues.Doctor ? "" : "This field is required."
+            temp.Doctor = fieldValues.Doctor ? "" : "Không được bỏ trống."
         if ('PhoneNumber' in fieldValues)
-            temp.PhoneNumber = fieldValues.PhoneNumber.length > 9 ? "" : "Minimum 10 numbers required."
+            temp.PhoneNumber = fieldValues.PhoneNumber.length > 9 ? "" : "Yêu cầu tối thiểu 10 số."
         if ('CCCD' in fieldValues)
-            temp.CCCD = fieldValues.CCCD.length === 12 ? "" : "There is 12 numbers required."
+            temp.CCCD = fieldValues.CCCD.length === 12 ? "" : "Yêu cầu 12 số."
         if ('Department' in fieldValues)
-            temp.Department = fieldValues.Department.length !== 0 ? "" : "This field is required."
+            temp.Department = fieldValues.Department.length !== 0 ? "" : "Không được bỏ trống."
         if ('statusId' in fieldValues)
-            temp.Status = fieldValues.Status.length !== 0 ? "" : "This field is required."
+            temp.Status = fieldValues.Status.length !== 0 ? "" : "Không được bỏ trống."
         setErrors({
             ...temp
         })
@@ -250,20 +246,15 @@ export default function EditForm({
                 getPatient();
                 resetForm();
                 setOpenPopup(false);
-                setNotify({
-                    isOpen: true,
-                    message: 'Updated Successfully',
-                    type: 'success'
-                });
             } catch (error) {
                 console.error("Error updating document: ", error);
             }
         }
         setNotify({
             isOpen: true,
-            message: 'Submitted Successfully',
+            message: 'Cập nhật thành công',
             type: 'success'
-        })
+        });
     };
     
     
@@ -273,14 +264,14 @@ export default function EditForm({
             <Grid container>
                 <Grid item xs={6}>
                     <Input
-                        label="Full Name"
+                        label="Tên đầy đủ"
                         name="Name"
                         value={values.Name}
                         onChange={handleInputChange}
                         error={errors.Name}
                     />
                     <Input
-                        label="Doctor Name"
+                        label="Tên bác sĩ"
                         name="Doctor"
                         value={values.Doctor}
                         onChange={handleInputChange}
@@ -294,20 +285,20 @@ export default function EditForm({
                         error={errors.CCCD}
                     />
                     <Input
-                        label="PhoneNumber"
+                        label="Số điện thoại"
                         name="PhoneNumber"
                         value={values.PhoneNumber}
                         onChange={handleInputChange}
                         error={errors.PhoneNumber}
                     />
                     <Input
-                        label="City"
+                        label="Thành phố"
                         name="City"
                         value={values.City}
                         onChange={handleInputChange}
                     />
                     <Input
-                        label="Address"
+                        label="Địa chỉ"
                         name="Address"
                         value={values.Address}
                         onChange={handleInputChange}
@@ -317,20 +308,20 @@ export default function EditForm({
                 <Grid item xs={6}>
                     <RadioGroup
                         name="Gender"
-                        label="Gender"
+                        label="Giới tính"
                         value={values.Gender}
                         onChange={handleInputChange}
                         items={GenderItems}
                     />
                     <DatePicker
                         name="Birthday"
-                        label="Birthday"
+                        label="Ngày sinh"
                         value={values.Birthday}
                         onChange={handleInputChange}
                     />
                     {<Select
                         name="Department"
-                        label="Department"
+                        label="Khoa"
                         value={values.Department}
                         onChange={handleInputChange}
                         options={getDepartment()}
@@ -338,7 +329,7 @@ export default function EditForm({
                     />}
                     {<Select
                         name="Status"
-                        label="Status"
+                        label="Trạng thái"
                         value={values.Status}
                         onChange={handleInputChange}
                         options={getStatus()}
@@ -346,17 +337,17 @@ export default function EditForm({
                     />}
                     <DatePicker
                         name="RegistrationDate"
-                        label="Registration Date"
+                        label="Ngày đăng kí"
                         value={values.RegistrationDate}
                         onChange={handleInputChange}
                     />
                     <div>
                         <Button
                             type="submit"
-                            text="Submit" 
+                            text="Gửi" 
                         />
                         <Button
-                            text="Reset"
+                            text="Đăt lại"
                             color="default"
                             onClick={resetForm} />
                     </div>

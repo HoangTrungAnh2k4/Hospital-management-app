@@ -18,13 +18,12 @@ function StaffsDisplay() {
                 <div className={clsx(style.headerBox)}>
                     <h2>Bác sĩ</h2>
                 </div>
-                <SortTable data={doctors_data} />
                 <AddStaffs />
+                <SortTable data={doctors_data} />
                 <div className={clsx(style.headerBox)}>
                     <h2>Y tá</h2>
                 </div>
                 <SortTable data={nurses_data} />
-                <AddStaffs />
             </div>
             {/*---------------------------------------Thông tin nhân viên -----------------------------------------*/}
             <div className={clsx(style.col2)}>
@@ -45,13 +44,14 @@ function StaffsDisplay() {
                                 <div className={clsx('card-text', style.cardtext)}>
                                     <span style={{ fontWeight: 'bold' }}>Họ tên: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Giới tính: </span> <br />
-                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span>
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Quê quán: </span> <br />
-                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chuyên ngành: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Bằng cấp: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Email: </span>
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>SĐT: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>SĐT: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Địa chỉ: </span> <br />
                                 </div>
                             </div>
                         </div>
@@ -66,213 +66,22 @@ function StaffsDisplay() {
                                     <h2 className={clsx('card-title', style.headerCard)}>Thông tin chi tiết</h2>
                                 </div>
                                 <div className={clsx('card-text', style.cardtext)}>
-                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> Marry Jane <br />
+                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> Trần Thu Thảo <br />
                                     <span style={{ fontWeight: 'bold' }}>Giới tính: </span> Nữ <br />
-                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> 19/06/1990
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span>Đồng Nai{' '}
-                                    <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> 19/06/1990 <br />
                                     <span style={{ fontWeight: 'bold' }}>Quê quán: </span> Đồng Tháp <br />
-                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> Khoa nhi <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chuyên ngành: </span> Khoa nhi
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Bằng cấp: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> Bác sĩ <br />
                                     <span style={{ fontWeight: 'bold' }}>Email: </span> mjane@gmail.com
                                     <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>
                                         SĐT:{' '}
-                                    </span> 0988423367{' '}
-                                    {/* <p><span style={{ fontWeight:'bold' }}>Full name: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Gender: </span> Female</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Birthdate </span> 10/12/1990</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p>
-                                    <p><span style={{ fontWeight:'bold' }}>Họ tên: </span> Marry Jane</p> */}
+                                    </span> 0988423367 <br />
+                                    <span style={{ fontWeight: 'bold' }}>Địa chỉ: </span> Đông Hòa, Dĩ An, Bình Dương{' '}
+                                    <br />
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end" style={{ marginRight: '20px' }}>
-                                <div class="btn-group">
-                                    <div className={clsx(style.button__edit)}>
-                                        {/* <!-- Button trigger modal --> */}
-                                        <button
-                                            type="button"
-                                            className={clsx('btn btn-primary', style.button__edit__mod)}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editModal"
-                                        >
-                                            Chỉnh sửa
-                                        </button>
-
-                                        {/* <!-- Modal --> */}
-                                        <div
-                                            class="modal fade"
-                                            id="editModal"
-                                            tabindex="-1"
-                                            aria-labelledby="editModalLabel"
-                                            aria-hidden="true"
-                                        >
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h3 class="modal-title" id="editModalLabel">
-                                                            Chỉnh sửa thông tin nhân viên
-                                                        </h3>
-                                                        <button
-                                                            type="button"
-                                                            class="btn-close"
-                                                            data-bs-dismiss="modal"
-                                                            aria-label="Close"
-                                                        ></button>
-                                                    </div>
-                                                    <div class="container mt-3">
-                                                        <form action="/action_page.php">
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Họ tên"
-                                                                    name="name"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Giới tính"
-                                                                    name="sex"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Ngày sinh"
-                                                                    name="birthdate"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Nơi sinh"
-                                                                    name="birthplace"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Quê quán"
-                                                                    name="hometown"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Hộ khẩu"
-                                                                    name="residence"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Khoa"
-                                                                    name="faculty"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Chức vụ"
-                                                                    name="position"
-                                                                />
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="Email"
-                                                                    name="email"
-                                                                />
-                                                                <span class="input-group-text">@gmail.com</span>
-                                                            </div>
-                                                            <div class="input-group mb-3">
-                                                                <input
-                                                                    type="text"
-                                                                    className={clsx('form-control', style.textform)}
-                                                                    placeholder="SĐT"
-                                                                    name="tel"
-                                                                />
-                                                            </div>
-                                                            <button
-                                                                type="submit"
-                                                                className={clsx(style.button__clear__save)}
-                                                            >
-                                                                Submit
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={clsx(style.button__clear)}>
-                                        {/* <!-- Button trigger modal --> */}
-                                        <button
-                                            type="button"
-                                            className={clsx('btn btn-primary', style.button__clear__mod)}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#clearModal"
-                                        >
-                                            Xóa
-                                        </button>
-
-                                        {/* <!-- Modal --> */}
-                                        <div
-                                            class="modal fade"
-                                            id="clearModal"
-                                            tabindex="-1"
-                                            aria-labelledby="clearModalLabel"
-                                            aria-hidden="true"
-                                        >
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h3 class="modal-title" id="clearModalLabel">
-                                                            Bạn muốn xóa nhân viên này?
-                                                        </h3>
-                                                        <button
-                                                            type="button"
-                                                            class="btn-close"
-                                                            data-bs-dismiss="modal"
-                                                            aria-label="Close"
-                                                        ></button>
-                                                    </div>
-                                                    <div class="modal-body">...</div>
-                                                    <div class="modal-footer">
-                                                        <button
-                                                            type="button"
-                                                            className={clsx(style.button__clear__close)}
-                                                            data-bs-dismiss="modal"
-                                                        >
-                                                            Close
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            className={clsx(style.button__clear__save)}
-                                                        >
-                                                            Save changes
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <EditInfoStaff />
                         </div>
                     </div>
                 </div>
@@ -282,6 +91,7 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Lịch</h2>
                         </div>
+                        <AddCalendar />
                         <Calendar />
                     </div>
                     {/* -------------------------------------------------- Bệnh nhân ------------------------------------------------ */}
@@ -289,67 +99,41 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Bệnh nhân</h2>
                         </div>
-                        <div className={clsx(style.patientInfor)}>
-                            <p>Nguyễn Văn A</p>
-                            <p>Trần Văn B</p>
-                        </div>
+                        <PatientInfo/>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+//--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
+function PatientInfo() {
+    return (
+        <div className={clsx(style.PatientInfo)}>
+            <div className={clsx(style.infoTable)}>
+                <table className={clsx(style.myTable)}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3216</td>
+                            <td>Nguyễn Văn A</td>
+                        </tr>
+                        <tr>
+                            <td>4357</td>
+                            <td>Trần Văn B</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
 //-------------------------------------------------- ADD ------------------------------------------------------------------
-
-// function AddStaffs() {
-//     var modal = document.getElementById('myModal');
-
-//     // Get the button that opens the modal
-//     var btn = document.getElementById('myBtn');
-
-//     // Get the <span> element that closes the modal
-//     var span = document.querySelector(`.${style.close}`)[0];
-
-//     // When the user clicks the button, open the modal
-//     btn.onclick = function () {
-//         modal.style.display = 'block';
-//     };
-
-//     // When the user clicks on <span> (x), close the modal
-//     span.onclick = function () {
-//         modal.style.display = 'none';
-//     };
-
-//     // When the user clicks anywhere outside of the modal, close it
-//     window.onclick = function (event) {
-//         if (event.target === modal) {
-//             modal.style.display = 'none';
-//         }
-//     };
-//     return (
-//         <div>
-//             <div className={clsx(style.AddButton)}>
-//                 <button id="myBtn" className={clsx(style.addButton)}>
-//                     ADD
-//                 </button>
-//             </div>
-//             <div id="myModal" className={clsx(style.modal)}>
-//                 <div className={clsx(style.modalContent)}>
-//                     <div className={clsx(style.modalHeader)}>
-//                         <span className={clsx(style.close)}>&times;</span>
-//                         <h3>Điền thông tin nhân viên</h3>
-//                     </div>
-//                     <div className={clsx(style.modalBody)}>
-//                         <p>Some text in the Modal..</p>
-//                     </div>
-//                     <div className={clsx(style.modalFooter)}>
-//                         <button>Submit</button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
 function AddStaffs() {
     const [showModal, setShowModal] = useState(false);
 
@@ -363,7 +147,7 @@ function AddStaffs() {
 
     async function generateId() {
         const querySnapshot = await getDocs(collection(database, 'Doctors'));
-        const querySnapshot2 = await getDocs(collection(database, 'Nurse'));
+        const querySnapshot2 = await getDocs(collection(database, 'Nurses'));
 
         const newId = Math.floor(100000 + Math.random() * 900000);
         let newIdString = newId.toString();
@@ -372,9 +156,9 @@ function AddStaffs() {
             querySnapshot.docs.find((doc) => doc.id === newIdString) ||
             querySnapshot2.docs.find((doc) => doc.id === newIdString)
         ) {
-            return newIdString;
-        } else {
             newIdString = generateId();
+        } else {
+            return newIdString;
         }
         return newIdString;
     }
@@ -389,6 +173,17 @@ function AddStaffs() {
         const phone = document.querySelector('input[name=phone]').value;
         const address = document.querySelector('input[name=address]').value;
         const job = document.querySelector('input[name=job]').value;
+
+        document.querySelector('input[name="fullName"]').value = '';
+        document.querySelector('input[name=gender]').value = '';
+        document.querySelector('input[name=faculty]').value = '';
+        document.querySelector('input[name=birthdate]').value = '';
+        document.querySelector('input[name=email]').value = '';
+        document.querySelector('input[name=hometown]').value = '';
+        document.querySelector('input[name=phone]').value = '';
+        document.querySelector('input[name=address]').value = '';
+        document.querySelector('input[name=job]').value = '';
+
         const newId = await generateId();
 
         if (job === 'doctor') {
@@ -402,9 +197,10 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
+                calendar: [{}],
             });
         } else if (job === 'nurse') {
-            await addDoc(collection(database, 'Nurse'), {
+            await addDoc(collection(database, 'Nurses'), {
                 id: newId,
                 fullName: fullName,
                 gender: gender,
@@ -414,6 +210,7 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
+                calendar: [{}],
             });
         }
     }
@@ -422,7 +219,7 @@ function AddStaffs() {
         <div>
             <div className={clsx(style.AddButton)}>
                 <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                    ADD
+                    <i class="fa-solid fa-plus"></i> Thêm nhân viên
                 </button>
             </div>
             {showModal && (
@@ -477,7 +274,9 @@ function AddStaffs() {
                             </label>
                         </div>
                         <div className={clsx(style.modalFooter)}>
-                            <button onClick={handleAdd}>Submit</button>
+                            <button className={clsx(style.submitButton)} onClick={handleAdd}>
+                                Submit
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -498,6 +297,7 @@ function getCard() {
         hideDefault.style.display = 'none';
     }
 }
+
 //------------------------------------------------------ Sort ----------------------------------------------------------------
 
 const SortTable = ({ data }) => {
@@ -542,19 +342,21 @@ const SortTable = ({ data }) => {
                     <thead>
                         <tr>
                             <th onClick={() => handleSort('id')}>ID {<i class="fa-solid fa-sort"></i>} </th>
-                            <th onClick={() => handleSort('full_name')}>
-                                Full Name {<i class="fa-solid fa-sort"></i>}
+                            <th onClick={() => handleSort('full_name')}>Họ tên {<i class="fa-solid fa-sort"></i>}</th>
+                            <th onClick={() => handleSort('faculty')}>
+                                Chuyên ngành {<i class="fa-solid fa-sort"></i>}
                             </th>
-                            <th onClick={() => handleSort('faculty')}>Faculty {<i class="fa-solid fa-sort"></i>}</th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tbody>
                         {sortedData.map((item) => (
                             // <tr onClick={() => getCard(item.id)}></tr>
-                            <tr onClick={getCard}>
-                                <td>{item.id}</td>
+                            <tr>
+                                <td> {item.id}</td>
                                 <td>{item.full_name}</td>
-                                <td>{item.faculty}</td>
+                                <td>{item.faculty} </td>
+                                <td onClick={getCard}>{<i class="fa-regular fa-address-card"></i>}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -563,6 +365,140 @@ const SortTable = ({ data }) => {
         </div>
     );
 };
+//----------------------------------------------------- add calendar --------------------------------------------------------
+function AddCalendar() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    return (
+        <div>
+            <div className={clsx(style.AddButton)}>
+                <button onClick={handleOpenModal} className={clsx(style.addButton)}>
+                    <i class="fa-solid fa-plus"></i> Thêm lịch
+                </button>
+            </div>
+            {showModal && (
+                <div id="myModal" className={clsx(style.modal)}>
+                    <div className={clsx(style.modalContent)}>
+                        <div className={clsx(style.modalHeader)}>
+                            <span onClick={handleCloseModal} className={clsx(style.close)}>
+                                &times;
+                            </span>
+                            <h3>Thêm thông tin lịch</h3>
+                        </div>
+                        <div className={clsx(style.modalBody)}>
+                            <label>
+                                Tên công việc:
+                                <input type="text" name="job_name" />
+                            </label>
+                            <label>
+                                Thời gian:
+                                <input type="text" name="job_time" />
+                            </label>
+                            <label>
+                                Địa điểm:
+                                <input type="text" name="job_place" />
+                            </label>
+                            <label>
+                                Ngày thực hiện:
+                                <input type="text" name="job_date" />
+                            </label>
+                        </div>
+                        <div className={clsx(style.modalFooter)}>
+                            <button className={clsx(style.submitButton)}>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+//----------------------------------------------------edit staff ---------------------------------------------------------------
+function EditInfoStaff() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    return (
+        <div className={clsx(style.EditStaff)}>
+            <div>
+                <div className={clsx(style.EditButton)}>
+                    <button onClick={handleOpenModal} className={clsx(style.editButton)}>
+                        Chỉnh sửa
+                    </button>
+                </div>
+                {showModal && (
+                    <div id="myModal" className={clsx(style.modal)}>
+                        <div className={clsx(style.modalContent)}>
+                            <div className={clsx(style.modalHeader)}>
+                                <span onClick={handleCloseModal} className={clsx(style.close)}>
+                                    &times;
+                                </span>
+                                <h3>Chỉnh sửa thông tin nhân viên</h3>
+                            </div>
+                            <div className={clsx(style.modalBody)}>
+                                <label>
+                                    Họ tên:
+                                    <input type="text" name="fullName" placeholder="Nguyen Van A" />
+                                </label>
+                                <label>
+                                    Giới tính:
+                                    <input type="text" name="gender" placeholder="Gender" />
+                                </label>
+                                <label>
+                                    Chuyên ngành:
+                                    <input type="text" name="faculty" placeholder="Faculty" />
+                                </label>
+                                <label>
+                                    Ngày sinh:
+                                    <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
+                                </label>
+                                <label>
+                                    Chức vụ:
+                                    <input type="text" name="job" placeholder="doctor or nurse" />
+                                </label>
+                                <label>
+                                    Email:
+                                    <input type="text" name="email" placeholder="abc@gmail.com" />
+                                </label>
+                                <label>
+                                    Quê quán:
+                                    <input type="text" name="hometown" placeholder="Hometown" />
+                                </label>
+                                <label>
+                                    SĐT:
+                                    <input type="text" name="phone" placeholder="Phone number" />
+                                </label>
+                                <label>
+                                    Địa chỉ:
+                                    <input type="text" name="address" placeholder="Address" />
+                                </label>
+                            </div>
+                            <div className={clsx(style.modalFooter)}>
+                                <button className={clsx(style.submitButton)}>Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className={clsx(style.ClearButton)}>
+                <button className={clsx(style.clearButton)}>Xóa</button>
+            </div>
+        </div>
+    );
+}
 
 // --------------------------------------------------- main --------------------------------------------------------------
 function Staffs() {

@@ -3,16 +3,16 @@ import style from './DashboardStaffs.module.scss';
 // import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BoardNotify } from '~/pages/Dashboard/DashboardAdmin';
 
 function DashboardStaffs() {
-
     const navigate = useNavigate();
 
     useEffect(() => {
-         if (localStorage.getItem('auth') !== 'staff') {
-             navigate('/');
-         }
-     }, []);
+        if (localStorage.getItem('auth') !== 'staff') {
+            navigate('/');
+        }
+    }, []);
 
     const customStyle = {
         backgroundColor: 'rgb(101, 197, 197)',
@@ -175,92 +175,7 @@ function DashboardStaffs() {
 
                 <div className={clsx(style.row2)}>
                     {/* Notification board */}
-                    <div className={clsx(style.notify)}>
-                        <header>Thông báo chung</header>
-                        <main className={clsx(style.notify_Main)}>
-                            <ul className={clsx(style.ul__notice)}>
-                                <li>
-                                    <div className={clsx('container mt-3', style.mybutton)}>
-                                        <div className="mt-4 p-5 rounded" style={customStyle}>
-                                            <li className={clsx(style.index)}>
-                                                <div className={clsx(style.icon)}>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </div>
-                                                <div className={clsx(style.content)}>
-                                                    <div className={clsx(style.row5)}>
-                                                        <span>Loan</span>
-                                                        <span className={clsx(style.date)}>4/7/2024</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <div className={clsx(style.row6)}>
-                                                <h4>Thông báo lịch trực đột xuất của Khoa Nhi.</h4>
-                                                <p>
-                                                    {' '}
-                                                    Do tình hình hiện tại, bệnh viện gặp hải một số vấn đề phức tạp nên
-                                                    mọi người cần tham gia cuoc họ để tình cách giải quyết
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className={clsx('container mt-3', style.mybutton)}>
-                                        <div className="mt-4 p-5 rounded" style={customStyle}>
-                                            <li className={clsx(style.index)}>
-                                                <div className={clsx(style.icon)}>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </div>
-                                                <div className={clsx(style.content)}>
-                                                    <div className={clsx(style.row5)}>
-                                                        <span>Admin</span>
-                                                        <span className={clsx(style.date)}>4/10/2024</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <div className={clsx(style.row6)}>
-                                                <h4>Thông báo lịch nghỉ 30/4 và 1/5 .</h4>
-                                                <p>
-                                                    {' '}
-                                                    Do tình hình hiện tại, bệnh viện gặp hải một số vấn đề phức tạp nên
-                                                    mọi người cần tham gia cuoc họ để tình cách giải quyết
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div className={clsx('container mt-3', style.mybutton)}>
-                                        <div className="mt-4 p-5 rounded" style={customStyle}>
-                                            <li className={clsx(style.index)}>
-                                                <div className={clsx(style.icon)}>
-                                                    <i class="fa-solid fa-user"></i>
-                                                </div>
-                                                <div className={clsx(style.content)}>
-                                                    <div className={clsx(style.row5)}>
-                                                        <span>Loan</span>
-                                                        <span className={clsx(style.date)}>4/7/2024</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <div className={clsx(style.row6)}>
-                                                <h4>Thông báo lịch trực đột xuất của Khoa Nhi.</h4>
-                                                <p>
-                                                    {' '}
-                                                    Do tình hình hiện tại, bệnh viện gặp hải một số vấn đề phức tạp nên
-                                                    mọi người cần tham gia cuoc họ để tình cách giải quyết
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </main>
-                    </div>
+                    <BoardNotify/>
                 </div>
             </div>
         </div>

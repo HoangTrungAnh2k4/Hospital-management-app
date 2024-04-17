@@ -35,19 +35,19 @@ function Header() {
                         <Link to="/dashboard/admin">Dashboard</Link>
                     </li>
                     <li>
-                        <Link to="/staff">Staffs</Link>
+                        <Link to="/staff">Nhân viên</Link>
                     </li>
                     <li>
-                        <Link to="/patient">Patients</Link>
+                        <Link to="/patient">Bệnh nhân</Link>
                     </li>
                     <li>
-                        <Link to="/medicine">Medicine</Link>
+                        <Link to="/medicine">Kho thuốc</Link>
                     </li>
                     <li>
-                        <Link to="/equipment">Equipment</Link>
+                        <Link to="/equipment">Thiết bị</Link>
                     </li>
                     <li>
-                        <Link to="/blood">Blood</Link>
+                        <Link to="/blood">Kho máu</Link>
                     </li>
                 </ul>
             </nav>
@@ -63,7 +63,7 @@ function Header() {
                     <div className={clsx(style.dropdown)}>
                         <ul>
                             <li>
-                                <Link onClick={handleLogout}>Log out</Link>
+                                <Link onClick={handleLogout}>Đăng xuất</Link>
                             </li>
                         </ul>
                     </div>

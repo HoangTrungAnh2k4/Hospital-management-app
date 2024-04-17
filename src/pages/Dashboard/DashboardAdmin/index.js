@@ -3,6 +3,8 @@ import style from './DashboardAmin.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import CalendarWeek from '~/components/Calendar/CalendarWeek';
 import { useNavigate } from 'react-router-dom';
+import { database } from '~/firebase';
+import { addDoc, collection, getDocs, orderBy } from 'firebase/firestore';
 
 function Chart1() {
     return (
@@ -228,6 +230,12 @@ function BoardNotify({ listNotify }) {
                 }
             });
         };
+
+        // delete footer button with staff
+        const footer = document.querySelector(`.${style.notify__footer}`);
+        if (localStorage.getItem('auth') === 'staff') {
+            footer.style.display = 'none';
+        }
     }, []);
 
     return (
@@ -249,33 +257,58 @@ function BoardNotify({ listNotify }) {
     );
 }
 
-function NotifyList({ listNotify }) {
+function NotifyList() {
+    let [listNotify, setListNotify] = useState([]);
+
+    // get notify from firebase
+    useEffect(() => {
+        async function getNotify() {
+            const querySnapshot = await getDocs(collection(database, 'Notifications'), orderBy('date', 'desc'));
+            let notifies = [];
+            querySnapshot.forEach((doc) => {
+                notifies.push(doc.data());
+            });
+
+            setListNotify(notifies);
+        }
+        getNotify();
+    }, []);
+
     return (
-        <ul>
-            {listNotify.map((notify, index) => {
-                return (
-                    <li key={index}>
-                        <div className={clsx(style.icon)}>
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div className={clsx(style.content)}>
-                            <div className={clsx(style.row1)}>
-                                <span>Admin</span>
-                                <span className={clsx(style.date)}>{notify.date}</span>
+        <main className={clsx(style.notify_list)}>
+            <ul className={clsx(style.ul__notice)}>
+                {listNotify.map((notify, index) => {
+                    return (
+                        <li key={index} className={clsx(style.item)}>
+                            <div className={clsx('container mt-3')}>
+                                <div className="mt-4  rounded">
+                                    <li className={clsx(style.index)}>
+                                        <div className={clsx(style.icon)}>
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <div className={clsx(style.content)}>
+                                            <div className={clsx(style.row5)}>
+                                                <span>Admin</span>
+                                                <span className={clsx(style.date)}>{notify.date}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <div className={clsx(style.row6)}>
+                                        <h4>{notify.title}</h4>
+                                        <p>{notify.content}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={clsx(style.row2)}>
-                                <p>{notify.content}</p>
-                                <input type="checkbox" />
-                            </div>
-                        </div>
-                    </li>
-                );
-            })}
-        </ul>
+                        </li>
+                    );
+                })}
+            </ul>
+        </main>
     );
 }
 
-function ModalAddNotify({ addNotification }) {
+function ModalAddNotify({ reload }) {
     const closeNotify = useRef();
 
     useEffect(() => {
@@ -285,14 +318,21 @@ function ModalAddNotify({ addNotification }) {
         };
     }, []);
 
-    const handleAddNotify = () => {
-        const message = document.querySelector(`.${style.addNotify} textarea`).value;
+    async function handleAddNotify() {
+        const title = document.querySelector(`.${style.addNotify} input`).value;
+        const content = document.querySelector(`.${style.addNotify} textarea`).value;
 
-        if (message) {
-            addNotification(message);
-            document.querySelector(`.${style.addNotify} textarea`).value = '';
-        }
-    };
+        document.querySelector(`.${style.addNotify} textarea`).value = '';
+        document.querySelector(`.${style.addNotify} input`).value = '';
+
+        await addDoc(collection(database, 'Notifications'), {
+            title: title,
+            content: content,
+            date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
+        });
+
+        reload();
+    }
 
     return (
         <div className={clsx(style.addNotify)}>
@@ -304,10 +344,11 @@ function ModalAddNotify({ addNotification }) {
                     </button>
                 </header>
                 <main>
+                    <input className={clsx(style.title)} type="text" placeholder="Title" />
                     <textarea name="message" rows="4" Cols="50" placeholder="Nhập thông báo"></textarea>
                 </main>
                 <footer>
-                    <button type="button" className={clsx(style.rerender)} onClick={handleAddNotify}>
+                    <button type="button" onClick={handleAddNotify}>
                         Thêm
                     </button>
                 </footer>
@@ -318,23 +359,18 @@ function ModalAddNotify({ addNotification }) {
 
 function DashboardAdmin() {
     const navigate = useNavigate();
+    const [varReload, setVarReload] = useState(0);
 
-   useEffect(() => {
+    function reload() {
+        varReload === 0 ? setVarReload(1) : setVarReload(0);
+    }
+
+    // check auth
+    useEffect(() => {
         if (localStorage.getItem('auth') !== 'admin') {
             navigate('/');
         }
     }, []);
-    const [listNotify, setListNotify] = useState([]);
-
-    const addNotification = (message) => {
-        setListNotify([
-            {
-                content: message,
-                date: new Date().toLocaleDateString(),
-            },
-            ...listNotify,
-        ]);
-    };
 
     return (
         <div className={clsx(style.wrapper)}>
@@ -343,7 +379,9 @@ function DashboardAdmin() {
                 <PatientQuantity />
 
                 {/* Notification board */}
-                <BoardNotify listNotify={listNotify} />
+                <div className={clsx(style.boardNotifyWraper)}>
+                    <BoardNotify />
+                </div>
             </div>
 
             <header className={clsx(style.headerCalendar)}>Lịch làm việc trong tuần</header>
@@ -352,9 +390,10 @@ function DashboardAdmin() {
                 <CalendarWeek />
             </div>
 
-            <ModalAddNotify addNotification={addNotification} />
+            <ModalAddNotify reload={reload} />
         </div>
     );
 }
 
+export { BoardNotify };
 export default DashboardAdmin;
