@@ -6,10 +6,10 @@ import React, { useState, useEffect } from 'react';
 import { query, getDocs, collection, orderBy } from 'firebase/firestore';
 import { database } from 'src/firebase'
 import Table from './Table'
-import Popup from './Popup';
+import Popup from './Action/Popup';
 import AddForm from './Forms/addForm.js';
-import Notification from "./Forms/Notification";
-import ConfirmDialog from "./Forms/ConfirmDialog";
+import Notification from "./Action/Notification";
+import ConfirmDialog from "./Action/ConfirmDialog";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,14 +64,14 @@ function Patients() {
                         <input type="text" className={clsx(style.searchInput)} onChange={
                             (e) => setValue(e.target.value)
                         }
-                        placeholder="Search here ...">
+                        placeholder="Nhập để tìm kiếm ...">
                         </input>
                     </div>
                 </div>
                 <span className={clsx(style.addPatient)}> 
                     <button className={clsx(style.addButton)}  onClick={() =>  setOpenPopup(true) }>
                         <AddIcon /> 
-                        <span>New Patient</span>
+                        <span>Bệnh Nhân Mới</span>
                     </button>
                 </span>
             </div>
@@ -92,8 +92,6 @@ function Patients() {
                 setOpenPopup={setOpenPopup}>
 
                 <AddForm
-                    patients={patients}
-                    setPatients={setPatients}
                     setOpenPopup={setOpenPopup}
                     setNotify={setNotify}
                     getPatient={getPatient}

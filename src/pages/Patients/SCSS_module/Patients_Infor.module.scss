@@ -69,9 +69,10 @@
             .profileWithPicture{ 
                 border-right: solid 2px #dedede;
                 height:90%;
+                width:40%;
+                min-width: fit-content;
                 margin-top:auto;
                 margin-bottom: auto;
-                width: fit-content;
                 padding:15px;
 
                 .picContainer{
@@ -127,7 +128,7 @@
             }
             .shortInfor{
                 height:100%;
-                width: 55%;
+                width: 60%;
                 margin-top:20px;
                 height: fit-content;
                 text-align: center;
@@ -136,7 +137,7 @@
                         height:100%;
                         width: 100%;
                         max-width: 100%;
-                        margin:30px;         
+                        margin:30px;
                     }
                     
                     th,
@@ -194,6 +195,7 @@
             .medical, .allergies{
                 height: 50%;
                 width:100%;
+                overflow-y: auto;
             }
             .content{
                 height: 70%;

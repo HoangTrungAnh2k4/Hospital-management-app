@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import style from './SCSS_module/Patients.module.scss';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getDocs, collection, deleteDoc } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { database } from 'src/firebase'
 import EditForm from './Forms/editForm.js';
-import Popup from './Popup';
+import Popup from './Action/Popup';
 
 
 
@@ -24,8 +24,8 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
     const records = patients.slice(firstIndex, lastIndex);
     const npage = Math.ceil(patients.length / recordsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
-    //Navigate variables
     
+    //Navigate variables
     const navigate = useNavigate();
 
     function nextPage() {
@@ -44,6 +44,7 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
         setCurrentPage(page);
     }
 
+    //Sorting table
     const sorting = (col) => {
         let sorted;
         if (order === 'ASC') {
@@ -76,13 +77,15 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
         setPatients(sorted);
     };
 
+
+    //Event handle function
     const handleStatus = (status) => {
         switch (status) {
-            case 'Recovered':
+            case 'Đã phục hồi':
                 return 'success';
-            case 'New patient':
+            case 'Bệnh nhân mới':
                 return 'warning';
-            case 'In treatment':
+            case 'Đang điều trị':
                 return 'danger';
             default:
                 return 'succeeded';
@@ -97,31 +100,35 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
         });
 
         try {
-            const querySnapshot = await getDocs(collection(database, "Patients"));
-    
-            const documentsToDelete = querySnapshot.docs.filter(doc => doc.data().ID === id);
-    
-            await Promise.all(documentsToDelete.map(async (doc) => {
-                await deleteDoc(doc.ref);
-            }));
+            const docRef = doc(database, "Patients", id);
+            const subcollections = ["MedicalHistory", "Allergies", "Amount", "Payment", "Notes", "HealthRecord", "Appointments"];
 
-            const updatedPatientsSnapshot = await getDocs(collection(database, "Patients"));
+            for (const subcollection of subcollections) {
+                const subcollectionRef = collection(docRef, subcollection);
+                const querySnapshot = await getDocs(subcollectionRef);
+                querySnapshot.forEach(async (doc) => {
+                    try {
+                        await deleteDoc(doc.ref);
+                    } catch (error) {
+                        console.error("Error deleting subcollection document:", error);
+                    }
+                });
+            }
 
-            const updatedPatients = updatedPatientsSnapshot.docs.map(doc => doc.data());
-
-            setPatients(updatedPatients);
+            // Xóa tài liệu chính
+            await deleteDoc(docRef);
             getPatient();
     
             setNotify({
                 isOpen: true,
-                message: 'Deleted Successfully',
+                message: 'Đã xóa thành công',
                 type: 'error'
             });
         } catch (error) {
             console.error("Error deleting document: ", error);
             setNotify({
                 isOpen: true,
-                message: 'Error deleting document',
+                message: 'Đã gặp lỗi khi xóa dữ liệu',
                 type: 'error'
             });
         }
@@ -141,19 +148,19 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
                 <thead>
                     <tr>
                         <th onClick={() => sorting('ID')}>ID {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('Name')}>Patient Name {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('Department')}>Department {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('Doctor')}>Doctor Assgined {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('RegistrationDate')}>Date Check In {<i class="fa-solid fa-sort"></i>}</th>
-                        <th onClick={() => sorting('Status')}>Status {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('Name')}>Tên bệnh nhân {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('Department')}>Khoa {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('Doctor')}>Bác sĩ điều trị {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('RegistrationDate')}>Ngày đăng ký {<i class="fa-solid fa-sort"></i>}</th>
+                        <th onClick={() => sorting('Status')}>Trạng thái {<i class="fa-solid fa-sort"></i>}</th>
                         <th colSpan={2} className="text-center">
-                            Actions
+                            Hành động
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     {patients ? (
-                        records.map((patient, i) => (
+                        records.map((patient) => (
                             <tr key={patient.id}>
                                 <td>{patient.ID}</td>
                                 <td>{patient.Name}</td>
@@ -180,9 +187,9 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
                                         <button className={clsx(style.circleButton)} onClick={() => {
                                                 setConfirmDialog({
                                                     isOpen: true,
-                                                    title: 'Are you sure to delete this record?',
-                                                    subTitle: "You can't undo this operation",
-                                                    onConfirm: () => { handleDelete(patient.ID) }
+                                                    title: 'Bạn có chắc chắn muốn xóa bệnh nhân này?',
+                                                    subTitle: "Hành động này sẽ không thể hoàn tác",
+                                                    onConfirm: () => { handleDelete(patient.id) }
                                                 })
                                             }}>
                                             <i class="fa-solid fa-trash-can"></i>
@@ -223,14 +230,11 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
             </div>
         </div>
             <Popup
-            title="Edit Patient Information"
+            title="Điều chỉnh thông tin bệnh nhân"
             openPopup={openPopup}
             setOpenPopup={setOpenPopup}
             >
-
                 <EditForm
-                    patients={patients}
-                    setPatients={setPatients}
                     selectedPatient={selectedPatient}
                     getPatient={getPatient}
                     setOpenPopup={setOpenPopup}

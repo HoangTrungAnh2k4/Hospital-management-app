@@ -14,7 +14,7 @@
     border-radius: 1rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     .col1__row {
-        margin: 5% 5%;
+        margin: 2rem;
     }
 }
 .col2 {
@@ -168,6 +168,7 @@ li {
 
 .headerBox {
     width: 50%;
+    height: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -187,7 +188,32 @@ li {
         margin: 0;
     }
 }
-
+.AddButton {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 2rem;
+    .addButton {
+        background-color: #45a049;
+        border: none;
+        color: whitesmoke;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        //font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 1rem;
+        font-weight: bold;
+        &:hover {
+            background-color: #178235;
+        }
+        i {
+            font-size: 1.5rem;
+        }
+    }
+}
 .infoTable {
     height: 200px;
     overflow-y: auto;
@@ -224,32 +250,6 @@ li {
         }
     }
 }
-.AddButton {
-    padding: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .addButton {
-        background-color: var(--second-color);
-        border: none;
-        color: whitesmoke;
-        padding: 5px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        //font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 50%;
-        &:hover {
-            background-color: var(--correctblue-color);
-        }
-        i {
-            font-size: 3rem;
-        }
-    }
-}
-
 .modal {
     //display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -319,6 +319,7 @@ li {
         }
     }
 }
+
 @-webkit-keyframes animatetop {
     from {
         top: -300px;
@@ -340,29 +341,42 @@ li {
         opacity: 1;
     }
 }
-//.button__clear__mod,
-//.button__clear__close
-.EditButton {
-    padding: 20px 0;
+.EditStaff {
+    padding: 0 0 20px 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    .clearButton {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 2px;
-        background-color: darkred;
-        border-color: darkred;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    .EditButton {
+        padding-right: 1rem;
+        .editButton {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: #2196f3;
+            border-color: #2196f3;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 1rem;
+            &:hover {
+                background-color: #1566bd;
+            }
+        }
     }
-    // .button__clear__save,
-    // .button__edit__mod
-    .editButton {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 2px;
-        background-color: var(--correctblue-color);
-        border-color: var(--correctblue-color);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    .ClearButton {
+        padding-right: 1rem;
+        .clearButton {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: darkred;
+            border-color: darkred;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 1rem;
+            &:hover {
+                background-color: tomato;
+            }
+        }
     }
+}
+.PatientInfo {
+    margin: 2rem;
 }

@@ -18,13 +18,12 @@ function StaffsDisplay() {
                 <div className={clsx(style.headerBox)}>
                     <h2>Bác sĩ</h2>
                 </div>
-                <SortTable data={doctors_data} />
                 <AddStaffs />
+                <SortTable data={doctors_data} />
                 <div className={clsx(style.headerBox)}>
                     <h2>Y tá</h2>
                 </div>
                 <SortTable data={nurses_data} />
-                <AddStaffs />
             </div>
             {/*---------------------------------------Thông tin nhân viên -----------------------------------------*/}
             <div className={clsx(style.col2)}>
@@ -45,13 +44,14 @@ function StaffsDisplay() {
                                 <div className={clsx('card-text', style.cardtext)}>
                                     <span style={{ fontWeight: 'bold' }}>Họ tên: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Giới tính: </span> <br />
-                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span>
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Quê quán: </span> <br />
-                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chuyên ngành: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Bằng cấp: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Email: </span>
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>SĐT: </span>
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>SĐT: </span> <br />
+                                    <span style={{ fontWeight: 'bold' }}>Địa chỉ: </span> <br />
                                 </div>
                             </div>
                         </div>
@@ -66,26 +66,22 @@ function StaffsDisplay() {
                                     <h2 className={clsx('card-title', style.headerCard)}>Thông tin chi tiết</h2>
                                 </div>
                                 <div className={clsx('card-text', style.cardtext)}>
-                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> Marry Jane <br />
+                                    <span style={{ fontWeight: 'bold' }}>Họ tên: </span> Trần Thu Thảo <br />
                                     <span style={{ fontWeight: 'bold' }}>Giới tính: </span> Nữ <br />
-                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> 19/06/1990
-                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Nơi sinh: </span>Đồng Nai{' '}
-                                    <br />
+                                    <span style={{ fontWeight: 'bold' }}>Ngày sinh: </span> 19/06/1990 <br />
                                     <span style={{ fontWeight: 'bold' }}>Quê quán: </span> Đồng Tháp <br />
-                                    <span style={{ fontWeight: 'bold' }}>Khoa: </span> Khoa nhi <br />
+                                    <span style={{ fontWeight: 'bold' }}>Chuyên ngành: </span> Khoa nhi
+                                    <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>Bằng cấp: </span> <br />
                                     <span style={{ fontWeight: 'bold' }}>Chức vụ: </span> Bác sĩ <br />
                                     <span style={{ fontWeight: 'bold' }}>Email: </span> mjane@gmail.com
                                     <span style={{ marginLeft: '30px', fontWeight: 'bold' }}>
                                         SĐT:{' '}
-                                    </span> 0988423367{' '}
-                                    
+                                    </span> 0988423367 <br />
+                                    <span style={{ fontWeight: 'bold' }}>Địa chỉ: </span> Đông Hòa, Dĩ An, Bình Dương{' '}
+                                    <br />
                                 </div>
                             </div>
-{/* ----------------------------------------- chỉnh sửa và xóa nhân viên --------------------------------------------------------------- */}
-                            {/* <div class="d-flex justify-content-end" style={{ marginRight: '20px' }}>
-                                
-                            </div> */}
-                            <EditInfoStaff/>
+                            <EditInfoStaff />
                         </div>
                     </div>
                 </div>
@@ -95,20 +91,44 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Lịch</h2>
                         </div>
+                        <AddCalendar />
                         <Calendar />
-                        <AddCalendar/>
                     </div>
                     {/* -------------------------------------------------- Bệnh nhân ------------------------------------------------ */}
                     <div className={clsx(style.col2__row2__col2)}>
                         <div className={clsx(style.headerBox)}>
                             <h2>Bệnh nhân</h2>
                         </div>
-                        <div className={clsx(style.patientInfor)}>
-                            <p>Nguyễn Văn A</p>
-                            <p>Trần Văn B</p>
-                        </div>
+                        <PatientInfo/>
                     </div>
                 </div>
+            </div>
+        </div>
+    );
+}
+//--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
+function PatientInfo() {
+    return (
+        <div className={clsx(style.PatientInfo)}>
+            <div className={clsx(style.infoTable)}>
+                <table className={clsx(style.myTable)}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3216</td>
+                            <td>Nguyễn Văn A</td>
+                        </tr>
+                        <tr>
+                            <td>4357</td>
+                            <td>Trần Văn B</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     );
@@ -153,18 +173,17 @@ function AddStaffs() {
         const phone = document.querySelector('input[name=phone]').value;
         const address = document.querySelector('input[name=address]').value;
         const job = document.querySelector('input[name=job]').value;
-        
+
         document.querySelector('input[name="fullName"]').value = '';
-        document.querySelector('input[name=gender]').value='';
-        document.querySelector('input[name=faculty]').value='';
-        document.querySelector('input[name=birthdate]').value='';
-        document.querySelector('input[name=email]').value='';
-        document.querySelector('input[name=hometown]').value='';
-        document.querySelector('input[name=phone]').value='';
-        document.querySelector('input[name=address]').value='';
-        document.querySelector('input[name=job]').value='';
-        
-        
+        document.querySelector('input[name=gender]').value = '';
+        document.querySelector('input[name=faculty]').value = '';
+        document.querySelector('input[name=birthdate]').value = '';
+        document.querySelector('input[name=email]').value = '';
+        document.querySelector('input[name=hometown]').value = '';
+        document.querySelector('input[name=phone]').value = '';
+        document.querySelector('input[name=address]').value = '';
+        document.querySelector('input[name=job]').value = '';
+
         const newId = await generateId();
 
         if (job === 'doctor') {
@@ -200,7 +219,7 @@ function AddStaffs() {
         <div>
             <div className={clsx(style.AddButton)}>
                 <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                <i class="fa-solid fa-plus"></i>
+                    <i class="fa-solid fa-plus"></i> Thêm nhân viên
                 </button>
             </div>
             {showModal && (
@@ -255,7 +274,9 @@ function AddStaffs() {
                             </label>
                         </div>
                         <div className={clsx(style.modalFooter)}>
-                            <button className={clsx(style.submitButton)} onClick={handleAdd}>Submit</button>
+                            <button className={clsx(style.submitButton)} onClick={handleAdd}>
+                                Submit
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -276,6 +297,7 @@ function getCard() {
         hideDefault.style.display = 'none';
     }
 }
+
 //------------------------------------------------------ Sort ----------------------------------------------------------------
 
 const SortTable = ({ data }) => {
@@ -320,10 +342,10 @@ const SortTable = ({ data }) => {
                     <thead>
                         <tr>
                             <th onClick={() => handleSort('id')}>ID {<i class="fa-solid fa-sort"></i>} </th>
-                            <th onClick={() => handleSort('full_name')}>
-                                Full Name {<i class="fa-solid fa-sort"></i>}
+                            <th onClick={() => handleSort('full_name')}>Họ tên {<i class="fa-solid fa-sort"></i>}</th>
+                            <th onClick={() => handleSort('faculty')}>
+                                Chuyên ngành {<i class="fa-solid fa-sort"></i>}
                             </th>
-                            <th onClick={() => handleSort('faculty')}>Faculty {<i class="fa-solid fa-sort"></i>}</th>
                             <th> </th>
                         </tr>
                     </thead>
@@ -344,7 +366,7 @@ const SortTable = ({ data }) => {
     );
 };
 //----------------------------------------------------- add calendar --------------------------------------------------------
-function AddCalendar () {
+function AddCalendar() {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -376,10 +398,10 @@ function AddCalendar () {
     }
 
     return (
-    <div>
+        <div>
             <div className={clsx(style.AddButton)}>
                 <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                <i class="fa-solid fa-plus"></i>
+                    <i class="fa-solid fa-plus"></i> Thêm lịch
                 </button>
             </div>
             {showModal && (
@@ -393,17 +415,17 @@ function AddCalendar () {
                         </div>
                         <div className={clsx(style.modalBody)}>
                             <label>
-                                Tên công việc: 
-                                <input type="text" name="job_name" /> 
-                            </label> 
+                                Tên công việc:
+                                <input type="text" name="job_name" />
+                            </label>
                             <label>
-                                Thời gian: 
-                                <input type="text" name="job_time" /> 
-                            </label> 
+                                Thời gian:
+                                <input type="text" name="job_time" />
+                            </label>
                             <label>
-                                Địa điểm: 
-                                <input type="text" name="job_place" /> 
-                            </label> 
+                                Địa điểm:
+                                <input type="text" name="job_place" />
+                            </label>
                             <label>
                                 Ngày thực hiện: 
                                 <input type="text" name="job_date"  placeholder='04/06/2024'/> 
@@ -420,7 +442,7 @@ function AddCalendar () {
 }
 
 //----------------------------------------------------edit staff ---------------------------------------------------------------
-function EditInfoStaff () {
+function EditInfoStaff() {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -431,65 +453,70 @@ function EditInfoStaff () {
         setShowModal(false);
     };
     return (
-    <div>
-            <div className={clsx(style.EditButton)}>
-                <button onClick={handleOpenModal} className={clsx(style.editButton)}>
-                </button>
-            </div>
-            {showModal && (
-                <div id="myModal" className={clsx(style.modal)}>
-                    <div className={clsx(style.modalContent)}>
-                        <div className={clsx(style.modalHeader)}>
-                            <span onClick={handleCloseModal} className={clsx(style.close)}>
-                                &times;
-                            </span>
-                            <h3>Chỉnh sửa thông tin nhân viên</h3>
-                        </div>
-                        <div className={clsx(style.modalBody)}>
-                        <label>
-                                Họ tên:
-                                <input type="text" name="fullName" placeholder="Nguyen Van A" />
-                            </label>
-                            <label>
-                                Giới tính:
-                                <input type="text" name="gender" placeholder="Gender" />
-                            </label>
-                            <label>
-                                Chuyên ngành:
-                                <input type="text" name="faculty" placeholder="Faculty" />
-                            </label>
-                            <label>
-                                Ngày sinh:
-                                <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
-                            </label>
-                            <label>
-                                Chức vụ:
-                                <input type="text" name="job" placeholder="doctor or nurse" />
-                            </label>
-                            <label>
-                                Email:
-                                <input type="text" name="email" placeholder="abc@gmail.com" />
-                            </label>
-                            <label>
-                                Quê quán: 
-                                <input type="text" name="hometown" placeholder="Hometown" />
-                            </label>
-                            <label>
-                                SĐT: 
-                                <input type="text" name="phone" placeholder="Phone number" />
-                            </label>
-                            <label>
-                                Địa chỉ:
-                                <input type="text" name="address" placeholder="Address" />
-                            </label>
-                        </div>
-                        <div className={clsx("btn-group", style.modalFooter)}>
-                            <button className={clsx(style.submitButton)}>Submit</button>
-                            <button className={clsx(style.clearButton)}>Xóa</button>
+        <div className={clsx(style.EditStaff)}>
+            <div>
+                <div className={clsx(style.EditButton)}>
+                    <button onClick={handleOpenModal} className={clsx(style.editButton)}>
+                        Chỉnh sửa
+                    </button>
+                </div>
+                {showModal && (
+                    <div id="myModal" className={clsx(style.modal)}>
+                        <div className={clsx(style.modalContent)}>
+                            <div className={clsx(style.modalHeader)}>
+                                <span onClick={handleCloseModal} className={clsx(style.close)}>
+                                    &times;
+                                </span>
+                                <h3>Chỉnh sửa thông tin nhân viên</h3>
+                            </div>
+                            <div className={clsx(style.modalBody)}>
+                                <label>
+                                    Họ tên:
+                                    <input type="text" name="fullName" placeholder="Nguyen Van A" />
+                                </label>
+                                <label>
+                                    Giới tính:
+                                    <input type="text" name="gender" placeholder="Gender" />
+                                </label>
+                                <label>
+                                    Chuyên ngành:
+                                    <input type="text" name="faculty" placeholder="Faculty" />
+                                </label>
+                                <label>
+                                    Ngày sinh:
+                                    <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
+                                </label>
+                                <label>
+                                    Chức vụ:
+                                    <input type="text" name="job" placeholder="doctor or nurse" />
+                                </label>
+                                <label>
+                                    Email:
+                                    <input type="text" name="email" placeholder="abc@gmail.com" />
+                                </label>
+                                <label>
+                                    Quê quán:
+                                    <input type="text" name="hometown" placeholder="Hometown" />
+                                </label>
+                                <label>
+                                    SĐT:
+                                    <input type="text" name="phone" placeholder="Phone number" />
+                                </label>
+                                <label>
+                                    Địa chỉ:
+                                    <input type="text" name="address" placeholder="Address" />
+                                </label>
+                            </div>
+                            <div className={clsx(style.modalFooter)}>
+                                <button className={clsx(style.submitButton)}>Submit</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+            <div className={clsx(style.ClearButton)}>
+                <button className={clsx(style.clearButton)}>Xóa</button>
+            </div>
         </div>
     );
 }
