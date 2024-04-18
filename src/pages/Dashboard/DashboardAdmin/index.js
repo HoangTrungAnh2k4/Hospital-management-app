@@ -1,39 +1,57 @@
 import clsx from 'clsx';
-import style from './DashboardAmin.module.scss';
+import styles from './DashboardAmin.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import CalendarWeek from '~/components/Calendar/CalendarWeek';
 import { useNavigate } from 'react-router-dom';
 import { database } from '~/firebase';
 import { addDoc, collection, getDocs, orderBy } from 'firebase/firestore';
+import { set } from 'date-fns';
 
-function Chart1() {
+function Chart1({ countAge }) {
     return (
-        <div className={clsx(style.chart_1)}>
-            <p className={clsx(style.header)}>Biểu đồ độ tuổi</p>
-            <div className={clsx(style.chart1)}>
-                <div className={style.center}>1244</div>
+        <div className={clsx(styles.chart_1)}>
+            <p className={clsx(styles.header)}>Biểu đồ độ tuổi</p>
+            <div
+                className={clsx(styles.chart1)}
+                style={{
+                    background: `conic-gradient( 
+                        var(--color4) 0deg, 
+                        var(--color4) ${countAge[3] * 3.6}deg, 
+                        var(--color1) ${countAge[3] * 3.6}deg, 
+                        var(--color1)  ${countAge[4] * 3.6 + countAge[3] * 3.6}deg,
+                        var(--color2)  ${countAge[4] * 3.6 + countAge[3] * 3.6}deg,
+                        var(--color2)  ${countAge[5] * 3.6}deg)`,
+                }}
+            >
+                <div className={styles.center}>{countAge[6]}</div>
             </div>
-            <div className={clsx(style.detail1)}>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot1)}></div>
+            <div className={clsx(styles.detail1)}>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot1)}></div>
                         <span>0-14 tuổi</span>
                     </div>
-                    <span className={clsx(style.quantity1)}>23% (427)</span>
+                    <span className={clsx(styles.quantity1)}>
+                        {countAge[3]}% ({countAge[0]})
+                    </span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot2)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot2)}></div>
                         <span>15-64 tuổi</span>
                     </div>
-                    <span className={clsx(style.quantity2)}>23% (427)</span>
+                    <span className={clsx(styles.quantity2)}>
+                        {countAge[4]}% ({countAge[1]})
+                    </span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot3)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot3)}></div>
                         <span>&gt; 65 tuổi</span>
                     </div>
-                    <span className={clsx(style.quantity3)}>23% (427)</span>
+                    <span className={clsx(styles.quantity3)}>
+                        {countAge[5]}% ({countAge[2]})
+                    </span>
                 </div>
             </div>
         </div>
@@ -41,168 +59,172 @@ function Chart1() {
 }
 
 function Chart2() {
+    
     return (
-        <div className={clsx(style.chart_2)}>
-            <p className={clsx(style.header)}>Kho máu</p>
+        <div className={clsx(styles.chart_2)}>
+            <p className={clsx(styles.header)}>Kho máu</p>
 
             {/* chart */}
-            <div className={clsx(style.chart2)}>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>A+</p>
+            <div className={clsx(styles.chart2)}>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>A+</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>A-</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>A-</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>B+</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>B+</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>B-</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>B-</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>O+</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>O+</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>O-</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>O-</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>AB+</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>AB+</p>
                 </div>
-                <div className={clsx(style.bloodWrap)}>
-                    <div className={clsx(style.bloodCol)}></div>
-                    <p className={clsx(style.type)}>AB-</p>
+                <div className={clsx(styles.bloodWrap)}>
+                    <div className={clsx(styles.bloodCol)}></div>
+                    <p className={clsx(styles.type)}>AB-</p>
                 </div>
             </div>
             {/* detail */}
-            <div className={clsx(style.detail2)}>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+            <div className={clsx(styles.detail2)}>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>A+</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>B+</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>O+</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>AB+</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
 
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>A-</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
 
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>B-</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
 
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>O-</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
-                <div className={clsx(style.item)}>
-                    <div className={clsx(style.wrap)}>
-                        <div className={clsx(style.dot)}></div>
+                <div className={clsx(styles.item)}>
+                    <div className={clsx(styles.wrap)}>
+                        <div className={clsx(styles.dot)}></div>
                         <span>AB-</span>
                     </div>
-                    <span className={clsx(style.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>23% (427)</span>
                 </div>
             </div>
         </div>
     );
 }
 
-function PatientQuantity() {
+function PatientQuantity({ countAge, quantityPatient}) {
+
+
+
     return (
-        <div className={clsx(style.quantityPatient)}>
+        <div className={clsx(styles.quantityPatient)}>
             {/* quantity box */}
-            <div className={clsx(style.row1)}>
-                <div className={clsx(style.boxInfor, style.khoa1)}>
-                    <div className={clsx(style.icon)}>
+            <div className={clsx(styles.row1)}>
+                <div className={clsx(styles.boxInfor, styles.khoa1)}>
+                    <div className={clsx(styles.icon)}>
                         <i class="fa-solid fa-lungs"></i>
                     </div>
                     <div>
                         <p>Khoa nội</p>
-                        <span>23/45</span>
+                        <span>{quantityPatient[0]}/45</span>
                     </div>
                 </div>
-                <div className={clsx(style.boxInfor, style.khoa2)}>
-                    <div className={clsx(style.icon)}>
+                <div className={clsx(styles.boxInfor, styles.khoa2)}>
+                    <div className={clsx(styles.icon)}>
                         <i class="fa-solid fa-bandage"></i>
                     </div>
                     <div>
                         <p>Khoa ngoại</p>
-                        <span>20/38</span>
+                        <span>{quantityPatient[1]}/38</span>
                     </div>
                 </div>
-                <div className={clsx(style.boxInfor, style.khoa3)}>
-                    <div className={clsx(style.icon)}>
+                <div className={clsx(styles.boxInfor, styles.khoa3)}>
+                    <div className={clsx(styles.icon)}>
                         <i class="fa-solid fa-baby-carriage"></i>
                     </div>
                     <div>
                         <p>Khoa nhi</p>
-                        <span>12/50</span>
+                        <span>{quantityPatient[2]}/50</span>
                     </div>
                 </div>
-                <div className={clsx(style.boxInfor, style.khoa4)}>
-                    <div className={clsx(style.icon)}>
+                <div className={clsx(styles.boxInfor, styles.khoa4)}>
+                    <div className={clsx(styles.icon)}>
                         <i class="fa-solid fa-person-pregnant"></i>
                     </div>
                     <div>
                         <p>Khoa sản</p>
-                        <span>9/40</span>
+                        <span>{quantityPatient[3]}/40</span>
                     </div>
                 </div>
-                <div className={clsx(style.boxInfor, style.khoa5)}>
-                    <div className={clsx(style.icon)}>
+                <div className={clsx(styles.boxInfor, styles.khoa5)}>
+                    <div className={clsx(styles.icon)}>
                         <i className="fa-solid fa-bacteria"></i>
                     </div>
                     <div>
                         <p>Khoa truyền nhiễm</p>
-                        <span>36/56</span>
+                        <span>{quantityPatient[4]}/56</span>
                     </div>
                 </div>
             </div>
 
             {/* chart */}
-            <div className={clsx(style.boxChart)}>
-                <Chart1 />
+            <div className={clsx(styles.boxChart)}>
+                <Chart1 countAge={countAge} />
 
-                <Chart2 />
+                <Chart2  />
             </div>
         </div>
     );
@@ -212,18 +234,18 @@ function BoardNotify({ listNotify }) {
     const addNotify = useRef();
     useEffect(() => {
         addNotify.current.onclick = () => {
-            const addBtn = document.querySelector(`.${style.addNotify}`);
-            addBtn.style.display = 'block';
+            const addBtn = document.querySelector(`.${styles.addNotify}`);
+            addBtn.styles.display = 'block';
 
-            const textarea = document.querySelector(`.${style.addNotify} textarea`);
+            const textarea = document.querySelector(`.${styles.addNotify} textarea`);
             textarea.focus();
         };
     }, []);
 
     useEffect(() => {
-        const removeBtn = document.querySelector(`.${style.removeBtn}`);
+        const removeBtn = document.querySelector(`.${styles.removeBtn}`);
         removeBtn.onclick = () => {
-            const listNotify = document.querySelectorAll(`.${style.notify} input[type="checkbox"]`);
+            const listNotify = document.querySelectorAll(`.${styles.notify} input[type="checkbox"]`);
             listNotify.forEach((notify) => {
                 if (notify.checked) {
                     notify.parentElement.parentElement.parentElement.remove();
@@ -232,23 +254,23 @@ function BoardNotify({ listNotify }) {
         };
 
         // delete footer button with staff
-        const footer = document.querySelector(`.${style.notify__footer}`);
+        const footer = document.querySelector(`.${styles.notify__footer}`);
         if (localStorage.getItem('auth') === 'staff') {
-            footer.style.display = 'none';
+            footer.styles.display = 'none';
         }
     }, []);
 
     return (
-        <div className={clsx(style.notify)}>
-            <header className={clsx(style.notify__header)}>Thông báo chung</header>
-            <main className={clsx(style.notify__main)}>
+        <div className={clsx(styles.notify)}>
+            <header className={clsx(styles.notify__header)}>Thông báo chung</header>
+            <main className={clsx(styles.notify__main)}>
                 <NotifyList listNotify={listNotify} />
 
-                <footer className={clsx(style.notify__footer)}>
-                    <button ref={addNotify} className={clsx(style.addBtn, style.btn)} type="button">
+                <footer className={clsx(styles.notify__footer)}>
+                    <button ref={addNotify} className={clsx(styles.addBtn, styles.btn)} type="button">
                         Thêm
                     </button>
-                    <button className={clsx(style.removeBtn)} type="button">
+                    <button className={clsx(styles.removeBtn)} type="button">
                         Xóa
                     </button>
                 </footer>
@@ -275,26 +297,26 @@ function NotifyList() {
     }, []);
 
     return (
-        <main className={clsx(style.notify_list)}>
-            <ul className={clsx(style.ul__notice)}>
+        <main className={clsx(styles.notify_list)}>
+            <ul className={clsx(styles.ul__notice)}>
                 {listNotify.map((notify, index) => {
                     return (
-                        <li key={index} className={clsx(style.item)}>
+                        <li key={index} className={clsx(styles.item)}>
                             <div className={clsx('container mt-3')}>
                                 <div className="mt-4  rounded">
-                                    <li className={clsx(style.index)}>
-                                        <div className={clsx(style.icon)}>
+                                    <li className={clsx(styles.index)}>
+                                        <div className={clsx(styles.icon)}>
                                             <i class="fa-solid fa-user"></i>
                                         </div>
-                                        <div className={clsx(style.content)}>
-                                            <div className={clsx(style.row5)}>
+                                        <div className={clsx(styles.content)}>
+                                            <div className={clsx(styles.row5)}>
                                                 <span>Admin</span>
-                                                <span className={clsx(style.date)}>{notify.date}</span>
+                                                <span className={clsx(styles.date)}>{notify.date}</span>
                                             </div>
                                         </div>
                                     </li>
 
-                                    <div className={clsx(style.row6)}>
+                                    <div className={clsx(styles.row6)}>
                                         <h4>{notify.title}</h4>
                                         <p>{notify.content}</p>
                                     </div>
@@ -313,17 +335,17 @@ function ModalAddNotify({ reload }) {
 
     useEffect(() => {
         closeNotify.current.onclick = () => {
-            const addNotify = document.querySelector(`.${style.addNotify}`);
-            addNotify.style.display = 'none';
+            const addNotify = document.querySelector(`.${styles.addNotify}`);
+            addNotify.styles.display = 'none';
         };
     }, []);
 
     async function handleAddNotify() {
-        const title = document.querySelector(`.${style.addNotify} input`).value;
-        const content = document.querySelector(`.${style.addNotify} textarea`).value;
+        const title = document.querySelector(`.${styles.addNotify} input`).value;
+        const content = document.querySelector(`.${styles.addNotify} textarea`).value;
 
-        document.querySelector(`.${style.addNotify} textarea`).value = '';
-        document.querySelector(`.${style.addNotify} input`).value = '';
+        document.querySelector(`.${styles.addNotify} textarea`).value = '';
+        document.querySelector(`.${styles.addNotify} input`).value = '';
 
         await addDoc(collection(database, 'Notifications'), {
             title: title,
@@ -335,8 +357,8 @@ function ModalAddNotify({ reload }) {
     }
 
     return (
-        <div className={clsx(style.addNotify)}>
-            <div className={style.wrap}>
+        <div className={clsx(styles.addNotify)}>
+            <div className={styles.wrap}>
                 <header>
                     <p>Viết thông báo</p>
                     <button ref={closeNotify}>
@@ -344,7 +366,7 @@ function ModalAddNotify({ reload }) {
                     </button>
                 </header>
                 <main>
-                    <input className={clsx(style.title)} type="text" placeholder="Title" />
+                    <input className={clsx(styles.title)} type="text" placeholder="Title" />
                     <textarea name="message" rows="4" Cols="50" placeholder="Nhập thông báo"></textarea>
                 </main>
                 <footer>
@@ -372,21 +394,73 @@ function DashboardAdmin() {
         }
     }, []);
 
+    // get age of patients from firebase
+    const [countAge, setCountAge] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [quantityPatient, setQuantityPatient] = useState([0, 0, 0, 0, 0]);
+
+    useEffect(() => {
+        let cntAge = [0, 0, 0, 0, 0, 0, 0];
+        let quantityPatient = [0, 0, 0, 0, 0];
+
+        async function getAge() {
+            const querySnapshot = await getDocs(collection(database, 'Patients'));
+
+            querySnapshot.forEach((doc) => {
+                // count age
+                cntAge[6]++;
+                const birthDay = new Date(doc.data().Birthday.toDate()).getFullYear();
+                if (birthDay >= 2010) {
+                    cntAge[0]++;
+                } else if (birthDay <= 2010 && birthDay >= 1959) {
+                    cntAge[1]++;
+                } else {
+                    cntAge[2]++;
+                }
+
+                // count quantity patient
+                if (doc.data().Department === 'Khoa nội') {
+                    quantityPatient[0]++;
+                } else if (doc.data().Department === 'Khoa ngoại') {
+                    quantityPatient[1]++;
+                } else if (doc.data().Department === 'Khoa nhi') {
+                    quantityPatient[2]++;
+                } else if (doc.data().Department === 'Khoa sản') {
+                    quantityPatient[3]++;
+                } else {
+                    quantityPatient[4]++;
+                }
+            });
+
+            cntAge[3] = ((cntAge[0] / cntAge[6]) * 100).toFixed(0);
+            cntAge[4] = ((cntAge[1] / cntAge[6]) * 100).toFixed(0);
+            cntAge[5] = ((cntAge[2] / cntAge[6]) * 100).toFixed(0);
+
+            return new Promise((resolve) => {
+                resolve();
+            });
+        }
+        getAge().then(() => {
+            setCountAge([cntAge[0], cntAge[1], cntAge[2], cntAge[3], cntAge[4], cntAge[5], cntAge[6]]);
+            setQuantityPatient(quantityPatient);
+        });
+    }, []);
+
+
     return (
-        <div className={clsx(style.wrapper)}>
+        <div className={clsx(styles.wrapper)}>
             {/* quantity patient and notification board */}
-            <div className={clsx(style.row1)}>
-                <PatientQuantity />
+            <div className={clsx(styles.row1)}>
+                <PatientQuantity countAge={countAge} quantityPatient={quantityPatient} />
 
                 {/* Notification board */}
-                <div className={clsx(style.boardNotifyWraper)}>
+                <div className={clsx(styles.boardNotifyWraper)}>
                     <BoardNotify />
                 </div>
             </div>
 
-            <header className={clsx(style.headerCalendar)}>Lịch làm việc trong tuần</header>
+            <header className={clsx(styles.headerCalendar)}>Lịch làm việc trong tuần</header>
 
-            <div className={clsx(style.calendar)}>
+            <div className={clsx(styles.calendar)}>
                 <CalendarWeek />
             </div>
 

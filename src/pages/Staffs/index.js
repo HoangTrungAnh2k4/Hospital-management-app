@@ -354,6 +354,27 @@ function AddCalendar () {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+
+    async function handleAdd() {
+        const job_name = document.querySelector('input[name=job_name]').value;
+        const job_time = document.querySelector('input[name=job_time]').value;
+        const job_place = document.querySelector('input[name=job_place]').value;
+        const job_date = document.querySelector('input[name=job_date]').value;
+        
+        document.querySelector('input[name=job_name]').value = '';
+        document.querySelector('input[name=job_time]').value = '';
+        document.querySelector('input[name=job_place]').value = '';
+        document.querySelector('input[name=job_date]').value = '';
+        
+        await addDoc(collection(database, 'Calendar'), {
+            job_name: job_name,
+            job_time: job_time,
+            job_place: job_place,
+            job_date: job_date,
+        });
+    }
+
     return (
     <div>
             <div className={clsx(style.AddButton)}>
@@ -385,7 +406,7 @@ function AddCalendar () {
                             </label> 
                             <label>
                                 Ngày thực hiện: 
-                                <input type="text" name="job_date" /> 
+                                <input type="text" name="job_date"  placeholder='04/06/2024'/> 
                             </label> 
                         </div>
                         <div className={clsx(style.modalFooter)}>

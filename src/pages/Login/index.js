@@ -30,12 +30,24 @@ function Login() {
                 navigate('/dashboard/staff');
             }
         });
+
+        if (localStorage.getItem('auth') === null) {
+            alert('Username or password is incorrect');
+        }
     }
 
     useEffect(() => {
         loginRef.current.onclick = () => {
             checkAuth(Username.current.value, Password.current.value);
         };
+
+        Password.current.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                checkAuth(Username.current.value, Password.current.value);
+            }
+        });
+       
+
     }, []);
 
     return (
@@ -45,7 +57,10 @@ function Login() {
                 <div className={clsx(style.login)}>
                     <h1>Login</h1>
                     <div>
-                        <input ref={Username} type="text" placeholder="Username" />
+                        <label className={clsx(style.label)}>Uername</label>
+                        <input ref={Username} type="text" placeholder="Username" autoFocus/>
+
+                        <label className={clsx(style.label)}>Password</label>
                         <input ref={Password} type="password" placeholder="Password" />
 
                         <button ref={loginRef} className={clsx(style.btn, 'btn btn-primary btn-block btn-large')}>

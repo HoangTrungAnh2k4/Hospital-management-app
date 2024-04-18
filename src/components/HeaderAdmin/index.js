@@ -21,7 +21,7 @@ function Header() {
     function handleLogout() {
         localStorage.removeItem('auth');
         localStorage.removeItem('name');
-        window.location.href = '/';
+       window.location.href = '/';    
     }
 
     return (

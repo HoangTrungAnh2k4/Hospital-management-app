@@ -124,14 +124,7 @@
             width: 130px;
             height: 130px;
             border-radius: 50%;
-            background: conic-gradient(
-                var(--color4) 0deg,
-                var(--color4) 120deg,
-                var(--color1) 120deg,
-                var(--color1) 240deg,
-                var(--color2) 240deg,
-                var(--color2) 360deg
-            );
+            
 
             .center {
                 display: flex;
@@ -170,10 +163,10 @@
                         background-color: var(--color4);
                     }
                     .dot2 {
-                        background-color: var(--color3);
+                        background-color: var(--color1);
                     }
                     .dot3 {
-                        background-color: var(--color5);
+                        background-color: var(--color2);
                     }
                 }
 
@@ -184,13 +177,13 @@
                 }
 
                 .quantity1 {
-                    color: #ffa901;
+                    color: var(--color4);
                 }
                 .quantity2 {
-                    color: #7a6efe;
+                    color: var(--color1);
                 }
                 .quantity3 {
-                    color: #26a7fa;
+                    color: var(--color2);
                 }
             }
         }
