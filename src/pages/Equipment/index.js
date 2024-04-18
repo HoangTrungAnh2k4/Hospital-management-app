@@ -23,7 +23,7 @@ function Equipment() {
         name: "",
         produce: "",
         expiry: "",
-        img_url: "",
+        img_url: null,
         quantity: 0,
         win_bid: []
     }
@@ -72,8 +72,15 @@ function Equipment() {
     
     function submitAdd(event){
         event.preventDefault();
-        addEquipment( addItem.catalogue_1, addItem.catalogue_2, addItem);
-        setAddItem(initialState);
+        if ( !addItem.catalogue_1 || !addItem.catalogue_2 || !addItem.name || 
+            !addItem.produce || !addItem.expiry || !addItem.img_url
+        ){
+            alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
+            return;
+        }
+        addEquipment( addItem.catalogue_1, addItem.catalogue_2, addItem).then(() => {
+            setAddItem(initialState);
+        })
     }
 
     function submitCancelAdd(event){
@@ -178,11 +185,11 @@ function Equipment() {
                         <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelAdd}></button>
                     </div>
                     <div className={"modal-body"}>
-                        <input className={"form-control m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thiết bị" onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="produce" placeholder="Nơi sản xuất" onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" onChange={changeAddItem}/>
+                        <input className={"form-control m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddItem}/>
+                        <input className={"form-control m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddItem}/>
+                        <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thiết bị" value={addItem.name} onChange={changeAddItem}/>
+                        <input className={"form-control m-2"} type="text" name="produce" placeholder="Nơi sản xuất" value={addItem.produce} onChange={changeAddItem}/>
+                        <input className={"form-control m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeAddItem}/>
                         <input className={"form-control m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
                     </div>
                     <div className={"modal-footer"}>
