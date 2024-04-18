@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import style from './SCSS_module/Patients.module.scss';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getDocs, collection, deleteDoc } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { database } from 'src/firebase'
 import EditForm from './Forms/editForm.js';
-import Popup from './Popup';
+import Popup from './Action/Popup';
 
 
 
@@ -100,12 +100,23 @@ const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, se
         });
 
         try {
-            const documentsToDelete = await getDocs(collection(database, "Patients")).docs.filter(doc => doc.data().id === id);
-    
-            await Promise.all(documentsToDelete.map(async (doc) => {
-                await deleteDoc(doc.ref);
-            }));
+            const docRef = doc(database, "Patients", id);
+            const subcollections = ["MedicalHistory", "Allergies", "Amount", "Payment", "Notes", "HealthRecord", "Appointments"];
 
+            for (const subcollection of subcollections) {
+                const subcollectionRef = collection(docRef, subcollection);
+                const querySnapshot = await getDocs(subcollectionRef);
+                querySnapshot.forEach(async (doc) => {
+                    try {
+                        await deleteDoc(doc.ref);
+                    } catch (error) {
+                        console.error("Error deleting subcollection document:", error);
+                    }
+                });
+            }
+
+            // Xóa tài liệu chính
+            await deleteDoc(docRef);
             getPatient();
     
             setNotify({

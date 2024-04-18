@@ -6,10 +6,10 @@ import React, { useState, useEffect } from 'react';
 import { query, getDocs, collection, orderBy } from 'firebase/firestore';
 import { database } from 'src/firebase'
 import Table from './Table'
-import Popup from './Popup';
+import Popup from './Action/Popup';
 import AddForm from './Forms/addForm.js';
-import Notification from "./Forms/Notification";
-import ConfirmDialog from "./Forms/ConfirmDialog";
+import Notification from "./Action/Notification";
+import ConfirmDialog from "./Action/ConfirmDialog";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 

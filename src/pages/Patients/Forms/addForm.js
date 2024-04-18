@@ -5,7 +5,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import { Button as MuiButton, makeStyles } from "@material-ui/core";
 import { TextField } from '@material-ui/core';
 import DateFnsUtils from "@date-io/date-fns";
-import { query, getDocs, collection, addDoc } from 'firebase/firestore';
+import { query, getDocs, setDoc, collection, addDoc, doc } from 'firebase/firestore';
 import { database } from 'src/firebase'
 
 
@@ -219,7 +219,7 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
             }
         };
         fetchInitialValues();
-    }, [initialFValues]);
+    }, []);
    
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -256,9 +256,31 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
         if (validate()) {
             try {
                     // Gửi dữ liệu mới lên Firestore
-                    await addDoc(collection(database, "Patients"), {
+                    const docRef = await addDoc(collection(database, "Patients"), {
                         ...values
                     });
+
+                    /*const subcollections = {
+                        "MedicalHistory": {},
+                        "Allergies": {},
+                        "Payment": {},
+                        "Notes": {},
+                        "HealthRecord": {},
+                        "Appointments": {}
+                    };
+
+                    for (const [name, data] of Object.entries(subcollections)) {
+                        await setDoc(doc(database, "Patients", docRef.id, name, "NoInfor"), data);
+                    }*/
+
+                    const amountData = {
+                        "TotalPayment": {total: 0},
+                        "AppointmentCount": {Past: 0 , Upcoming: 0},
+                    };
+
+                    for (const [name, data] of Object.entries(amountData)) {
+                        await setDoc(doc(database, "Patients", docRef.id, "Amount", name), data);
+                    }
 
                     // Cập nhật state với thông tin mới được thêm vào Firestore
                     getPatient();
