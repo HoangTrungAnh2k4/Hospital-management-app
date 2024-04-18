@@ -1,7 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import clsx from 'clsx';
 import styles from "./Equipment.module.scss"
-import Edetail_1 from '~/components/Slicebar/Edetail_1';
+import Slicebar from '~/components/Slicebar';
 import { useState } from 'react';
 import Carausel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
@@ -72,7 +72,7 @@ function Equipment() {
     
     function submitAdd(event){
         event.preventDefault();
-        if ( !addItem.catalogue_1 || !addItem.catalogue_2 || !addItem.name || 
+        if ( !addItem.catalogue_1 || !addItem.catalogue_2 || !addItem.name ||
             !addItem.produce || !addItem.expiry || !addItem.img_url
         ){
             alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
@@ -162,7 +162,7 @@ function Equipment() {
                     <button class="btn btn-outline-info" type="submit"><SearchIcon/></button>  
                 </form>
                 <hr/>
-                <Edetail_1 catalogues={catalogues} setTarget={setTarget} />
+                <Slicebar catalogues={catalogues} setTarget={setTarget} />
                 <hr/>
                 <button class="btn btn-toggle align-items-center rounded collapsed ps-3" aria-expanded="false" data-bs-toggle="offcanvas" data-bs-target="#showHistory">
                     <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử

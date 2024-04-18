@@ -7,7 +7,7 @@ import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import Carausel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { addMedicine, getMedicine, queryByFirstChar, queryMedByName, queryMedBCatOrAct} from '~/firebase';
+import { addMedicine, getMedicine, queryByFirstChar, queryMedByName, queryMedByCatOrAct} from '~/firebase';
 import { uploadImage, deleteImage, getHistory } from '~/firebase';
 import { useNavigate } from 'react-router-dom';
 
@@ -86,12 +86,12 @@ function Medicine() {
             })
         }
         else if ( obFilter === "danh mục"){
-            queryMedBCatOrAct( searchItem, "catelogue", (medicines) => {
+            queryMedByCatOrAct( searchItem, "catelogue", (medicines) => {
                 setData(medicines);
             })
         }
         else if ( obFilter === "hoạt chất"){
-            queryMedBCatOrAct( searchItem, "active_element", (medicines) => {
+            queryMedByCatOrAct( searchItem, "active_element", (medicines) => {
                 setData(medicines);
             })
         }

@@ -199,7 +199,7 @@ async function queryMedByName_blood(bloodName, onChange) {
     }
 }
 
-async function queryMedBCatOrAct(key, option, onChange) {
+async function queryMedByCatOrAct(key, option, onChange) {
     const medicinesCollectionRef = collection(database, "medicines"); 
     const q = query(medicinesCollectionRef, where(option, "array-contains", key));
 
@@ -578,56 +578,66 @@ async function addWinBidEquipment(catalogue_1, catalogue_2, equipmentId, winBid)
     }
 }
 
-async function deleteWinBidEquipment(catalogue_1, catalogue_2, equipmentId, bidId) {
+async function deleteWinBidEquipment(catalogue1Name, catalogue2Name, equipmentId, bidIndex) {
     try {
-        // Locate the catalogue_1
-        const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue_1));
+        // Query for the catalogue1 document using its name
+        const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue1Name));
         const catalogue1Snapshot = await getDocs(catalogue1Query);
         if (catalogue1Snapshot.empty) {
             throw new Error("Catalogue 1 not found");
         }
         const catalogue1Ref = catalogue1Snapshot.docs[0].ref;
 
-        // Locate the catalogue_2
-        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue_2));
+        // Query for the catalogue2 document using its name within the specific catalogue1
+        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue2Name));
         const catalogue2Snapshot = await getDocs(catalogue2Query);
         if (catalogue2Snapshot.empty) {
             throw new Error("Catalogue 2 not found");
         }
         const catalogue2Ref = catalogue2Snapshot.docs[0].ref;
 
-        // Locate the specific equipment
+        // Access the specific equipment document
         const equipmentRef = doc(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`, equipmentId);
         const equipmentSnap = await getDoc(equipmentRef);
         if (!equipmentSnap.exists()) {
             throw new Error("Equipment not found");
         }
-
-        // Retrieve the current data
         const equipmentData = equipmentSnap.data();
-        const updatedWinBids = equipmentData.win_bid.filter(bid => bid.id !== bidId);
 
-        // Calculate the new quantity assuming 'quantity' reduction is based on the bid being removed
-        const bidToRemove = equipmentData.win_bid.find(bid => bid.id === bidId);
-        if (!bidToRemove) {
-            throw new Error("Win bid not found");
+        // Validate the bid index
+        if (bidIndex < 0 || bidIndex >= equipmentData.win_bid.length) {
+            throw new Error("Invalid index!");
         }
-        const newQuantity = Number(equipmentData.quantity) - Number(bidToRemove.wquantity);
+        const winBid = equipmentData.win_bid[bidIndex];
 
+        // Ensure there is enough quantity to remove the win bid
+        if (equipmentData.quantity < winBid.wquantity) {
+            throw new Error("Insufficient quantity to remove this win bid!");
+        }
+
+        // Create the history entry before modifying the equipment
         addHistory({
             field: "Xóa",
             time: getTime(),
-            content: `Xóa lượt đấu thầu thành công cho vật tư ${equipmentData.name}.`
+            content: `Xóa lượt đấu thầu thành công cho thiết bị ${equipmentData.name}.`
         }, false);
+
+        // Remove the bid from the array and update the quantity
+        const updatedWinBids = [...equipmentData.win_bid];
+        updatedWinBids.splice(bidIndex, 1);
+        const updatedQuantity = Number(equipmentData.quantity) - Number(winBid.wquantity);
+
         // Update the document with the new win bids array and adjusted quantity
         await updateDoc(equipmentRef, {
             win_bid: updatedWinBids,
-            quantity: newQuantity
+            quantity: updatedQuantity
         });
 
         console.log("Win bid removed successfully from the equipment!");
+
     } catch (error) {
         console.error("Error removing win bid from equipment:", error);
+        alert("Error removing win bid: " + error.message);
     }
 }
 
@@ -821,7 +831,7 @@ function deleteImage_blood(img_url){
     deleteObject(imageRef);
 }
 
-export { database, addMedicine,addBlood, getMedicine,getBlood, deleteMedicine,deleteBlood, queryByFirstChar,queryByFirstChar_blood, updateMedicine,updateBlood, addWinBidMedicine, addWinBid_blood, deleteWinBidMedicine, deleteWinBid_blood, queryMedByName,queryMedByName_blood, queryMedBCatOrAct,queryMedBCatOrAct_blood};
+export { database, addMedicine,addBlood, getMedicine,getBlood, deleteMedicine,deleteBlood, queryByFirstChar,queryByFirstChar_blood, updateMedicine,updateBlood, addWinBidMedicine, addWinBid_blood, deleteWinBidMedicine, deleteWinBid_blood, queryMedByName,queryMedByName_blood, queryMedByCatOrAct,queryMedBCatOrAct_blood};
 export {uploadImage,uploadImageBlood, deleteImage,deleteImage_blood};
 export {addEquipment, getEquipmentByCatalogue, getCatalogue, updateEquipment, addWinBidEquipment, deleteWinBidEquipment, deleteEquipment, queryEquipmentByName, updateCatalogue1Name, updateCatalogue2Name, deleteCatalogue1, deleteCatalogue2};
 export {addHistory, getHistory};
