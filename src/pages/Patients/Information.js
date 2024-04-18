@@ -19,27 +19,27 @@ const Information = () => {
     const { patient } = location.state;
     const docId = patient.id;
 
-    const [subcollectionMedicalHistory, setSubcollection1MedicalHistory] = useState(null);
+    const [subcollectionMedicalHistory, setSubcollectionMedicalHistory] = useState(null);
     const [subcollectionAllergies, setSubcollectionAllergies] = useState(null);
     const [subcollectionPayment, setSubcollectionPayment] = useState(null);
     const [totalPayment, setTotalPayment] = useState(null);
 
+    const getSubcollections = async () => {
+        const subcollectionMH = await checkSubcollection(docId, "MedicalHistory");
+        setSubcollectionMedicalHistory(subcollectionMH);
+
+        const subcollectionA = await checkSubcollection(docId, "Allergies");
+        setSubcollectionAllergies(subcollectionA);
+
+        const subcollectionP = await checkSubcollection(docId, "Payment");
+        setSubcollectionPayment(subcollectionP);
+
+        const totalP = await getTotalPayment(docId);
+        setTotalPayment(totalP);
+    };
+
     useEffect(() => {
-        const fetchSubcollections = async () => {
-            const subcollectionMH = await checkSubcollection(docId, "MedicalHistory");
-            setSubcollection1MedicalHistory(subcollectionMH);
-
-            const subcollectionA = await checkSubcollection(docId, "Allergies");
-            setSubcollectionAllergies(subcollectionA);
-
-            const subcollectionP = await checkSubcollection(docId, "Payment");
-            setSubcollectionPayment(subcollectionP);
-
-            const totalP = await getTotalPayment(docId);
-            setTotalPayment(totalP);
-        };
-
-        fetchSubcollections();
+        getSubcollections()
     }, []);
 
     return (
@@ -81,11 +81,15 @@ const Information = () => {
                         <div className={clsx(style.medical_history)}>
                             <MedicalHistory 
                                 subcollectionMedicalHistory={subcollectionMedicalHistory}
+                                patient={patient}
+                                getSubcollections={getSubcollections}
                             > 
                             </MedicalHistory>
                             
                             <Allergies 
                                 subcollectionAllergies={subcollectionAllergies}
+                                patient={patient}
+                                getSubcollections={getSubcollections}
                             >
                             </Allergies>
                         </div>
