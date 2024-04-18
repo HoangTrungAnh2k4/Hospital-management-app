@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import style from './staffs.module.scss';
 import React, { useState } from 'react';
-import doctorImage from 'src/img/doctor.png';
 // import { doctors_data } from './doctors_data';
 // import { nurses_data } from './nurses_data';
 import Calendar from 'src/components/Calendar/CalendarDay';
@@ -394,7 +393,7 @@ const SortTable = ({ data, showInfor }) => {
                     <thead>
                         <tr>
                             <th onClick={() => handleSort('id')}>ID {<i class="fa-solid fa-sort"></i>} </th>
-                            <th onClick={() => handleSort('fullNname')}>Họ tên {<i class="fa-solid fa-sort"></i>}</th>
+                            <th onClick={() => handleSort('fullName')}>Họ tên {<i class="fa-solid fa-sort"></i>}</th>
                             <th onClick={() => handleSort('faculty')}>
                                 Chuyên ngành {<i class="fa-solid fa-sort"></i>}
                             </th>
