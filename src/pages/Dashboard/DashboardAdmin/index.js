@@ -59,7 +59,6 @@ function Chart1({ countAge }) {
 }
 
 function Chart2() {
-    
     return (
         <div className={clsx(styles.chart_2)}>
             <p className={clsx(styles.header)}>Kho máu</p>
@@ -165,10 +164,7 @@ function Chart2() {
     );
 }
 
-function PatientQuantity({ countAge, quantityPatient}) {
-
-
-
+function PatientQuantity({ countAge, quantityPatient }) {
     return (
         <div className={clsx(styles.quantityPatient)}>
             {/* quantity box */}
@@ -224,7 +220,7 @@ function PatientQuantity({ countAge, quantityPatient}) {
             <div className={clsx(styles.boxChart)}>
                 <Chart1 countAge={countAge} />
 
-                <Chart2  />
+                <Chart2 />
             </div>
         </div>
     );
@@ -232,10 +228,11 @@ function PatientQuantity({ countAge, quantityPatient}) {
 
 function BoardNotify({ listNotify }) {
     const addNotify = useRef();
+
     useEffect(() => {
         addNotify.current.onclick = () => {
             const addBtn = document.querySelector(`.${styles.addNotify}`);
-            addBtn.styles.display = 'block';
+            addBtn.style.display = 'block';
 
             const textarea = document.querySelector(`.${styles.addNotify} textarea`);
             textarea.focus();
@@ -254,9 +251,9 @@ function BoardNotify({ listNotify }) {
         };
 
         // delete footer button with staff
-        const footer = document.querySelector(`.${styles.notify__footer}`);
         if (localStorage.getItem('auth') === 'staff') {
-            footer.styles.display = 'none';
+            const footer = document.querySelector(`.${styles.notify__footer}`);
+            footer.style.display = 'none';
         }
     }, []);
 
@@ -336,7 +333,7 @@ function ModalAddNotify({ reload }) {
     useEffect(() => {
         closeNotify.current.onclick = () => {
             const addNotify = document.querySelector(`.${styles.addNotify}`);
-            addNotify.styles.display = 'none';
+            addNotify.style.display = 'none';
         };
     }, []);
 
@@ -347,13 +344,18 @@ function ModalAddNotify({ reload }) {
         document.querySelector(`.${styles.addNotify} textarea`).value = '';
         document.querySelector(`.${styles.addNotify} input`).value = '';
 
-        await addDoc(collection(database, 'Notifications'), {
-            title: title,
-            content: content,
-            date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
-        });
-
-        reload();
+        if(title !== '' || content !== '') {
+            await addDoc(collection(database, 'Notifications'), {
+                title: title,
+                content: content,
+                date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
+            });
+    
+            reload();
+        }
+        else{
+            alert('Hãy nhập đầy đủ thông tin');
+        }
     }
 
     return (
@@ -444,7 +446,6 @@ function DashboardAdmin() {
             setQuantityPatient(quantityPatient);
         });
     }, []);
-
 
     return (
         <div className={clsx(styles.wrapper)}>
