@@ -344,16 +344,15 @@ function ModalAddNotify({ reload }) {
         document.querySelector(`.${styles.addNotify} textarea`).value = '';
         document.querySelector(`.${styles.addNotify} input`).value = '';
 
-        if(title !== '' || content !== '') {
+        if (title !== '' || content !== '') {
             await addDoc(collection(database, 'Notifications'), {
                 title: title,
                 content: content,
                 date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
             });
-    
+
             reload();
-        }
-        else{
+        } else {
             alert('Hãy nhập đầy đủ thông tin');
         }
     }
@@ -401,11 +400,10 @@ function DashboardAdmin() {
     const [quantityPatient, setQuantityPatient] = useState([0, 0, 0, 0, 0]);
 
     useEffect(() => {
-        let cntAge = [0, 0, 0, 0, 0, 0, 0];
-        let quantityPatient = [0, 0, 0, 0, 0];
-
         async function getAge() {
             const querySnapshot = await getDocs(collection(database, 'Patients'));
+            let cntAge = [0, 0, 0, 0, 0, 0, 0];
+            let quantityPatient = [0, 0, 0, 0, 0];
 
             querySnapshot.forEach((doc) => {
                 // count age
@@ -437,14 +435,11 @@ function DashboardAdmin() {
             cntAge[4] = ((cntAge[1] / cntAge[6]) * 100).toFixed(0);
             cntAge[5] = ((cntAge[2] / cntAge[6]) * 100).toFixed(0);
 
-            return new Promise((resolve) => {
-                resolve();
-            });
-        }
-        getAge().then(() => {
             setCountAge([cntAge[0], cntAge[1], cntAge[2], cntAge[3], cntAge[4], cntAge[5], cntAge[6]]);
             setQuantityPatient(quantityPatient);
-        });
+        }
+        
+        getAge();
     }, []);
 
     return (

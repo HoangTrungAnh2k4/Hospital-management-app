@@ -36,10 +36,11 @@
             .myimg {
                 display: block;
                 margin: auto;
-                width: 60%;
+                width: 70%;
                 object-fit: cover;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
                 //border: 10px solid var(--second-color);
+                border-radius: 0.5rem;
             }
             .cardbody {
                 padding: 0 0 15px 15px;
@@ -69,8 +70,14 @@
                     }
                 }
                 .cardtext {
-                    margin-top: 1.5rem;
-                    margin-left: 2rem;
+                    margin-top: 0.5rem;
+                    margin-left: 0rem;
+                    
+                    .textInfor {
+                        color:#555;
+                        margin-left: 1rem;
+                        font-weight: 500;
+                    }
                 }
             }
         }
@@ -82,7 +89,7 @@
             .myimg {
                 display: block;
                 margin: auto;
-                width: 60%;
+                width: 90%;
                 // border-radius: 50%;
                 object-fit: cover;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -118,6 +125,10 @@
                 .cardtext {
                     margin-top: 1.5rem;
                     margin-left: 2rem;
+
+                    .textInfor {
+                        color: red;
+                    }
                 }
             }
         }
@@ -222,6 +233,7 @@ li {
     .myTable {
         border-collapse: collapse;
         width: 100%;
+        margin-top: 1rem;
     }
     th {
         background-color: var(--second-color);
@@ -247,6 +259,11 @@ li {
             &:hover {
                 cursor: pointer;
             }
+        }
+    }
+    th {
+        i:hover{
+            cursor: pointer;
         }
     }
 }
@@ -378,5 +395,5 @@ li {
     }
 }
 .PatientInfo {
-    margin: 2rem;
+    margin: 1rem;
 }

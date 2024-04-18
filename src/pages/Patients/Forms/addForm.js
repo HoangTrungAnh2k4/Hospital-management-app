@@ -142,7 +142,6 @@ export function useForm(initialFValues, validateOnChange = false, validate) {
         setErrors({})
     }
 
-
     return {
         values,
         setValues,
@@ -259,19 +258,6 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
                     const docRef = await addDoc(collection(database, "Patients"), {
                         ...values
                     });
-
-                    /*const subcollections = {
-                        "MedicalHistory": {},
-                        "Allergies": {},
-                        "Payment": {},
-                        "Notes": {},
-                        "HealthRecord": {},
-                        "Appointments": {}
-                    };
-
-                    for (const [name, data] of Object.entries(subcollections)) {
-                        await setDoc(doc(database, "Patients", docRef.id, name, "NoInfor"), data);
-                    }*/
 
                     const amountData = {
                         "TotalPayment": {total: 0},
