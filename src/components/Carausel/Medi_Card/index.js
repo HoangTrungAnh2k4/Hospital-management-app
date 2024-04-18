@@ -19,6 +19,11 @@ function MCard(props){
     useEffect(() => {
         setFixItem(props.medicine);
     }, [props.medicine]);
+    useEffect(() => {
+        if (fixItem.quantity !== undefined && fixItem.quantity !== props.medicine.quantity) {
+            updateMedicine(props.medicine.id, fixItem);
+        }
+    }, [fixItem.quantity]);
     function changeFixItem(event) {
         const { name, value, files } = event.target;
         if (name === "img_url" && files && files.length > 0) {
