@@ -87,7 +87,7 @@ function Patients() {
                 /> 
             </div>}
             <Popup
-                title="Patient Form"
+                title="Tạo bệnh nhân mới"
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}>
 

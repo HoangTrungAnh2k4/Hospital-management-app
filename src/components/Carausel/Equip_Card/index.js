@@ -66,7 +66,7 @@ function ECard(props){
     }
     function submitDelEquip(event){
         event.preventDefault();
-        deleteImage(prevImg, "equipments");
+        deleteImage(props.equipment.img_url, "equipments");
         deleteEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 , props.equipment.id)
     }
     function changeNewBid(event){
@@ -113,24 +113,27 @@ function ECard(props){
                         <img src={props.equipment.img_url} alt="..."/>
                         <p>Nhà sản xuất: {props.equipment.produce}</p>
                         <p>Hạng sử dụng: {props.equipment.expiry}</p>
+                        <p>Số lượng còn lại: {props.equipment.quantity}</p>
                         <div class="d-flex align-items-center">
                             <h5 class="me-3">Đấu thầu thành công:</h5>
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#win_bidBackdrop">Nhập hàng</button>
                         </div>
                         <table class="table table-striped">
-                            <thead>
+                        <thead>
                                 <tr>
                                     <th scope="col">Thời gian</th>
                                     <th scope="col">Giá nhập</th>
                                     <th scope="col">Số lượng</th>
+                                    <th scope="col">Đơn vị</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {props.equipment.win_bid.map((item, index) => (
                                     <tr key={index}> 
                                         <th scope="row">{item.date}</th> 
-                                        <td>{item.price}</td>
-                                        <td>{item.quantity}</td>
+                                        <td>{item.wprice}</td>
+                                        <td>{item.wquantity}</td>
+                                        <td>{item.wunit}</td>
                                     </tr>
                                 ))}     
                             </tbody>

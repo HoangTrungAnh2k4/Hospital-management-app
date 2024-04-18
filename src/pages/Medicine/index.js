@@ -33,7 +33,7 @@ function Medicine() {
         price: "",
         unit: "",
         quantity: 0,
-        img_url: "",
+        img_url: null,
         win_bid: []
     };
     
@@ -117,8 +117,14 @@ function Medicine() {
         }
     }
     
-    function submitAdd(event){
+   function submitAdd(event){
         event.preventDefault();
+        if (!addItem.name || !addItem.number || addItem.catelogue.length === 0 || !addItem.type ||
+            !addItem.packing || !addItem.expiry || addItem.active_element.length === 0 || !addItem.produce ||
+            !addItem.unit || !addItem.img_url) {
+            alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
+            return;
+        }
         addMedicine(addItem).then(() => {
             setAddItem(initialState);
         })
