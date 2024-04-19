@@ -15,7 +15,8 @@ function StaffsDisplay() {
     const [nurses_data, setNursesData] = useState([]);
     const [infor, setInfor] = useState({});
     const [hasInfor, setHasInfor] = useState(false);
-    
+    const [arrCalendar, setArrCalendar] = useState([]);
+
     useEffect(() => {
         async function getDoctors() {
             const querySnapshot = await getDocs(collection(database, 'Doctors'));
@@ -47,6 +48,7 @@ function StaffsDisplay() {
 
         if (querySnapshot) {
             const tmp = querySnapshot.docs[0].data();
+            setArrCalendar(tmp.calendar);
             setInfor(tmp);
         }
 
@@ -60,7 +62,7 @@ function StaffsDisplay() {
         setHasInfor(true);
     }
 
-    async function showCalendar(job_name, job_time, job_place, job_date) {
+    async function addCalendar(job_name, job_time, job_place, job_date) {
         const newCalendar = {
             jobName: job_name,
             jobTime: job_time,
@@ -74,8 +76,6 @@ function StaffsDisplay() {
         await updateDoc(docRef, {
             calendar: [newCalendar, ...querySnapshot.docs[0].data().calendar],
         });
-        
-        
     }
     return (
         <div className={clsx(style.colum)}>
@@ -139,8 +139,8 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Lịch</h2>
                         </div>
-                        {hasInfor && <AddCalendar showCalendar={showCalendar} />}
-                        {hasInfor && <Calendar id={infor.id} />}
+                        {hasInfor && <AddCalendar addCalendar={addCalendar} />}
+                        {hasInfor && <Calendar arrCalendar={arrCalendar} />}
                     </div>
                     {/* -------------------------------------------------- Bệnh nhân ------------------------------------------------ */}
                     <div className={clsx(style.col2__row2__col2)}>
@@ -157,27 +157,80 @@ function StaffsDisplay() {
 
 //--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
 function PatientInfo() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    async function handleAdd() {}
     return (
-        <div className={clsx(style.PatientInfo)}>
-            <div className={clsx(style.infoTable)}>
-                <table className={clsx(style.myTable)}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Họ tên</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>3216</td>
-                            <td>Nguyễn Văn A</td>
-                        </tr>
-                        <tr>
-                            <td>4357</td>
-                            <td>Trần Văn B</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div>
+            <div className={clsx(style.AddButton)}>
+                <button onClick={handleOpenModal} className={clsx(style.addButton)}>
+                    Thêm bệnh nhân
+                </button>
+            </div>
+            {showModal && (
+                <div id="myModal" className={clsx(style.modal)}>
+                    <div className={clsx(style.modalContent)}>
+                        <div className={clsx(style.modalHeader)}>
+                            <span onClick={handleCloseModal} className={clsx(style.close)}>
+                                &times;
+                            </span>
+                            <h3>Thêm thông tin lịch</h3>
+                        </div>
+                        <div className={clsx(style.modalBody)}>
+                            <label>
+                                Tên công việc:
+                                <input type="text" name="job_name" autoFocus />
+                            </label>
+                            <label>
+                                Thời gian:
+                                <input type="text" name="job_time" />
+                            </label>
+                            <label>
+                                Địa điểm:
+                                <input type="text" name="job_place" />
+                            </label>
+                            <label>
+                                Ngày thực hiện:
+                                <input type="text" name="job_date" placeholder="mm/dd/yyyy" />
+                            </label>
+                        </div>
+                        <div className={clsx(style.modalFooter)}>
+                            <button className={clsx(style.submitButton)} onClick={handleAdd}>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <div className={clsx(style.PatientInfo)}>
+                <div className={clsx(style.infoTable)}>
+                    <table className={clsx(style.myTable)}>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3216</td>
+                                <td>Nguyễn Văn A</td>
+                            </tr>
+                            <tr>
+                                <td>4357</td>
+                                <td>Trần Văn B</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
@@ -223,6 +276,21 @@ function AddStaffs() {
         const address = document.querySelector('input[name=address]').value;
         const job = document.querySelector('input[name=job]').value;
 
+        if (
+            fullName === '' ||
+            gender === '' ||
+            faculty === '' ||
+            birthdate === '' ||
+            email === '' ||
+            hometown === '' ||
+            phone === '' ||
+            address === '' ||
+            job === ''
+        ) {
+            alert('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
         if (job !== 'doctor' && job !== 'nurse') {
             alert('Chức vụ không hợp lệ');
             return;
@@ -251,7 +319,8 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
-                calendar: [{}],
+                calendar: [],
+                patients:[]
             });
         } else if (job === 'nurse') {
             await addDoc(collection(database, 'Nurses'), {
@@ -264,7 +333,8 @@ function AddStaffs() {
                 hometown: hometown,
                 phone: phone,
                 address: address,
-                calendar: [{}],
+                calendar: [],
+                patients:[]
             });
         }
     }
@@ -273,7 +343,7 @@ function AddStaffs() {
         <div>
             <div className={clsx(style.AddButton)}>
                 <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                    <i class="fa-solid fa-plus"></i> Thêm nhân viên
+                    Thêm nhân viên
                 </button>
             </div>
             {showModal && (
@@ -423,7 +493,7 @@ const SortTable = ({ data, showInfor }) => {
     );
 };
 //----------------------------------------------------- add calendar --------------------------------------------------------
-function AddCalendar({ showCalendar }) {
+function AddCalendar({ addCalendar }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -458,14 +528,14 @@ function AddCalendar({ showCalendar }) {
         document.querySelector('input[name=job_place]').value = '';
         document.querySelector('input[name=job_date]').value = '';
 
-        showCalendar(job_name, job_time, job_place, job_date);
+        addCalendar(job_name, job_time, job_place, job_date);
     }
 
     return (
         <div>
             <div className={clsx(style.AddButton)}>
                 <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                    <i class="fa-solid fa-plus"></i> Thêm lịch
+                    Thêm lịch
                 </button>
             </div>
             {showModal && (

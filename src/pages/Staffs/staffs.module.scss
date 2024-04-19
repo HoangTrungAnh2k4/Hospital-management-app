@@ -48,6 +48,7 @@
                     display: flex;
                     justify-content: flex-end;
                     .headerCard {
+                        color:#FEFAF6;
                         width: 80%;
                         display: flex;
                         align-items: center;
@@ -58,6 +59,7 @@
                         border-bottom-left-radius: 1rem;
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                         transition: box-shadow 0.3s ease;
+                        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
                         &:hover {
                             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
@@ -138,7 +140,7 @@
         display: flex;
         // flex-shrink: 1;
         .col2__row2__col1 {
-            flex: 2;
+            flex: 1.3;
             margin: 20px 10px 0 0;
             background-color: white;
             border-radius: 1rem;
@@ -178,6 +180,8 @@ li {
 }
 
 .headerBox {
+    color:#FEFAF6;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     width: 50%;
     height: fit-content;
     display: flex;
@@ -205,9 +209,9 @@ li {
     align-items: center;
     padding-right: 2rem;
     .addButton {
-        background-color: #45a049;
+        background-color:#41B06E   ;
         border: none;
-        color: whitesmoke;
+        color: #FEFAF6;
         padding: 5px 10px;
         text-align: center;
         text-decoration: none;
@@ -218,7 +222,9 @@ li {
         border-radius: 1rem;
         font-weight: bold;
         &:hover {
-            background-color: #178235;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            background-color: var(--primary-color);
         }
         i {
             font-size: 1.5rem;
