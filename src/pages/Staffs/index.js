@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 // import { nurses_data } from './nurses_data';
 import Calendar from 'src/components/Calendar/CalendarDay';
 import { database } from '~/firebase';
-import { collection, getDocs, addDoc, query, where, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, query, where, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { set } from 'date-fns';
@@ -17,6 +17,11 @@ function StaffsDisplay() {
     const [hasInfor, setHasInfor] = useState(false);
     const [arrCalendar, setArrCalendar] = useState([]);
     const [ownPatients, setOwnPatients] = useState([]);
+    const [reload, setReload] = useState(false);
+
+    function reloadPage() {
+        setReload(!reload);
+    }
 
     useEffect(() => {
         async function getDoctors() {
@@ -41,26 +46,28 @@ function StaffsDisplay() {
 
         getNurses();
         getDoctors();
-    }, []);
+
+        setHasInfor(false);
+        setInfor({});
+    }, [reload]);
 
     async function showInfor(id) {
         const q = query(collection(database, 'Doctors'), where('id', '==', id));
         const querySnapshot = await getDocs(q);
 
-        if (querySnapshot) {
+        if (querySnapshot.empty === false) {
             const tmp = querySnapshot.docs[0].data();
             setArrCalendar(tmp.calendar);
             setInfor(tmp);
         }
 
-        const querySnapshot1 = await getDocs(collection(database, 'Patients'));
-        const patients = querySnapshot1.docs.filter((doc) => doc.data().doctorId === id);
+        const q2 = query(collection(database, 'Nurses'), where('id', '==', id));
+        const querySnapshot2 = await getDocs(q2);
 
-        const querySnapshot2 = await getDocs(collection(database, 'Nurses'));
-        const nurse = querySnapshot2.docs.find((doc) => doc.id === id);
-
-        if (nurse) {
-            setInfor(nurse.data());
+        if (querySnapshot2.empty === false) {
+            const tmp = querySnapshot2.docs[0].data();
+            setArrCalendar(tmp.calendar);
+            setInfor(tmp);
         }
 
         setHasInfor(true);
@@ -134,7 +141,7 @@ function StaffsDisplay() {
                                     <span className={clsx(style.textInfor)}>{infor.address}</span> <br />
                                 </div>
                             </div>
-                            <EditInfoStaff />
+                            <EditInfoStaff id={infor.id} reloadPage={reloadPage} />
                         </div>
                     </div>
                 </div>
@@ -546,7 +553,7 @@ function AddCalendar({ addCalendar }) {
 }
 
 //----------------------------------------------------edit staff ---------------------------------------------------------------
-function EditInfoStaff() {
+function EditInfoStaff({ id, reloadPage }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -556,6 +563,21 @@ function EditInfoStaff() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    if (id === undefined) {
+        return <div></div>;
+    }
+    async function handleRemove() {
+        const q = query(collection(database, 'Doctors'), where('id', '==', id));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty === false) {
+            await deleteDoc(doc(database, 'Doctors', querySnapshot.docs[0].id));
+        }
+
+        reloadPage();
+    }
+
     return (
         <div className={clsx(style.EditStaff)}>
             <div>
@@ -619,7 +641,9 @@ function EditInfoStaff() {
                 )}
             </div>
             <div className={clsx(style.ClearButton)}>
-                <button className={clsx(style.clearButton)}>Xóa</button>
+                <button className={clsx(style.clearButton)} onClick={handleRemove}>
+                    Xóa
+                </button>
             </div>
         </div>
     );

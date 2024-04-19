@@ -6,7 +6,7 @@ import { collection, getDocs, addDoc, query, where, updateDoc, doc } from 'fireb
 
 function CalendarWeek({ children }) {
     function randomColor() {
-        const colors = ['#6AD4DD', '#BE9FE1', '#8576FF', '#E4C59E', '#FFC7C7', '#E84545'];
+        const colors = ['#6AD4DD', '#BE9FE1', '#8576FF', '#E4C59E', '#FFC7C7', '#E84545','#ADC2A9','#C2DEDC'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -50,13 +50,22 @@ function CalendarWeek({ children }) {
             let arrSatDayEvent = [];
             let arrSunDayEvent = [];
 
-            const querySnapshot = await getDocs(collection(database, 'Doctors'));
-            querySnapshot.forEach((doc) => {
-                if (doc.data().calendar.length > 0) {
-                    arrCalendar.push({ name: doc.data().fullName, calendar: doc.data().calendar });
-                }
-            });
-
+            if (localStorage.getItem('auth') !== 'staff') {
+                const querySnapshot = await getDocs(collection(database, 'Doctors'));
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().calendar.length > 0) {
+                        arrCalendar.push({ name: doc.data().fullName, calendar: doc.data().calendar });
+                    }
+                });
+            } else {
+                const currentStaff = localStorage.getItem('name');
+                const querySnapshot = await getDocs(collection(database, 'Doctors'));
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().fullName === currentStaff) {
+                        arrCalendar.push({ name: doc.data().fullName, calendar: doc.data().calendar });
+                    }
+                });
+            }
             arrCalendar.forEach((event1) => {
                 event1.calendar.forEach((event2) => {
                     const date = new Date(event2.jobDate);
@@ -76,6 +85,7 @@ function CalendarWeek({ children }) {
                         arrSunDayEvent.push({ doctor: event1.name, calendar: event2 });
                 });
             });
+
             setMonDayEvent(arrMonDayEvent);
             setTueDayEvent(arrTueDayEvent);
             setWedDayEvent(arrWedDayEvent);
@@ -177,7 +187,7 @@ function CalendarWeek({ children }) {
                             satDayEvent.map((event) => {
                                 return (
                                     <div className={clsx(styles.event)} style={{ backgroundColor: randomColor() }}>
-                                       <p>{event.calendar.jobName}</p>
+                                        <p>{event.calendar.jobName}</p>
                                         <span>{event.calendar.jobTime}</span>
                                         <span>{event.calendar.jobPlace}</span>
                                         <span>{event.doctor}</span>
