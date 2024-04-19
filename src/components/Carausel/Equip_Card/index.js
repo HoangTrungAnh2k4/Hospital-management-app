@@ -88,8 +88,17 @@ function ECard(props){
     }
     function submitNewBid(event) {
         event.preventDefault();
-        addWinBidEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 , props.equipment.id, newWin_bid);
-        setNewWin_bid(initWinBid);
+        if ( !newWin_bid.date || !newWin_bid.wquantity || !newWin_bid.wunit){
+            alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
+            return;
+        }
+        addWinBidEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 , props.equipment.id, newWin_bid).then(() => {
+            setNewWin_bid(initWinBid);
+        })
+    }
+    function submitDelBid(event, bidId){
+        event.preventDefault();
+        deleteWinBidEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 ,props.equipment.id, bidId);
     }
     return (
         <div class="col-md-3 col-sm-6" >
@@ -190,7 +199,7 @@ function ECard(props){
                                         <input type="number" className="form-control" name="wprice" defaultValue={item.wprice} onChange={changFixWinBid}/>
                                         <input type="number" className="form-control" name="wquantity" defaultValue={item.wquantity} onChange={changFixWinBid}/>
                                         <input type="text" className="form-control" name="wunit" defaultValue={item.wunit} onChange={changFixWinBid}/>
-                                        <button className="btn btn-outline-secondary" type="button">Xóa</button>
+                                        <button className="btn btn-outline-secondary" type="button" onClick={(e) => submitDelBid(e, index)} data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Xóa</button>
                                     </div>
                                 ))
                             }
@@ -213,10 +222,10 @@ function ECard(props){
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <input type="date" name="date" class="form-control" placeholder="Ngày nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wprice" class="form-control" placeholder="Giá nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wquantity" class="form-control" placeholder="Số lượng" onChange={changeNewBid}/>
-                            <input type="text" name="wunit" class="form-control" placeholder="Đơn vị" onChange={changeNewBid}/>
+                            <input type="date" name="date" class="form-control" placeholder="Ngày nhập" value={newWin_bid.date} onChange={changeNewBid}/>
+                            <input type="number" name="wprice" class="form-control" placeholder="Giá nhập" value={newWin_bid.wprice} onChange={changeNewBid}/>
+                            <input type="number" name="wquantity" class="form-control" placeholder="Số lượng" value={newWin_bid.wquantity} onChange={changeNewBid}/>
+                            <input type="text" name="wunit" class="form-control" placeholder="Đơn vị" value={newWin_bid.wunit} onChange={changeNewBid}/>
                         </div>
                     </div>
                     <div class="modal-footer">

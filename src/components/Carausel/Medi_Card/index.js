@@ -81,7 +81,6 @@ function MCard(props){
     function submitDelete(event){
         event.preventDefault();
         deleteImage(props.medicine.img_url, "medicines");
-        console.log(props.medicine.id);
         deleteMedicine(props.medicine.id);
     }
     function changeNewBid(event){

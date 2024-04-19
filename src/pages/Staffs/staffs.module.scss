@@ -267,6 +267,11 @@ li {
             }
         }
     }
+    th {
+        i:hover{
+            cursor: pointer;
+        }
+    }
 }
 .modal {
     //display: none; /* Hidden by default */
