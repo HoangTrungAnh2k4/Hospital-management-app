@@ -48,7 +48,7 @@
                     display: flex;
                     justify-content: flex-end;
                     .headerCard {
-                        color:#FEFAF6;
+                        color: #fefaf6;
                         width: 80%;
                         display: flex;
                         align-items: center;
@@ -74,9 +74,9 @@
                 .cardtext {
                     margin-top: 0.5rem;
                     margin-left: 0rem;
-                    
+
                     .textInfor {
-                        color:#555;
+                        color: #555;
                         margin-left: 1rem;
                         font-weight: 500;
                     }
@@ -180,7 +180,7 @@ li {
 }
 
 .headerBox {
-    color:#FEFAF6;
+    color: #fefaf6;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     width: 50%;
     height: fit-content;
@@ -209,9 +209,9 @@ li {
     align-items: center;
     padding-right: 2rem;
     .addButton {
-        background-color:#41B06E   ;
+        background-color: var(--third-color);
         border: none;
-        color: #FEFAF6;
+        color: #333;
         padding: 5px 10px;
         text-align: center;
         text-decoration: none;
@@ -268,7 +268,7 @@ li {
         }
     }
     th {
-        i:hover{
+        i:hover {
             cursor: pointer;
         }
     }
@@ -277,7 +277,7 @@ li {
     //display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 80px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -291,12 +291,14 @@ li {
         margin: auto;
         padding: 0;
         border: 1px solid #888;
-        width: 60%;
+        border-radius: 0.5rem;
+        width: 50%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         -webkit-animation-name: animatetop;
         -webkit-animation-duration: 0.4s;
         animation-name: animatetop;
         animation-duration: 0.4s;
+        overflow: hidden;
         .close {
             color: white;
             float: right;
@@ -322,14 +324,15 @@ li {
                 font-weight: bold;
                 margin: 8px;
             }
+
             input {
                 display: flex;
                 width: 100%;
             }
-        }
+        }       
 
         .modalFooter {
-            padding: 2px 16px;
+            padding: 8px 16px;
             background-color: var(--correctblue-color);
             color: white;
             .submitButton {
@@ -338,6 +341,7 @@ li {
                 border-radius: 1rem;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
                 font-weight: bold;
+                margin-left: 16px;
             }
         }
     }
