@@ -200,7 +200,7 @@ function Medicine() {
                 <button className={"btn btn-info btn-lg"} type="button"  data-bs-toggle="modal" data-bs-target="#addMedModal"><h4><PlaylistAddOutlinedIcon/> Thêm</h4></button>
             </div>
             <div className={"modal fade"} id="addMedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className={"modal-dialog"}>
+                <div className={"modal-dialog modal-lg"}>
                     <div className={"modal-content"}>
                     <div className={"modal-header"}>
                         <h5 className={"modal-title"} id="exampleModalLabel">Thêm thuốc</h5>

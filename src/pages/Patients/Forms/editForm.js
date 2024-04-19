@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FormControl, FormLabel, RadioGroup as MuiRadioGroup, FormControlLabel, Radio, Grid, } from '@material-ui/core';
 import { InputLabel, Select as MuiSelect, MenuItem, FormHelperText } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import { Button as MuiButton, makeStyles } from "@material-ui/core";
 import { TextField } from '@material-ui/core';
 import DateFnsUtils from "@date-io/date-fns";
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, where, query, getDocs, collection, QuerySnapshot } from 'firebase/firestore';
 import { database } from 'src/firebase'
 
 const useStyles = makeStyles(theme => ({
@@ -14,11 +14,20 @@ const useStyles = makeStyles(theme => ({
         '& .MuiFormControl-root': {
             width: '80%',
             margin: theme.spacing(1)
-        }
+        },
+        '& .MuiInputBase-root': {
+            fontSize: '1.3rem', 
+        },
+        '& .MuiFormLabel-root': {
+            fontSize: '1.3rem',
+        },
     },
     label: {
         textTransform: 'none'
     },
+    input: {
+        fontSize: "1.3rem",
+    }
 }))
 
 function Button(props) {
@@ -40,6 +49,8 @@ function Button(props) {
 
 function DatePicker(props) {
     const { name, label, value, onChange } = props
+    const classes = useStyles();
+
     const convertToDefEventPara = (name, value) => ({
         target: {
             name, value
@@ -54,7 +65,7 @@ function DatePicker(props) {
                 name={name}
                 value={value}
                 onChange={date =>onChange(convertToDefEventPara(name,date))}
-
+                className={classes.root}
             />
         </MuiPickersUtilsProvider>
     )
@@ -62,6 +73,8 @@ function DatePicker(props) {
 
 function Input(props) {
     const { name, label, value,error=null, onChange, ...other } = props;
+    const classes = useStyles();
+
     return (
         <TextField
             variant="outlined"
@@ -69,6 +82,8 @@ function Input(props) {
             name={name}
             value={value}
             onChange={onChange}
+            InputProps={{ classes: { input: classes.input } }}
+            InputLabelProps={{ style: { fontSize: '1.3rem' } }}
             {...other}
             {...(error && {error:true,helperText:error})}
             
@@ -81,7 +96,7 @@ function RadioGroup(props) {
 
     return (
         <FormControl>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel style={{ fontSize: '1.3rem' }}>{label}</FormLabel>
             <MuiRadioGroup row
                 name={name}
                 value={value}
@@ -104,7 +119,7 @@ function Select(props) {
     return (
         <FormControl variant="outlined"
         {...(error && {error:true})}>
-            <InputLabel>{label}</InputLabel>
+            <InputLabel  style={{ fontSize: '1.3rem' }}>{label}</InputLabel>
             <MuiSelect
                 label={label}
                 name={name}
@@ -122,16 +137,37 @@ function Select(props) {
     )
 }
 
-export function useForm(initialFValues, validateOnChange = false, validate) {
+
+export function useForm(initialFValues, validateOnChange = false, validate, setDoctorOptions) {
     const [values, setValues] = useState(initialFValues);
     const [errors, setErrors] = useState({});
 
-    const handleInputChange = e => {
-        const { name, value } = e.target
-        setValues({
-            ...values,
-            [name]: value
-        })
+    const handleInputChange = async (e) => {
+        const { name, value } = e.target;
+        if (name === 'Department') {
+            setValues({
+                ...values,
+                [name]: value,
+                Doctor: undefined, 
+            });
+
+            const doctorsRef = collection(database, 'Doctors');
+            const q = query(doctorsRef, where('faculty', '==', value));
+            const querySnapshot = await getDocs(q);
+
+            const doctorOptions = querySnapshot.docs.map(doc => ({
+                id: doc.data().id ,
+                title: `${doc.data().fullName} - ${doc.data().id}`
+            }));
+
+            setDoctorOptions(doctorOptions);
+        } else {
+            setValues({
+                ...values,
+                [name]: value
+            });
+        }
+
         if (validateOnChange)
             validate({ [name]: value })
     }
@@ -188,11 +224,29 @@ export default function EditForm({
     getPatient,
     setOpenPopup,
     setNotify}) {
+    
+    const [doctorOptions, setDoctorOptions] = useState([]);
+    
+    useEffect(() => {
+        const fetchInitialValues = async () => {
+            const doctorsRef = collection(database, 'Doctors');
+            const q = query(doctorsRef, where('faculty', '==', selectedPatient.Department));
+            const querySnapshot = await getDocs(q);
+
+            const doctorOptions = querySnapshot.docs.map(doc => ({
+                id: doc.data().id,
+                title: `${doc.data().fullName} - ${doc.data().id}`
+            }));
+
+            setDoctorOptions(doctorOptions);
+        };
+        fetchInitialValues();
+    }, []);
 
     const initialFValues = {
         ID: selectedPatient.ID,
         Name: selectedPatient.Name,
-        Doctor: selectedPatient.Doctor,
+        Doctor: selectedPatient.DoctorID,
         PhoneNumber: selectedPatient.PhoneNumber,
         CCCD: selectedPatient.CCCD,
         Address: selectedPatient.Address,
@@ -203,6 +257,7 @@ export default function EditForm({
         Birthday: selectedPatient.Birthday.toDate(),
         RegistrationDate: selectedPatient.RegistrationDate.toDate(),
     };
+
    
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -227,20 +282,33 @@ export default function EditForm({
     }
 
     const {
-        errors,
         values,
+        errors,
         setErrors,
         handleInputChange,
         resetForm
-    } = useForm(initialFValues, true, validate);
+    } = useForm(initialFValues, true, validate, setDoctorOptions);
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validate()) {
             try {
+                const doctorsRef = collection(database, 'Doctors');
                 const docRef = doc(database, 'Patients', selectedPatient.id);
-                await updateDoc(docRef, {
+
+                const q = query(doctorsRef, where('id', '==', values.Doctor));
+                const querySnapshot = await getDocs(q);
+
+                const doctor = querySnapshot.docs[0].data();
+
+                const newData = {
                     ...values,
+                    Doctor: doctor.fullName,
+                    DoctorID: doctor.id,
+                };
+
+                await updateDoc(docRef, {
+                    ...newData,
                 });
 
                 getPatient();
@@ -270,12 +338,11 @@ export default function EditForm({
                         onChange={handleInputChange}
                         error={errors.Name}
                     />
-                    <Input
-                        label="Tên bác sĩ"
-                        name="Doctor"
-                        value={values.Doctor}
+                    <DatePicker
+                        name="Birthday"
+                        label="Ngày sinh"
+                        value={values.Birthday}
                         onChange={handleInputChange}
-                        error={errors.Doctor}
                     />
                     <Input
                         label="CCCD"
@@ -313,12 +380,6 @@ export default function EditForm({
                         onChange={handleInputChange}
                         items={GenderItems}
                     />
-                    <DatePicker
-                        name="Birthday"
-                        label="Ngày sinh"
-                        value={values.Birthday}
-                        onChange={handleInputChange}
-                    />
                     {<Select
                         name="Department"
                         label="Khoa"
@@ -326,6 +387,14 @@ export default function EditForm({
                         onChange={handleInputChange}
                         options={getDepartment()}
                         error={errors.Department}
+                    />}
+                    {<Select
+                        name="Doctor"
+                        label="Tên bác sĩ"
+                        value={values.Doctor}
+                        onChange={handleInputChange}
+                        options={doctorOptions}
+                        error={errors.Doctor}
                     />}
                     {<Select
                         name="Status"
