@@ -150,10 +150,10 @@ function ECard(props){
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fixEquipModal">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
+                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#fixEquipModal">Chỉnh sửa</button>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                     </div>
                 </div>
@@ -169,8 +169,8 @@ function ECard(props){
                         Bạn chắc chắn muốn xóa?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={submitDelEquip}>Xóa</button>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal" onClick={submitDelEquip}>Xóa</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
                     </div>
                     </div>
                 </div>
@@ -184,22 +184,22 @@ function ECard(props){
                     </div>
                     <div class="modal-body">
                         <form class="form-floating">
-                            <input class="form-control m-2" type="text" name="catelogue_1" placeholder="Danh mục lớn" defaultValue={props.equipment.catalogue_1} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="catelogue_2" placeholder="Danh mục nhỏ" defaultValue={props.equipment.catalogue_2} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="name" placeholder="Tên thiết bị" defaultValue={props.equipment.name} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="produce" placeholder="Nơi sản xuất" defaultValue={props.equipment.produce} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.equipment.expiry} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.equipment.quantity} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="catelogue_1" placeholder="Danh mục lớn" defaultValue={props.equipment.catalogue_1} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="catelogue_2" placeholder="Danh mục nhỏ" defaultValue={props.equipment.catalogue_2} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="name" placeholder="Tên thiết bị" defaultValue={props.equipment.name} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="produce" placeholder="Nơi sản xuất" defaultValue={props.equipment.produce} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.equipment.expiry} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.equipment.quantity} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
                             <p>Đấu thầu thành công:</p>
                             {
                                 props.equipment.win_bid.map((item, index) => (
                                     <div className="input-group m-2" key={index}>
-                                        <input type="date" className="form-control" name="date" defaultValue={item.date} onChange={changFixWinBid}/>
-                                        <input type="number" className="form-control" name="wprice" defaultValue={item.wprice} onChange={changFixWinBid}/>
-                                        <input type="number" className="form-control" name="wquantity" defaultValue={item.wquantity} onChange={changFixWinBid}/>
-                                        <input type="text" className="form-control" name="wunit" defaultValue={item.wunit} onChange={changFixWinBid}/>
-                                        <button className="btn btn-outline-secondary" type="button" onClick={(e) => submitDelBid(e, index)} data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Xóa</button>
+                                        <input type="date" className="form-control form-control-lg" name="date" defaultValue={item.date} onChange={changFixWinBid}/>
+                                        <input type="number" className="form-control form-control-lg" name="wprice" defaultValue={item.wprice} onChange={changFixWinBid}/>
+                                        <input type="number" className="form-control form-control-lg" name="wquantity" defaultValue={item.wquantity} onChange={changFixWinBid}/>
+                                        <input type="text" className="form-control form-control-lg" name="wunit" defaultValue={item.wunit} onChange={changFixWinBid}/>
+                                        <button className="btn btn-lg btn-outline-secondary" type="button" onClick={(e) => submitDelBid(e, index)} data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Xóa</button>
                                     </div>
                                 ))
                             }
@@ -207,8 +207,8 @@ function ECard(props){
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
                     </div>
                     </div>
                 </div>
@@ -222,15 +222,15 @@ function ECard(props){
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <input type="date" name="date" class="form-control" placeholder="Ngày nhập" value={newWin_bid.date} onChange={changeNewBid}/>
-                            <input type="number" name="wprice" class="form-control" placeholder="Giá nhập" value={newWin_bid.wprice} onChange={changeNewBid}/>
-                            <input type="number" name="wquantity" class="form-control" placeholder="Số lượng" value={newWin_bid.wquantity} onChange={changeNewBid}/>
-                            <input type="text" name="wunit" class="form-control" placeholder="Đơn vị" value={newWin_bid.wunit} onChange={changeNewBid}/>
+                            <input type="date" name="date" class="form-control form-control-lg" placeholder="Ngày nhập" value={newWin_bid.date} onChange={changeNewBid}/>
+                            <input type="number" name="wprice" class="form-control form-control-lg" placeholder="Giá nhập" value={newWin_bid.wprice} onChange={changeNewBid}/>
+                            <input type="number" name="wquantity" class="form-control form-control-lg" placeholder="Số lượng" value={newWin_bid.wquantity} onChange={changeNewBid}/>
+                            <input type="text" name="wunit" class="form-control form-control-lg" placeholder="Đơn vị" value={newWin_bid.wunit} onChange={changeNewBid}/>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
                     </div>
                     </div>
                 </div>

@@ -178,23 +178,23 @@ function Equipment() {
             </div>
             {checkData()}
             <div className={"modal fade"} id="addEquipModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className={"modal-dialog modal-lg"}>
+                <div className={"modal-dialog"}>
                     <div className={"modal-content"}>
                     <div className={"modal-header"}>
                         <h5 className={"modal-title"} id="exampleModalLabel">Thêm vật tư</h5>
                         <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelAdd}></button>
                     </div>
                     <div className={"modal-body"}>
-                        <input className={"form-control m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thiết bị" value={addItem.name} onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="produce" placeholder="Nơi sản xuất" value={addItem.produce} onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeAddItem}/>
-                        <input className={"form-control m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="name" placeholder="Tên thiết bị" value={addItem.name} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="produce" placeholder="Nơi sản xuất" value={addItem.produce} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
-                        <button type="button" className={"btn btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
+                        <button type="button" className={"btn btn-lg btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
+                        <button type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
                     </div>
                     </div>
                 </div>
@@ -228,15 +228,15 @@ function Equipment() {
                         {catalogues.map((item, index) => (
                             <div key={item.id}>
                                 <div className="input-group m-2" key={index}>
-                                    <input className="form-control" type="text" defaultValue={item.name} onChange={changFixCata}/>
-                                    <button className="btn btn-outline-danger" type="button" id={item.id} onClick={submitDelCata1}>Xóa</button>
-                                    <button className="btn btn-outline-primary" type="button" id={item.id} onClick={submitFixCata1}>Lưu</button>
+                                    <input className="form-control form-control-lg" type="text" defaultValue={item.name} onChange={changFixCata}/>
+                                    <button className="btn btn-lg btn-outline-danger" type="button" id={item.id} onClick={submitDelCata1}>Xóa</button>
+                                    <button className="btn btn-lg btn-outline-primary" type="button" id={item.id} onClick={submitFixCata1}>Lưu</button>
                                 </div>
                                 {item.details.map((subItem, subIndex) => (
                                     <div className="input-group" key={subIndex}>
-                                        <input className="form-control ms-5" type="text" defaultValue={subItem.name} onChange={changFixCata}/>
-                                        <button data-parentid={item.id} data-id={subItem.id} className="btn btn-outline-danger" type="button" onClick={submitDelCata2}>Xóa</button>
-                                        <button data-parentid={item.id} data-id={subItem.id} className="btn btn-outline-primary" type="button" onClick={submitFixCata2}>Lưu</button>
+                                        <input className="form-control form-control-lg ms-5" type="text" defaultValue={subItem.name} onChange={changFixCata}/>
+                                        <button data-parentid={item.id} data-id={subItem.id} className="btn btn-lg btn-outline-danger" type="button" onClick={submitDelCata2}>Xóa</button>
+                                        <button data-parentid={item.id} data-id={subItem.id} className="btn btn-lg btn-outline-primary" type="button" onClick={submitFixCata2}>Lưu</button>
                                     </div>
                                 ))}
                             </div>

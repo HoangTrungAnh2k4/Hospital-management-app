@@ -177,10 +177,10 @@ function MCard(props){
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fixMedModal">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
+                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#fixMedModal">Chỉnh sửa</button>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                     </div>
                 </div>
@@ -196,8 +196,8 @@ function MCard(props){
                         Bạn chắc chắn muốn xóa?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={submitDelete}>Xóa</button>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal" onClick={submitDelete}>Xóa</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
                     </div>
                     </div>
                 </div>
@@ -211,15 +211,15 @@ function MCard(props){
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <input type="date" name="date" class="form-control" placeholder="Ngày nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wprice" class="form-control" placeholder="Giá nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wquantity" class="form-control" placeholder="Số lượng" onChange={changeNewBid}/>
-                            <input type="text" name="wunit" class="form-control" placeholder="Đơn vị" onChange={changeNewBid}/>
+                            <input type="date" name="date" class="form-control form-control-lg" placeholder="Ngày nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wprice" class="form-control form-control-lg" placeholder="Giá nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wquantity" class="form-control form-control-lg" placeholder="Số lượng" onChange={changeNewBid}/>
+                            <input type="text" name="wunit" class="form-control form-control-lg" placeholder="Đơn vị" onChange={changeNewBid}/>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
                     </div>
                     </div>
                 </div>
@@ -233,31 +233,31 @@ function MCard(props){
                     </div>
                     <div class="modal-body">
                         <form class="form-floating">
-                            <input class="form-control m-2" type="text" name="name" placeholder="Tên thuốc" defaultValue={props.medicine.name} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="number" placeholder="Số đăng kí" defaultValue={props.medicine.number} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="catelogue" placeholder="Danh mục" defaultValue={props.medicine.catelogue.join(" ,")} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="type" placeholder="Dạng bào chế" defaultValue={props.medicine.type} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="packing" placeholder="Đóng gói" defaultValue={props.medicine.packing} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.medicine.expiry} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="active_element" placeholder="Hoạt chất" defaultValue={props.medicine.active_element.join(", ")} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="produce" placeholder="Công ty sản xuất" defaultValue={props.medicine.produce} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.medicine.quantity} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="name" placeholder="Tên thuốc" defaultValue={props.medicine.name} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="number" placeholder="Số đăng kí" defaultValue={props.medicine.number} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="catelogue" placeholder="Danh mục" defaultValue={props.medicine.catelogue.join(" ,")} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="type" placeholder="Dạng bào chế" defaultValue={props.medicine.type} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="packing" placeholder="Đóng gói" defaultValue={props.medicine.packing} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.medicine.expiry} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="active_element" placeholder="Hoạt chất" defaultValue={props.medicine.active_element.join(", ")} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="produce" placeholder="Công ty sản xuất" defaultValue={props.medicine.produce} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.medicine.quantity} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
                             <div class="input-group m-2">
                                 <span class="input-group-text" id="basic-addon1">đ</span>
-                                <input type="number" class="form-control" name="price" placeholder="Giá bán" defaultValue={props.medicine.price} onChange={changeFixItem}/>
+                                <input type="number" class="form-control form-control-lg" name="price" placeholder="Giá bán" defaultValue={props.medicine.price} onChange={changeFixItem}/>
                                 <span class="input-group-text" id="basic-addon2">/</span>
-                                <input type="text" class="form-control" name="unit" placeholder="Đơn vị" defaultValue={props.medicine.unit} onChange={changeFixItem}/>
+                                <input type="text" class="form-control form-control-lg" name="unit" placeholder="Đơn vị" defaultValue={props.medicine.unit} onChange={changeFixItem}/>
                             </div>
                             <p>Đấu thầu thành công:</p>
                             {
                                 props.medicine.win_bid.map((item, index) => (
                                     <div className="input-group m-2" key={index}>
-                                        <input type="date" className="form-control" name="date" defaultValue={item.date} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="number" className="form-control" name="wprice" defaultValue={item.wprice} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="number" className="form-control" name="wquantity" defaultValue={item.wquantity} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="text" className="form-control" name="wunit" defaultValue={item.wunit} onChange={(e) => changFixWinBid(e, index)} />
-                                        <button className="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={(e) => submitDelBid(e, index)}>Xóa</button>
+                                        <input type="date" className="form-control form-control-lg" name="date" defaultValue={item.date} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="number" className="form-control form-control-lg" name="wprice" defaultValue={item.wprice} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="number" className="form-control form-control-lg" name="wquantity" defaultValue={item.wquantity} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="text" className="form-control form-control-lg" name="wunit" defaultValue={item.wunit} onChange={(e) => changFixWinBid(e, index)} />
+                                        <button className="btn btn-outline-secondary form-control-lg" type="button" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={(e) => submitDelBid(e, index)}>Xóa</button>
                                     </div>
                                 ))
                             }
@@ -265,8 +265,8 @@ function MCard(props){
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
                     </div>
                     </div>
                 </div>

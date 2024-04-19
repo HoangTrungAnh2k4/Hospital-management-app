@@ -200,32 +200,32 @@ function Medicine() {
                 <button className={"btn btn-info btn-lg"} type="button"  data-bs-toggle="modal" data-bs-target="#addMedModal"><h4><PlaylistAddOutlinedIcon/> Thêm</h4></button>
             </div>
             <div className={"modal fade"} id="addMedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className={"modal-dialog modal-lg"}>
+                <div className={"modal-dialog"}>
                     <div className={"modal-content"}>
                     <div className={"modal-header"}>
                         <h5 className={"modal-title"} id="exampleModalLabel">Thêm thuốc</h5>
                         <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelAdd}></button>
                     </div>
                     <div className={"modal-body"}>
-                        <input className={"form-control m-2"} type="text" name="name" placeholder="Tên thuốc" value={addItem.name} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="number" placeholder="Số đăng kí" value={addItem.number} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="catelogue" placeholder="Danh mục" value={addItem.catelogue} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="type" placeholder="Dạng bào chế" value={addItem.type} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="packing" placeholder="Đóng gói" value={addItem.packing} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="active_element" placeholder="Hoạt chất" value={addItem.active_element} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="text" name="produce" placeholder="Công ty sản xuất" value={addItem.produce} onChange={changeSaveItem}/>
-                        <input className={"form-control m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="name" placeholder="Tên thuốc" value={addItem.name} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="number" placeholder="Số đăng kí" value={addItem.number} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="catelogue" placeholder="Danh mục" value={addItem.catelogue} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="type" placeholder="Dạng bào chế" value={addItem.type} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="packing" placeholder="Đóng gói" value={addItem.packing} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="active_element" placeholder="Hoạt chất" value={addItem.active_element} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="produce" placeholder="Công ty sản xuất" value={addItem.produce} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeSaveItem}/>
                         <div class="input-group m-2">
                             <span className={"input-group-text"} id="basic-addon1">đ</span>
-                            <input type="number" className={"form-control"} name="price" placeholder="Giá bán" value={addItem.price} onChange={changeSaveItem}/>
+                            <input type="number" className={"form-control form-control-lg"} name="price" placeholder="Giá bán" value={addItem.price} onChange={changeSaveItem}/>
                             <span className={"input-group-text"} id="basic-addon2">/</span>
-                            <input type="text" className={"form-control"} name="unit" placeholder="Đơn vị" value={addItem.unit} onChange={changeSaveItem}/>
+                            <input type="text" className={"form-control form-control-lg"} name="unit" placeholder="Đơn vị" value={addItem.unit} onChange={changeSaveItem}/>
                         </div>
                     </div>
                     <div className={"modal-footer"}>
-                        <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
-                        <button type="button" className={"btn btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
+                        <button type="button" className={"btn btn-lg btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
+                        <button type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
                     </div>
                     </div>
                 </div>
