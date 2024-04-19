@@ -5,7 +5,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import { Button as MuiButton, makeStyles } from "@material-ui/core";
 import { TextField } from '@material-ui/core';
 import DateFnsUtils from "@date-io/date-fns";
-import { query, getDocs, setDoc, collection, addDoc, doc } from 'firebase/firestore';
+import { query, getDocs, setDoc, collection, addDoc, doc, where, QuerySnapshot } from 'firebase/firestore';
 import { database } from 'src/firebase'
 
 
@@ -15,11 +15,20 @@ const useStyles = makeStyles(theme => ({
         '& .MuiFormControl-root': {
             width: '80%',
             margin: theme.spacing(1)
-        }
+        },
+        '& .MuiInputBase-root': {
+            fontSize: '1.3rem', 
+        },
+        '& .MuiFormLabel-root': {
+            fontSize: '1.3rem',
+        },
     },
     label: {
         textTransform: 'none'
     },
+    input: {
+        fontSize: "1.3rem",
+    }
 }))
 
 function Button(props) {
@@ -41,6 +50,8 @@ function Button(props) {
 
 function DatePicker(props) {
     const { name, label, value, onChange } = props
+    const classes = useStyles();
+
     const convertToDefEventPara = (name, value) => ({
         target: {
             name, value
@@ -55,7 +66,7 @@ function DatePicker(props) {
                 name={name}
                 value={value}
                 onChange={date =>onChange(convertToDefEventPara(name,date))}
-
+                className={classes.root}
             />
         </MuiPickersUtilsProvider>
     )
@@ -63,6 +74,8 @@ function DatePicker(props) {
 
 function Input(props) {
     const { name, label, value,error=null, onChange, ...other } = props;
+    const classes = useStyles();
+
     return (
         <TextField
             variant="outlined"
@@ -70,6 +83,8 @@ function Input(props) {
             name={name}
             value={value}
             onChange={onChange}
+            InputProps={{ classes: { input: classes.input } }}
+            InputLabelProps={{ style: { fontSize: '1.3rem' } }}
             {...other}
             {...(error && {error:true,helperText:error})}
             
@@ -82,7 +97,7 @@ function RadioGroup(props) {
 
     return (
         <FormControl>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel style={{ fontSize: '1.3rem' }}>{label}</FormLabel>
             <MuiRadioGroup row
                 name={name}
                 value={value}
@@ -105,7 +120,7 @@ function Select(props) {
     return (
         <FormControl variant="outlined"
         {...(error && {error:true})}>
-            <InputLabel>{label}</InputLabel>
+            <InputLabel  style={{ fontSize: '1.3rem' }}>{label}</InputLabel>
             <MuiSelect
                 label={label}
                 name={name}
@@ -123,16 +138,36 @@ function Select(props) {
     )
 }
 
-export function useForm(initialFValues, validateOnChange = false, validate) {
+export function useForm(initialFValues, validateOnChange = false, validate, setDoctorOptions) {
     const [values, setValues] = useState(initialFValues);
     const [errors, setErrors] = useState({});
 
-    const handleInputChange = e => {
-        const { name, value } = e.target
-        setValues({
-            ...values,
-            [name]: value
-        })
+    const handleInputChange = async (e) => {
+        const { name, value } = e.target;
+        if (name === 'Department') {
+            setValues({
+                ...values,
+                [name]: value,
+                Doctor: '', 
+            });
+
+            const doctorsRef = collection(database, 'Doctors');
+            const q = query(doctorsRef, where('faculty', '==', value));
+            const querySnapshot = await getDocs(q);
+
+            const doctorOptions = querySnapshot.docs.map(doc => ({
+                id: { doctorName: doc.data().fullName, doctorId: doc.data().id },
+                title: `${doc.data().fullName} - ${doc.data().id}`
+            }));
+
+            setDoctorOptions(doctorOptions);
+        } else {
+            setValues({
+                ...values,
+                [name]: value
+            });
+        }
+
         if (validateOnChange)
             validate({ [name]: value })
     }
@@ -199,6 +234,8 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
         RegistrationDate: new Date(),
     }), []);
 
+    const [doctorOptions, setDoctorOptions] = useState([]);
+
     useEffect(() => {
         const fetchInitialValues = async () => {
             try {
@@ -248,30 +285,32 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
         setErrors,
         handleInputChange,
         resetForm
-    } = useForm(initialFValues, true, validate);
+    } = useForm(initialFValues, true, validate, setDoctorOptions);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (validate()) {
             try {
-                    // Gửi dữ liệu mới lên Firestore
-                    const docRef = await addDoc(collection(database, "Patients"), {
-                        ...values
-                    });
+                const newData = {
+                    ...values,
+                    Doctor: values.Doctor.doctorName,
+                    DoctorID: values.Doctor.doctorId,
+                };
+                
+                const docRef = await addDoc(collection(database, "Patients"), newData);
 
-                    const amountData = {
-                        "TotalPayment": {total: 0},
-                        "AppointmentCount": {Past: 0 , Upcoming: 0},
-                    };
+                const amountData = {
+                    "TotalPayment": {total: 0},
+                    "AppointmentCount": {Past: 0 , Upcoming: 0},
+                };
 
-                    for (const [name, data] of Object.entries(amountData)) {
-                        await setDoc(doc(database, "Patients", docRef.id, "Amount", name), data);
-                    }
+                for (const [name, data] of Object.entries(amountData)) {
+                    await setDoc(doc(database, "Patients", docRef.id, "Amount", name), data);
+                }
 
-                    // Cập nhật state với thông tin mới được thêm vào Firestore
-                    getPatient();
-                    resetForm();
-                    setOpenPopup(false);
+                getPatient();
+                resetForm();
+                setOpenPopup(false);
 
             } catch (error) {
                 console.error("Error adding document: ", error);
@@ -295,12 +334,11 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
                         onChange={handleInputChange}
                         error={errors.Name}
                     />
-                    <Input
-                        label="Tên bác sĩ"
-                        name="Doctor"
-                        value={values.Doctor}
+                    <DatePicker
+                        name="Birthday"
+                        label="Ngày sinh"
+                        value={values.Birthday}
                         onChange={handleInputChange}
-                        error={errors.Doctor}
                     />
                     <Input
                         label="CCCD"
@@ -338,12 +376,6 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
                         onChange={handleInputChange}
                         items={GenderItems}
                     />
-                    <DatePicker
-                        name="Birthday"
-                        label="Ngày sinh"
-                        value={values.Birthday}
-                        onChange={handleInputChange}
-                    />
                     {<Select
                         name="Department"
                         label="Khoa"
@@ -351,6 +383,14 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
                         onChange={handleInputChange}
                         options={getDepartment()}
                         error={errors.Department}
+                    />}
+                    {<Select
+                        name="Doctor"
+                        label="Tên bác sĩ"
+                        value={values.Doctor}
+                        onChange={handleInputChange}
+                        options={doctorOptions}
+                        error={errors.Doctor}
                     />}
                     {<Select
                         name="Status"

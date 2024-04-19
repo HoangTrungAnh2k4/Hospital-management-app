@@ -1,5 +1,8 @@
 import clsx from 'clsx';
 import style from '../SCSS_module/Patients_Infor.module.scss';
+import React, { useState, useEffect } from 'react';
+import Popup from '../Action/Popup';
+import Notification from "../Action/Notification";
 
 
 
@@ -26,11 +29,22 @@ function Pay(Transaction ,Price){
 }
 
 function Payment({subcollectionPayment, totalPayment}){
+    const [openPopup, setOpenPopup] = useState(false)
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+
     return(
         <>
             <div className={clsx(style.swaper2)}>
                 <div className={clsx(style.payment)}>
+                    <div className={clsx(style.HeadLine)}>
                         <strong>Các khoản thanh toán</strong>
+                        <span className={clsx(style.buttonRight)}> 
+                            <button className={clsx(style.colorButton)} onClick={() =>  setOpenPopup(true)}>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </span>
+                    </div>
+                        
                     <div className={clsx(style.paymentInfor)}>
                         <div className={clsx(style.payContainer)}>
                             <div className={clsx(style.item_1)}>Nội dung</div>
@@ -60,6 +74,16 @@ function Payment({subcollectionPayment, totalPayment}){
                     </div>
                 </div>
             </div>
+            <Popup 
+                title="Chỉnh sữa thông tin"
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+            >
+            </Popup>
+            <Notification
+                notify={notify}
+                setNotify={setNotify}
+            />
         </>
     )
 }

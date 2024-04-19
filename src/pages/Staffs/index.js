@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 // import { nurses_data } from './nurses_data';
 import Calendar from 'src/components/Calendar/CalendarDay';
 import { database } from '~/firebase';
-import { collection, getDocs, addDoc, query, where, updateDoc, arrayUnion, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, query, where, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { set } from 'date-fns';
@@ -16,6 +16,7 @@ function StaffsDisplay() {
     const [infor, setInfor] = useState({});
     const [hasInfor, setHasInfor] = useState(false);
     const [arrCalendar, setArrCalendar] = useState([]);
+    const [ownPatients, setOwnPatients] = useState([]);
 
     useEffect(() => {
         async function getDoctors() {
@@ -52,6 +53,9 @@ function StaffsDisplay() {
             setInfor(tmp);
         }
 
+        const querySnapshot1 = await getDocs(collection(database, 'Patients'));
+        const patients = querySnapshot1.docs.filter((doc) => doc.data().doctorId === id);
+
         const querySnapshot2 = await getDocs(collection(database, 'Nurses'));
         const nurse = querySnapshot2.docs.find((doc) => doc.id === id);
 
@@ -77,6 +81,7 @@ function StaffsDisplay() {
             calendar: [newCalendar, ...querySnapshot.docs[0].data().calendar],
         });
     }
+
     return (
         <div className={clsx(style.colum)}>
             {/* ----------------------------------- Danh sách nhân viên --------------------------------------------*/}
@@ -147,7 +152,7 @@ function StaffsDisplay() {
                         <div className={clsx(style.headerBox)}>
                             <h2>Bệnh nhân</h2>
                         </div>
-                        <PatientInfo />
+                        {hasInfor && <PatientInfo patients={ownPatients} />}
                     </div>
                 </div>
             </div>
@@ -156,60 +161,10 @@ function StaffsDisplay() {
 }
 
 //--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
-function PatientInfo() {
-    const [showModal, setShowModal] = useState(false);
-
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-    async function handleAdd() {}
+function PatientInfo({ ownPatients }) {
     return (
         <div>
-            <div className={clsx(style.AddButton)}>
-                <button onClick={handleOpenModal} className={clsx(style.addButton)}>
-                    Thêm bệnh nhân
-                </button>
-            </div>
-            {showModal && (
-                <div id="myModal" className={clsx(style.modal)}>
-                    <div className={clsx(style.modalContent)}>
-                        <div className={clsx(style.modalHeader)}>
-                            <span onClick={handleCloseModal} className={clsx(style.close)}>
-                                &times;
-                            </span>
-                            <h3>Thêm thông tin lịch</h3>
-                        </div>
-                        <div className={clsx(style.modalBody)}>
-                            <label>
-                                Tên công việc:
-                                <input type="text" name="job_name" autoFocus />
-                            </label>
-                            <label>
-                                Thời gian:
-                                <input type="text" name="job_time" />
-                            </label>
-                            <label>
-                                Địa điểm:
-                                <input type="text" name="job_place" />
-                            </label>
-                            <label>
-                                Ngày thực hiện:
-                                <input type="text" name="job_date" placeholder="mm/dd/yyyy" />
-                            </label>
-                        </div>
-                        <div className={clsx(style.modalFooter)}>
-                            <button className={clsx(style.submitButton)} onClick={handleAdd}>
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* ----------table infor patients */}
             <div className={clsx(style.PatientInfo)}>
                 <div className={clsx(style.infoTable)}>
                     <table className={clsx(style.myTable)}>
@@ -220,14 +175,13 @@ function PatientInfo() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>3216</td>
-                                <td>Nguyễn Văn A</td>
-                            </tr>
-                            <tr>
-                                <td>4357</td>
-                                <td>Trần Văn B</td>
-                            </tr>
+                            {ownPatients &&
+                                ownPatients.map((patient) => (
+                                    <tr>
+                                        <td>{patient.id}</td>
+                                        <td>{patient.fullName}</td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                 </div>
@@ -291,6 +245,17 @@ function AddStaffs() {
             return;
         }
 
+        if (
+            faculty !== 'Khoa nội' &&
+            faculty !== 'Khoa ngoại' &&
+            faculty !== 'Khoa sản' &&
+            faculty !== 'Khoa nhi' &&
+            faculty !== 'Khoa truyền nhiễm'
+        ) {
+            alert('Chuyên ngành không hợp lệ');
+            return;
+        }
+
         if (job !== 'doctor' && job !== 'nurse') {
             alert('Chức vụ không hợp lệ');
             return;
@@ -320,7 +285,7 @@ function AddStaffs() {
                 phone: phone,
                 address: address,
                 calendar: [],
-                patients:[]
+                patients: [],
             });
         } else if (job === 'nurse') {
             await addDoc(collection(database, 'Nurses'), {
@@ -334,7 +299,7 @@ function AddStaffs() {
                 phone: phone,
                 address: address,
                 calendar: [],
-                patients:[]
+                patients: [],
             });
         }
     }
@@ -357,42 +322,45 @@ function AddStaffs() {
                         </div>
                         <div className={clsx(style.modalBody)}>
                             <label>
-                                Full Name:
+                                Họ và tên:
                                 <input type="text" name="fullName" placeholder="Nguyen Van A" />
                             </label>
+
                             <label>
-                                Gender:
-                                <input type="text" name="gender" placeholder="Gender" />
+                                Giới tính:
+                                <input type="text" name="gender" placeholder="nam / nữ " />
                             </label>
+
                             <label>
-                                Faculty:
-                                <input type="text" name="faculty" placeholder="Faculty" />
-                            </label>
-                            <label>
-                                Birthdate:
+                                Ngày tháng năm sinh:
                                 <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
                             </label>
                             <label>
-                                Position:
+                                Vị trí (doctor / nurse):
                                 <input type="text" name="job" placeholder="doctor or nurse" />
+                            </label>
+                            <label>
+                                Khoa:
+                                <input type="text" name="faculty" placeholder="abc@gmail.com" />
                             </label>
                             <label>
                                 Email:
                                 <input type="text" name="email" placeholder="abc@gmail.com" />
                             </label>
                             <label>
-                                Hometown:
+                                Quê:
                                 <input type="text" name="hometown" placeholder="Hometown" />
                             </label>
                             <label>
-                                Phone number:
+                                Số điện thoại:
                                 <input type="text" name="phone" placeholder="Phone number" />
                             </label>
                             <label>
-                                Address:
+                                Địa chỉ thường chú:
                                 <input type="text" name="address" placeholder="Address" />
                             </label>
                         </div>
+
                         <div className={clsx(style.modalFooter)}>
                             <button className={clsx(style.submitButton)} onClick={handleAdd}>
                                 Submit

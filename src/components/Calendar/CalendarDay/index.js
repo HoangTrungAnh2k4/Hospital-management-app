@@ -8,17 +8,12 @@ function CalendarDay({ arrCalendar}) {
 
     function randomColor() {
         const colors = [
-            'MediumPurple',
-            'aquamarine',
-            'LightGreen',
-            'PaleTurquoise',
-            'LightSteelBlue',
-            'RoyalBlue',
-            'Wheat',
-            'Sienna',
-            'SandyBrown',
-            'SlateBlue',
-            'RosyBrown',
+            '#6AD4DD',
+            '#BE9FE1',
+            '#8576FF',
+            '#E4C59E',
+            '#FFC7C7',
+            '#E84545'
         ];
         return colors[Math.floor(Math.random() * colors.length)];
     }
@@ -31,6 +26,7 @@ function CalendarDay({ arrCalendar}) {
         setDayOfMonth(today.getDate());
     }, []);
 
+    
     return (
         <div className={clsx(styles.wrapper)}>
             <table>
