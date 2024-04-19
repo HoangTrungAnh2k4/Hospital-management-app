@@ -156,7 +156,7 @@ export function useForm(initialFValues, validateOnChange = false, validate, setD
             const querySnapshot = await getDocs(q);
 
             const doctorOptions = querySnapshot.docs.map(doc => ({
-                id: doc.data().id ,
+                id: { doctorName: doc.data().fullName, doctorId: doc.data().id },
                 title: `${doc.data().fullName} - ${doc.data().id}`
             }));
 
@@ -235,6 +235,7 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
     }), []);
 
     const [doctorOptions, setDoctorOptions] = useState([]);
+
     useEffect(() => {
         const fetchInitialValues = async () => {
             try {
@@ -290,13 +291,12 @@ export default function AddForm({ setOpenPopup, setNotify, getPatient}) {
         e.preventDefault()
         if (validate()) {
             try {
-
                 const newData = {
                     ...values,
                     Doctor: values.Doctor.doctorName,
                     DoctorID: values.Doctor.doctorId,
                 };
-    
+                
                 const docRef = await addDoc(collection(database, "Patients"), newData);
 
                 const amountData = {
