@@ -178,7 +178,7 @@ function Equipment() {
             </div>
             {checkData()}
             <div className={"modal fade"} id="addEquipModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className={"modal-dialog"}>
+                <div className={"modal-dialog modal-lg"}>
                     <div className={"modal-content"}>
                     <div className={"modal-header"}>
                         <h5 className={"modal-title"} id="exampleModalLabel">Thêm vật tư</h5>
