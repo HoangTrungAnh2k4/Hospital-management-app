@@ -215,12 +215,12 @@
         }
 
         .swaper2{
-            padding: 15px;
             .payment{
                 overflow-x: scroll;
                 width:99%;
                 height:99%;
                 .paymentHeadLine{
+                    padding: 15px;
                     padding-top: 10px;
                     .transactionLine, .amountLine{
                         display: inline-block;
@@ -237,20 +237,22 @@
                         text-align: right;
                     }
                 }
-    
-                .payContainer{
-                    display: grid;
-                    grid-template-columns: 140px 80px 50px;
-                    grid-template-rows: 10px 10px 10px;
-                }
-                .item_1{
-                    i{
-                        padding-right:10px;
+                .paymentInfor{
+                    padding: 15px;
+                    .payContainer{
+                        display: grid;
+                        grid-template-columns: 140px 80px 50px;
+                        grid-template-rows: 10px 10px 10px;
                     }
-                }
-                .item_3{
-                    padding-right:10px;
-                    text-align: left;
+                    .item_1{
+                        i{
+                            padding-right:10px;
+                        }
+                    }
+                    .item_3{
+                        padding-right:10px;
+                        text-align: left;
+                    }
                 }
             }
         }

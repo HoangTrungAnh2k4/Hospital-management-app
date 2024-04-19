@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'none'
     },
     input: {
-        fontSize: "14px",
+        fontSize: "1.3rem",
         width: "300px", 
     }
 }))
@@ -42,6 +42,7 @@ function Button(props) {
 function Input(props) {
     const { name, label, value,error=null, onChange, ...other } = props;
     const classes = useStyles();
+
     return (
         <TextField
             variant="outlined"
@@ -50,12 +51,14 @@ function Input(props) {
             value={value}
             onChange={onChange}
             InputProps={{ classes: { input: classes.input } }}
+            InputLabelProps={{ style: { fontSize: '1.3rem' } }}
             {...other}
             {...(error && {error:true,helperText:error})}
             
         />
     )
 }
+
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
     const [values, setValues] = useState(initialFValues);
