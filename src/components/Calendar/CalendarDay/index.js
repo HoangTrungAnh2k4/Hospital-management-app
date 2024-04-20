@@ -2,22 +2,14 @@ import { useEffect, useState } from 'react';
 import styles from './CalendarDay.module.scss';
 import clsx from 'clsx';
 
-function CalendarDay({ arrCalendar}) {
+function CalendarDay({ arrCalendar }) {
     const [dayOfWeek, setDayOfWeek] = useState('');
     const [dayOfMonth, setDayOfMonth] = useState(0);
 
     function randomColor() {
-        const colors = [
-            '#6AD4DD',
-            '#BE9FE1',
-            '#8576FF',
-            '#E4C59E',
-            '#FFC7C7',
-            '#E84545'
-        ];
+        const colors = ['#6AD4DD', '#BE9FE1', '#8576FF', '#E4C59E', '#FFC7C7', '#ADC2A9', '#C2DEDC'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
-
 
     useEffect(() => {
         const today = new Date();
@@ -26,7 +18,6 @@ function CalendarDay({ arrCalendar}) {
         setDayOfMonth(today.getDate());
     }, []);
 
-    
     return (
         <div className={clsx(styles.wrapper)}>
             <table>

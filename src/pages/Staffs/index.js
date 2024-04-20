@@ -31,6 +31,7 @@ function StaffsDisplay() {
             querySnapshot.forEach((doc) => {
                 doctors.push(doc.data());
             });
+
             setDoctorsData(doctors);
         }
 
@@ -57,10 +58,20 @@ function StaffsDisplay() {
 
         if (querySnapshot.empty === false) {
             const tmp = querySnapshot.docs[0].data();
+
+            const patients = [];
+            const q2 = query(collection(database, 'Patients'), where('DoctorID', '==', id));
+            const querySnapshot2 = await getDocs(q2);
+
+            querySnapshot2.forEach((doc) => {
+                patients.push(doc.data());
+            });
+
+            setOwnPatients(patients);
             setArrCalendar(tmp.calendar);
             setInfor(tmp);
         }
-
+        // --------------------- get nurses----------------------------------------
         const q2 = query(collection(database, 'Nurses'), where('id', '==', id));
         const querySnapshot2 = await getDocs(q2);
 
@@ -80,13 +91,27 @@ function StaffsDisplay() {
             jobPlace: job_place,
             jobDate: job_date,
         };
+        // --------------------- add to doctors----------------------------------------
         const q = query(collection(database, 'Doctors'), where('id', '==', infor.id));
         const querySnapshot = await getDocs(q);
 
-        const docRef = doc(database, 'Doctors', querySnapshot.docs[0].id);
-        await updateDoc(docRef, {
-            calendar: [newCalendar, ...querySnapshot.docs[0].data().calendar],
-        });
+        if (querySnapshot.empty === false) {
+            const docRef = doc(database, 'Doctors', querySnapshot.docs[0].id);
+            await updateDoc(docRef, {
+                calendar: [newCalendar, ...querySnapshot.docs[0].data().calendar],
+            });
+            return;
+        }
+        // --------------------- add to nurses----------------------------------------
+        const q2 = query(collection(database, 'Nurses'), where('id', '==', infor.id));
+        const querySnapshot2 = await getDocs(q2);
+
+        if (querySnapshot2.empty === false) {
+            const docRef2 = doc(database, 'Nurses', querySnapshot2.docs[0].id);
+            await updateDoc(docRef2, {
+                calendar: [newCalendar, ...querySnapshot2.docs[0].data().calendar],
+            });
+        }
     }
 
     return (
@@ -168,7 +193,13 @@ function StaffsDisplay() {
 }
 
 //--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
-function PatientInfo({ ownPatients }) {
+function PatientInfo({ patients }) {
+    useEffect(() => {
+        patients.sort((a, b) => {
+            return a.ID - b.ID;
+        });
+    }, [patients]);
+
     return (
         <div>
             {/* ----------table infor patients */}
@@ -182,11 +213,11 @@ function PatientInfo({ ownPatients }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {ownPatients &&
-                                ownPatients.map((patient) => (
+                            {patients &&
+                                patients.map((patient) => (
                                     <tr>
-                                        <td>{patient.id}</td>
-                                        <td>{patient.fullName}</td>
+                                        <td>{patient.ID}</td>
+                                        <td>{patient.Name}</td>
                                     </tr>
                                 ))}
                         </tbody>
@@ -228,37 +259,26 @@ function AddStaffs() {
 
     async function handleAdd() {
         const fullName = document.querySelector('input[name="fullName"]').value;
-        const gender = document.querySelector('input[name=gender]').value;
-        const faculty = document.querySelector('input[name=faculty]').value;
         const birthdate = document.querySelector('input[name=birthdate]').value;
         const email = document.querySelector('input[name=email]').value;
         const hometown = document.querySelector('input[name=hometown]').value;
         const phone = document.querySelector('input[name=phone]').value;
         const address = document.querySelector('input[name=address]').value;
-        const job = document.querySelector('input[name=job]').value;
+        const faculty = document.querySelector('select').value;
+        const degree = document.querySelector('input[name=degree]').value;
 
-        if (
-            fullName === '' ||
-            gender === '' ||
-            faculty === '' ||
-            birthdate === '' ||
-            email === '' ||
-            hometown === '' ||
-            phone === '' ||
-            address === '' ||
-            job === ''
-        ) {
+        var tmp1 = document.getElementsByName('gender');
+        const gender = tmp1[0].checked ? 'male' : 'female';
+
+        var tmp2 = document.getElementsByName('optradio');
+        const job = tmp2[0].checked ? 'doctor' : 'nurse';
+
+        if ([fullName, gender, faculty, birthdate, email, hometown, phone, address, job, degree].includes('')) {
             alert('Vui lòng điền đầy đủ thông tin');
             return;
         }
 
-        if (
-            faculty !== 'Khoa nội' &&
-            faculty !== 'Khoa ngoại' &&
-            faculty !== 'Khoa sản' &&
-            faculty !== 'Khoa nhi' &&
-            faculty !== 'Khoa truyền nhiễm'
-        ) {
+        if (['Khoa nội', 'Khoa ngoại', 'Khoa sản', 'Khoa nhi', 'Khoa truyền nhiễm'].indexOf(faculty) === -1) {
             alert('Chuyên ngành không hợp lệ');
             return;
         }
@@ -270,13 +290,13 @@ function AddStaffs() {
 
         document.querySelector('input[name="fullName"]').value = '';
         document.querySelector('input[name=gender]').value = '';
-        document.querySelector('input[name=faculty]').value = '';
         document.querySelector('input[name=birthdate]').value = '';
         document.querySelector('input[name=email]').value = '';
         document.querySelector('input[name=hometown]').value = '';
         document.querySelector('input[name=phone]').value = '';
         document.querySelector('input[name=address]').value = '';
-        document.querySelector('input[name=job]').value = '';
+        document.querySelector('select').value = '';
+        document.querySelector('input[name=degree]').value = '';
 
         const newId = await generateId();
 
@@ -286,13 +306,13 @@ function AddStaffs() {
                 fullName: fullName,
                 gender: gender,
                 faculty: faculty,
+                degree: degree,
                 birthdate: birthdate,
                 email: email,
                 hometown: hometown,
                 phone: phone,
                 address: address,
                 calendar: [],
-                patients: [],
             });
         } else if (job === 'nurse') {
             await addDoc(collection(database, 'Nurses'), {
@@ -300,13 +320,13 @@ function AddStaffs() {
                 fullName: fullName,
                 gender: gender,
                 faculty: faculty,
+                degree: degree,
                 birthdate: birthdate,
                 email: email,
                 hometown: hometown,
                 phone: phone,
                 address: address,
                 calendar: [],
-                patients: [],
             });
         }
     }
@@ -328,46 +348,145 @@ function AddStaffs() {
                             <h3>Điền thông tin nhân viên</h3>
                         </div>
                         <div className={clsx(style.modalBody)}>
-                            <label>
-                                Họ và tên:
-                                <input type="text" name="fullName" placeholder="Nguyen Van A" />
-                            </label>
+                            <form>
+                                <div class="row">
+                                    <div class="col">
+                                        {/* --------------fullName--------------- */}
+                                        <div class="mb-3 mt-3">
+                                            <label for="email" class="form-label">
+                                                Họ và tên:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                name="fullName"
+                                            />
+                                        </div>
+                                        {/* ----------------gender--------------- */}
+                                        <div class="mb-3" className={clsx(style.gender)}>
+                                            <label class="form-label">Gioi tinh</label>
+                                            <div class="form-check ms-4">
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    id="male"
+                                                    name="gender"
+                                                    value="nam"
+                                                />
+                                                <label class="form-check-label" for="male">
+                                                    Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check ms-4">
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    id="female"
+                                                    name="gender"
+                                                    value="nữ"
+                                                />
+                                                <label class="form-check-label" for="female">
+                                                    {' '}
+                                                    Nữ
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* -----------role-------------------- */}
+                                        <div class="mb-3">
+                                            <label class="form-label">Vai trò: </label>
+                                            <div class="form-check ms-4">
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    id="Doctor"
+                                                    name="optradio"
+                                                    value="option1"
+                                                />
+                                                <label class="form-check-label" for="Doctor">
+                                                    Doctor
+                                                </label>
+                                            </div>
+                                            <div class="form-check ms-4">
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    id="Nurse"
+                                                    name="optradio"
+                                                    value="option2"
+                                                />
+                                                <label class="form-check-label" for="Nurse">
+                                                    {' '}
+                                                    Nurse
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {/* ----------------faculty---------------- */}
+                                        <div class="mb-3 ">
+                                            <label class="form-label">Khoa</label>
+                                            <select class="form-select">
+                                                <option>Khoa nội</option>
+                                                <option>Khoa ngoại</option>
+                                                <option>Khoa sản</option>
+                                                <option>Khoa nhi</option>
+                                                <option>Khoa truyền nhiễm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {/* -----------birthdate------------- */}
+                                        <div class=" mb-3 mt-3">
+                                            <label for="birthDay" class="form-label">
+                                                Ngày tháng năm sinh:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="birthDay"
+                                                name="birthdate"
+                                            />
+                                        </div>
+                                        {/* ----------------certificate */}
+                                        <div class="mb-3 ">
+                                            <label for="degree" class="form-label">
+                                                Bằng cấp:
+                                            </label>
+                                            <input type="text" class="form-control"  name="degree" />
+                                        </div>
+                                        {/* ----------------email---------------- */}
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                Email:
+                                            </label>
+                                            <input type="text" class="form-control"  name="email" />
+                                        </div>
+                                        {/* ----------------phone---------------- */}
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                SĐT:
+                                            </label>
+                                            <input type="text" class="form-control"  name="phone" />
+                                        </div>
+                                        {/* ----------------hometown---------------- */}
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                Quê quán:
+                                            </label>
+                                            <input type="text" class="form-control"  name="hometown" />
+                                        </div>
 
-                            <label>
-                                Giới tính:
-                                <input type="text" name="gender" placeholder="nam / nữ " />
-                            </label>
-
-                            <label>
-                                Ngày tháng năm sinh:
-                                <input type="text" name="birthdate" placeholder="mm/dd/yyy" />
-                            </label>
-                            <label>
-                                Vị trí (doctor / nurse):
-                                <input type="text" name="job" placeholder="doctor or nurse" />
-                            </label>
-                            <label>
-                                Khoa:
-                                <input type="text" name="faculty" placeholder="abc@gmail.com" />
-                            </label>
-                            <label>
-                                Email:
-                                <input type="text" name="email" placeholder="abc@gmail.com" />
-                            </label>
-                            <label>
-                                Quê:
-                                <input type="text" name="hometown" placeholder="Hometown" />
-                            </label>
-                            <label>
-                                Số điện thoại:
-                                <input type="text" name="phone" placeholder="Phone number" />
-                            </label>
-                            <label>
-                                Địa chỉ thường chú:
-                                <input type="text" name="address" placeholder="Address" />
-                            </label>
+                                        {/* ----------------address---------------- */}
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                Địa chỉ:
+                                            </label>
+                                            <input type="text" class="form-control"  name="address" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
+                        {/* ---------------------model footer-------------------- */}
                         <div className={clsx(style.modalFooter)}>
                             <button className={clsx(style.submitButton)} onClick={handleAdd}>
                                 Submit
@@ -514,7 +633,7 @@ function AddCalendar({ addCalendar }) {
                 </button>
             </div>
             {showModal && (
-                <div id="myModal" className={clsx(style.modal)}>
+                <div id="myModal" className={clsx(style.modal,style.addCalendar)}>
                     <div className={clsx(style.modalContent)}>
                         <div className={clsx(style.modalHeader)}>
                             <span onClick={handleCloseModal} className={clsx(style.close)}>
@@ -523,22 +642,30 @@ function AddCalendar({ addCalendar }) {
                             <h3>Thêm thông tin lịch</h3>
                         </div>
                         <div className={clsx(style.modalBody)}>
-                            <label>
-                                Tên công việc:
-                                <input type="text" name="job_name" autoFocus />
-                            </label>
-                            <label>
-                                Thời gian:
-                                <input type="text" name="job_time" />
-                            </label>
-                            <label>
-                                Địa điểm:
-                                <input type="text" name="job_place" />
-                            </label>
-                            <label>
-                                Ngày thực hiện:
-                                <input type="text" name="job_date" placeholder="mm/dd/yyyy" />
-                            </label>
+                            <form>
+                                {/* --------------fullName--------------- */}
+                                <div class="mb-3 mt-3">
+                                            <label for="email" class="form-label">
+                                                Họ và tên:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                name="fullName"
+                                            />
+                                        </div>
+                                        {/* --------------fullName--------------- */}
+                                        <div class="mb-3 mt-3">
+                                            <label for="email" class="form-label">
+                                                Họ và tên:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                name="fullName"
+                                            />
+                                        </div>
+                            </form>
                         </div>
                         <div className={clsx(style.modalFooter)}>
                             <button className={clsx(style.submitButton)} onClick={handleAdd}>
@@ -568,14 +695,26 @@ function EditInfoStaff({ id, reloadPage }) {
         return <div></div>;
     }
     async function handleRemove() {
+        // --------------------- remove doctors----------------------------------------
         const q = query(collection(database, 'Doctors'), where('id', '==', id));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty === false) {
             await deleteDoc(doc(database, 'Doctors', querySnapshot.docs[0].id));
+            reloadPage();
+            return;
         }
 
-        reloadPage();
+        // --------------------- remove nurses----------------------------------------
+        // --------------------- remove doctors----------------------------------------
+        const q2 = query(collection(database, 'Nurses'), where('id', '==', id));
+        const querySnapshot2 = await getDocs(q2);
+
+        if (querySnapshot2.empty === false) {
+            await deleteDoc(doc(database, 'Nurses', querySnapshot2.docs[0].id));
+            reloadPage();
+            return;
+        }
     }
 
     return (

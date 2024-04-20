@@ -304,6 +304,7 @@ li {
             float: right;
             font-size: 28px;
             font-weight: bold;
+            margin-top: -8px;
             &:hover,
             &:focus {
                 color: #000;
@@ -313,38 +314,59 @@ li {
         }
 
         .modalHeader {
-            padding: 2px 16px;
+            padding: 6px 16px;
             background-color: var(--correctblue-color);
             color: white;
         }
         .modalBody {
-            padding: 2px 16px;
-            label {
-                display: block;
-                font-weight: bold;
-                margin: 8px;
+            font-size: 1.8rem;
+            form {
+                padding: 16px;
+                
+            }
+            input{
+                font-size: 1.5rem;
+                padding: 2px 4px;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 0.5rem;
             }
 
-            input {
-                display: flex;
-                width: 100%;
+            select{
+                font-size: 1.5rem;
             }
         }       
 
         .modalFooter {
             padding: 8px 16px;
-            background-color: var(--correctblue-color);
             color: white;
+            background-color: var(--correctblue-color);
             .submitButton {
-                color: var(--second-color);
+                color: #333;
                 background-color: var(--third-color);
                 border-radius: 1rem;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
                 font-weight: bold;
                 margin-left: 16px;
+                border: none;
+            }
+            .submitButton:hover {
+                color: #fff;
+                text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                background-color: var(--primary-color);
             }
         }
     }
+}
+
+.modal.addCalendar{
+    .modalContent {
+        width: 35%;
+
+        form{
+            padding: 12px 32px;
+        }
+    }
+
 }
 
 @-webkit-keyframes animatetop {

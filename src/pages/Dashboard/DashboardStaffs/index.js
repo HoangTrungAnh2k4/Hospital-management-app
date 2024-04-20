@@ -1,12 +1,16 @@
 import clsx from 'clsx';
 import style from './DashboardStaffs.module.scss';
-// import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BoardNotify } from '~/pages/Dashboard/DashboardAdmin';
+import { database } from '~/firebase';
+import { collection, getDocs, addDoc, query, where, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { set } from 'date-fns';
 
 function DashboardStaffs() {
     const navigate = useNavigate();
+    const [ownPatients, setOwnPatients] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem('auth') !== 'staff') {
@@ -18,6 +22,22 @@ function DashboardStaffs() {
         backgroundColor: 'rgb(101, 197, 197)',
         color: 'black',
     };
+
+    useEffect(() => {
+        async function showInfor() {
+            let patients = [];
+            const name = localStorage.getItem('name');
+            const q = query(collection(database, 'Patients'), where('Doctor', '==', name));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                patients.push(doc.data());
+            });
+            setOwnPatients(patients);
+        }
+        showInfor();
+    }, []);
+
+console.log(ownPatients);
 
     return (
         <div className={clsx(style.wrapper)}>
@@ -38,117 +58,46 @@ function DashboardStaffs() {
 
                         {/* The slideshow/carousel */}
                         <div className="carousel-inner">
-                            <div className="carousel-item active">
-                                {/* information Patient  */}
-                                <div className={clsx(style.box)}>
-                                    <div className={clsx(style.img)}>
-                                        <img
-                                            src="https://toplist.vn/images/800px/studio-quoc-khai-318820.jpg"
-                                            alt="Ảnh bệnh nhân"
-                                        />
-                                    </div>
+                            {ownPatients &&
+                                ownPatients.map((patient, index) => {
+                                    return (
+                                        <div className="carousel-item active ">
+                                            {/* information Patient  */}
+                                            <div className={clsx(style.box)}>
+                                                <div className={clsx(style.img)}>
+                                                    <img
+                                                        src="https://toplist.vn/images/800px/studio-quoc-khai-318820.jpg"
+                                                        alt="Ảnh bệnh nhân"
+                                                    />
+                                                </div>
+                                                <nav className={clsx(style.infor)}>
+                                                    <ul>
+                                                        <h1>Thông tin bệnh nhân</h1>
+                                                        <li>Tên: {patient.Name} </li>
 
-                                    <nav className={clsx(style.infor)}>
-                                        <ul>
-                                            <h1>Thông tin bệnh nhân</h1>
-                                            <li>Tên: Châu Bảo Ngọc </li>
-
-                                            <li>Tuổi: 20</li>
-                                            <li>
-                                                SĐT: <span>0352134515</span>
-                                            </li>
-                                            <li>
-                                                Bác sĩ điều trị: <span>Nguyễn Văn Sơn</span>
-                                            </li>
-                                            <li>
-                                                Chuẩn đoán: <span>Dấu hiệu bệnh sốt xuất huyết</span>
-                                            </li>
-
-                                            <li>
-                                                Tình trạng sức khỏe:{' '}
-                                                <span>Sốt cao, đau mỏi khắp người, không ăn được cơm </span>
-                                            </li>
-                                            <li>
-                                                Tiền sử bệnh án: <span>Khỏe mạnh</span>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <div className="carousel-item">
-                                {/* information Patient  */}
-                                <div className={clsx(style.box)}>
-                                    <div className={clsx(style.img)}>
-                                        <img
-                                            src="https://faceinch.vn/upload/elfinder/%E1%BA%A2nh/chup-chan-dung-5.jpg"
-                                            alt="Ảnh bệnh nhân"
-                                        />
-                                    </div>
-
-                                    <nav className={clsx(style.infor)}>
-                                        <ul>
-                                            <h1>Thông tin bệnh nhân</h1>
-                                            <li>Tên: Châu Bảo Ngọc </li>
-
-                                            <li>Tuổi: 20</li>
-                                            <li>
-                                                SĐT: <span>0352134515</span>
-                                            </li>
-                                            <li>
-                                                Bác sĩ điều trị: <span>Nguyễn Văn Sơn</span>
-                                            </li>
-                                            <li>
-                                                Chuẩn đoán: <span>Dấu hiệu bệnh sốt xuất huyết</span>
-                                            </li>
-
-                                            <li>
-                                                Tình trạng sức khỏe:{' '}
-                                                <span>Sốt cao, đau mỏi khắp người, không ăn được cơm </span>
-                                            </li>
-                                            <li>
-                                                Tiền sử bệnh án: <span>Khỏe mạnh</span>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <div className="carousel-item">
-                                {/* information Patient  */}
-                                <div className={clsx(style.box)}>
-                                    <div className={clsx(style.img)}>
-                                        <img
-                                            src="https://smilemedia.vn/wp-content/uploads/2022/09/cach-chup-anh-the-dep-e1664379835782.jpg"
-                                            alt="Ảnh bệnh nhân"
-                                        />
-                                    </div>
-
-                                    <nav className={clsx(style.infor)}>
-                                        <ul>
-                                            <h1>Thông tin bệnh nhân</h1>
-                                            <li>Tên: Châu Bảo Ngọc </li>
-
-                                            <li>Tuổi: 20</li>
-                                            <li>
-                                                SĐT: <span>0352134515</span>
-                                            </li>
-                                            <li>
-                                                Bác sĩ điều trị: <span>Nguyễn Văn Sơn</span>
-                                            </li>
-                                            <li>
-                                                Chuẩn đoán: <span>Dấu hiệu bệnh sốt xuất huyết</span>
-                                            </li>
-
-                                            <li>
-                                                Tình trạng sức khỏe:{' '}
-                                                <span>Sốt cao, đau mỏi khắp người, không ăn được cơm </span>
-                                            </li>
-                                            <li>
-                                                Tiền sử bệnh án: <span>Khỏe mạnh</span>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
+                                                        <li>Tuổi: </li>
+                                                        <li>
+                                                            SĐT: <span>{patient.PhoneNumber}</span>
+                                                        </li>
+                                                        <li>
+                                                            Bác sĩ điều trị: <span>{patient.Doctor}</span>
+                                                        </li>
+                                                        <li>
+                                                            Chuẩn đoán: <span>Dấu hiệu bệnh sốt xuất huyết</span>
+                                                        </li>
+                                                        <li>
+                                                            Tình trạng sức khỏe:{' '}
+                                                            <span>Sốt cao, đau mỏi khắp người, không ăn được cơm </span>
+                                                        </li>
+                                                        <li>
+                                                            Tiền sử bệnh án: <span>Khỏe mạnh</span>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                         </div>
 
                         <div className={clsx(style.carousel__icon)}>
@@ -175,7 +124,7 @@ function DashboardStaffs() {
 
                 <div className={clsx(style.row2)}>
                     {/* Notification board */}
-                    <BoardNotify/>
+                    <BoardNotify />
                 </div>
             </div>
         </div>

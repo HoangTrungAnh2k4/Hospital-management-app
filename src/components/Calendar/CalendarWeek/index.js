@@ -6,7 +6,7 @@ import { collection, getDocs, addDoc, query, where, updateDoc, doc } from 'fireb
 
 function CalendarWeek({ children }) {
     function randomColor() {
-        const colors = ['#6AD4DD', '#BE9FE1', '#8576FF', '#E4C59E', '#FFC7C7', '#E84545','#ADC2A9','#C2DEDC'];
+        const colors = ['#6AD4DD', '#BE9FE1', '#8576FF', '#E4C59E', '#FFC7C7','#ADC2A9','#C2DEDC'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -96,7 +96,7 @@ function CalendarWeek({ children }) {
         }
         fetchCalendar();
     }, []);
-    console.log(friDayEvent);
+
     return (
         <div className={clsx(styles.wrapper)}>
             <div className={clsx(styles.buffer)}></div>
