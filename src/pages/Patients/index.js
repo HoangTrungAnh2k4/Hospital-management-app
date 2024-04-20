@@ -14,8 +14,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
 
-
-
 function Patients() {
     const navigate = useNavigate();
 

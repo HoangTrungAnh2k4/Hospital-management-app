@@ -10,7 +10,7 @@ import Popup from './Action/Popup';
 
 
 
-const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, setConfirmDialog/*, handleEdit, handleDelete*/ }) => {
+const Table = ({ patients, setPatients, getPatient, setNotify, confirmDialog, setConfirmDialog }) => {
     //Order variables
     const [order, setOrder] = useState('ASC');
     const [openPopup, setOpenPopup] = useState(false)
