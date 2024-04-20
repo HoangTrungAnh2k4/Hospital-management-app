@@ -1,4 +1,4 @@
-import { getDoc, setDoc, doc} from 'firebase/firestore';
+import { getDoc, doc} from 'firebase/firestore';
 import { database } from 'src/firebase'
 
 const getTotalPayment = async (docID) => {

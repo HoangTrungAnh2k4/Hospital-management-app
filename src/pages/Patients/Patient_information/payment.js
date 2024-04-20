@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import style from '../SCSS_module/Patients_Infor.module.scss';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Popup from '../Action/Popup';
 import Notification from "../Action/Notification";
 

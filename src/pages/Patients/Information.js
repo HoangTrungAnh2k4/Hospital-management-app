@@ -4,8 +4,6 @@ import style from './SCSS_module/Patients_Infor.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import checkSubcollection from './Action/CheckSubcollection';
 import getTotalPayment from './Action/GetTotalPayment';
-import { getDoc, collection, doc} from 'firebase/firestore';
-import { database } from 'src/firebase'
 import Profile from './Patient_information/profile';
 import Appointment from './Patient_information/appointment';
 import Notes from './Patient_information/notes';

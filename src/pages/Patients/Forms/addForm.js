@@ -5,7 +5,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import { Button as MuiButton, makeStyles } from "@material-ui/core";
 import { TextField } from '@material-ui/core';
 import DateFnsUtils from "@date-io/date-fns";
-import { query, getDocs, setDoc, collection, addDoc, doc, where, QuerySnapshot } from 'firebase/firestore';
+import { query, getDocs, setDoc, collection, addDoc, doc, where} from 'firebase/firestore';
 import { database } from 'src/firebase'
 
 

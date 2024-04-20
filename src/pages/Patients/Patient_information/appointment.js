@@ -91,7 +91,20 @@ function Appointment({patient}){
                         }
                     </div>
                 </div>
-                <div className={toggle === 3 ? clsx(style.tabContentBox) : clsx(style.unshowContent)}></div>
+
+                <div className={toggle === 3 ? clsx(style.tabContentBox) : clsx(style.unshowContent)}>
+                    <div className={clsx(style.tabContent)}>
+                        <div className={clsx(style.swaper4)}>
+                            <div className={clsx(style.Diseased)}>
+                                <h2>Vấn đề sức khỏe</h2>
+                                <p>{patient.Sickness}</p>
+                            </div>
+                            <div className={clsx(style.BodyRecord)}>
+                                <h2>Các thông số sức khỏe</h2>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
             </div>
             </div>
         </>
