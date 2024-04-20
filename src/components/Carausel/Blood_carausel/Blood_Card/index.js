@@ -1,5 +1,5 @@
 //import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
-//import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
+import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import React, {useState, useEffect} from 'react';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
@@ -128,6 +128,7 @@ function BloodCard(props){ // blood_card
                     <h4 class="card-title text-align-center">{props.blood.name}</h4>
                     <p class="card-text">{props.blood.number}</p>
                     <p class="card-text"><WidgetsOutlinedIcon/>{props.blood.catelogue.join(", ")}</p>
+                    <p class="card-text"><EventNoteOutlinedIcon/>{props.blood.type}</p>
                     <p class="card-text">{props.blood.price}đ/{props.blood.unit}</p>
                 </div>
             </div>
@@ -141,6 +142,7 @@ function BloodCard(props){ // blood_card
                     <div class="modal-body">
                         <img src={props.blood.img_url} alt="..."/>
                         <p>Danh mục: {props.blood.catelogue.join(" ,")}</p>
+                        <p>Loại nhóm máu: {props.blood.type}</p>
                         <p>Đóng gói: {props.blood.packing}</p>
                         <p>Nhà sản xuất: {props.blood.produce}</p>
                         <div class="d-flex align-items-center">
@@ -175,10 +177,10 @@ function BloodCard(props){ // blood_card
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fixMedModal">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
+                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#fixMedModal">Chỉnh sửa</button>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                     </div>
                 </div>
@@ -194,8 +196,8 @@ function BloodCard(props){ // blood_card
                         Bạn chắc chắn muốn xóa?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={submitDelete}>Xóa</button>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal" onClick={submitDelete}>Xóa</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
                     </div>
                     </div>
                 </div>
@@ -209,15 +211,15 @@ function BloodCard(props){ // blood_card
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <input type="date" name="date" class="form-control" placeholder="Ngày nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wprice" class="form-control" placeholder="Giá nhập" onChange={changeNewBid}/>
-                            <input type="number" name="wquantity" class="form-control" placeholder="Số lượng" onChange={changeNewBid}/>
-                            <input type="text" name="wunit" class="form-control" placeholder="Đơn vị" onChange={changeNewBid}/>
+                            <input type="date" name="date" class="form-control form-control-lg" placeholder="Ngày nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wprice" class="form-control form-control-lg" placeholder="Giá nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wquantity" class="form-control form-control-lg" placeholder="Số lượng" onChange={changeNewBid}/>
+                            <input type="text" name="wunit" class="form-control form-control-lg" placeholder="Đơn vị" onChange={changeNewBid}/>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={submitNewBid}>Lưu</button>
                     </div>
                     </div>
                 </div>
@@ -231,36 +233,37 @@ function BloodCard(props){ // blood_card
                     </div>
                     <div class="modal-body">
                         <form class="form-floating">
-                            <input class="form-control m-2" type="text" name="name" placeholder="Tên thuốc" defaultValue={props.blood.name} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="catelogue" placeholder="Danh mục" defaultValue={props.blood.catelogue.join(" ,")} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="packing" placeholder="Đóng gói" defaultValue={props.blood.packing} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.blood.expiry} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="text" name="produce" placeholder="Công ty sản xuất" defaultValue={props.blood.produce} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.blood.quantity} onChange={changeFixItem}/>
-                            <input class="form-control m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="name" placeholder="Tên thuốc" defaultValue={props.blood.name} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="catelogue" placeholder="Danh mục" defaultValue={props.blood.catelogue.join(" ,")} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="type" placeholder="Loại nhóm máu" defaultValue={props.blood.type} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="packing" placeholder="Đóng gói" defaultValue={props.blood.packing} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.blood.expiry} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="text" name="produce" placeholder="Công ty sản xuất" defaultValue={props.blood.produce} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="number" name="quantity" placeholder="Số lượng còn lại" defaultValue={props.blood.quantity} onChange={changeFixItem}/>
+                            <input class="form-control form-control-lg m-2" type="file" name="img_url" placeholder="Link ảnh" onChange={changeFixItem}/>
                             <div class="input-group m-2">
                                 <span class="input-group-text" id="basic-addon1">đ</span>
-                                <input type="number" class="form-control" name="price" placeholder="Giá bán" defaultValue={props.blood.price} onChange={changeFixItem}/>
+                                <input type="number" class="form-control form-control-lg" name="price" placeholder="Giá bán" defaultValue={props.blood.price} onChange={changeFixItem}/>
                                 <span class="input-group-text" id="basic-addon2">/</span>
-                                <input type="text" class="form-control" name="unit" placeholder="Đơn vị" defaultValue={props.blood.unit} onChange={changeFixItem}/>
+                                <input type="text" class="form-control form-control-lg" name="unit" placeholder="Đơn vị" defaultValue={props.blood.unit} onChange={changeFixItem}/>
                             </div>
                             <p>Đấu thầu thành công:</p>
                             {
                                 props.blood.win_bid.map((item, index) => (
                                     <div className="input-group m-2" key={index}>
-                                        <input type="date" className="form-control" name="date" defaultValue={item.date} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="number" className="form-control" name="wprice" defaultValue={item.wprice} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="number" className="form-control" name="wquantity" defaultValue={item.wquantity} onChange={(e) => changFixWinBid(e, index)} />
-                                        <input type="text" className="form-control" name="wunit" defaultValue={item.wunit} onChange={(e) => changFixWinBid(e, index)} />
-                                        <button className="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={(e) => submitDelBid(e, index)}>Xóa</button>
+                                        <input type="date" className="form-control form-control-lg" name="date" defaultValue={item.date} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="number" className="form-control form-control-lg" name="wprice" defaultValue={item.wprice} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="number" className="form-control form-control-lg" name="wquantity" defaultValue={item.wquantity} onChange={(e) => changFixWinBid(e, index)} />
+                                        <input type="text" className="form-control form-control-lg" name="wunit" defaultValue={item.wunit} onChange={(e) => changFixWinBid(e, index)} />
+                                        <button className="btn btn-outline-secondary form-control-lg" type="button" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={(e) => submitDelBid(e, index)}>Xóa</button>
                                     </div>
                                 ))
                             }
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`}>Hủy</button>
+                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
                     </div>
                     </div>
                 </div>
