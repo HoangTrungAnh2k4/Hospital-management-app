@@ -7,6 +7,7 @@ import { BoardNotify } from '~/pages/Dashboard/DashboardAdmin';
 import { database } from '~/firebase';
 import { collection, getDocs, addDoc, query, where, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { set } from 'date-fns';
+import myImg from '~/img/user.png';
 
 function DashboardStaffs() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function DashboardStaffs() {
         showInfor();
     }, []);
 
-console.log(ownPatients);
+    console.log(ownPatients);
 
     return (
         <div className={clsx(style.wrapper)}>
@@ -65,33 +66,30 @@ console.log(ownPatients);
                                             {/* information Patient  */}
                                             <div className={clsx(style.box)}>
                                                 <div className={clsx(style.img)}>
-                                                    <img
-                                                        src="https://toplist.vn/images/800px/studio-quoc-khai-318820.jpg"
-                                                        alt="Ảnh bệnh nhân"
-                                                    />
+                                                    <img src={myImg} alt="Ảnh bệnh nhân" />
                                                 </div>
                                                 <nav className={clsx(style.infor)}>
                                                     <ul>
                                                         <h1>Thông tin bệnh nhân</h1>
-                                                        <li>Tên: {patient.Name} </li>
-
-                                                        <li>Tuổi: </li>
                                                         <li>
-                                                            SĐT: <span>{patient.PhoneNumber}</span>
+                                                            ID:<span> {patient.ID}</span>{' '}
                                                         </li>
                                                         <li>
-                                                            Bác sĩ điều trị: <span>{patient.Doctor}</span>
+                                                            Tên:<span> {patient.Name}</span>{' '}
                                                         </li>
                                                         <li>
-                                                            Chuẩn đoán: <span>Dấu hiệu bệnh sốt xuất huyết</span>
+                                                            Giới tính:<span> {patient.Gender}</span>{' '}
+                                                        </li>
+                                                       
+                                                        
+                                                        <li>
+                                                            Chuẩn đoán: <span>{patient.Sickness}</span>
                                                         </li>
                                                         <li>
                                                             Tình trạng sức khỏe:{' '}
-                                                            <span>Sốt cao, đau mỏi khắp người, không ăn được cơm </span>
+                                                            <span>{patient.Status} </span>
                                                         </li>
-                                                        <li>
-                                                            Tiền sử bệnh án: <span>Khỏe mạnh</span>
-                                                        </li>
+                                                        
                                                     </ul>
                                                 </nav>
                                             </div>

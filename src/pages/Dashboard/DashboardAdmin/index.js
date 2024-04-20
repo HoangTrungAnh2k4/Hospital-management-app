@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import CalendarWeek from '~/components/Calendar/CalendarWeek';
 import { useNavigate } from 'react-router-dom';
 import { database } from '~/firebase';
-import { addDoc, collection, getDocs, orderBy } from 'firebase/firestore';
+import { addDoc, collection, getDocs, orderBy, query, where, doc, deleteDoc } from 'firebase/firestore';
 import { set } from 'date-fns';
 
 function Chart1({ countAge }) {
@@ -58,7 +58,8 @@ function Chart1({ countAge }) {
     );
 }
 
-function Chart2() {
+function Chart2({ countBlood }) {
+    console.log(countBlood);
     return (
         <div className={clsx(styles.chart_2)}>
             <p className={clsx(styles.header)}>Kho máu</p>
@@ -164,7 +165,7 @@ function Chart2() {
     );
 }
 
-function PatientQuantity({ countAge, quantityPatient }) {
+function PatientQuantity({ countAge, countBlood, quantityPatient }) {
     return (
         <div className={clsx(styles.quantityPatient)}>
             {/* quantity box */}
@@ -220,7 +221,7 @@ function PatientQuantity({ countAge, quantityPatient }) {
             <div className={clsx(styles.boxChart)}>
                 <Chart1 countAge={countAge} />
 
-                <Chart2 />
+                <Chart2 countBlood={countBlood} />
             </div>
         </div>
     );
@@ -228,6 +229,11 @@ function PatientQuantity({ countAge, quantityPatient }) {
 
 function BoardNotify({ listNotify }) {
     const addNotify = useRef();
+    const [reload, setReload] = useState(0);
+
+    function reloadBoard() {
+        reload === 0 ? setReload(1) : setReload(0);
+    }
 
     useEffect(() => {
         addNotify.current.onclick = () => {
@@ -241,15 +247,28 @@ function BoardNotify({ listNotify }) {
 
     useEffect(() => {
         const removeBtn = document.querySelector(`.${styles.removeBtn}`);
+        const listNotifyRemove = [];
+
         removeBtn.onclick = () => {
             const listNotify = document.querySelectorAll(`.${styles.notify} input[type="checkbox"]`);
             listNotify.forEach((notify) => {
                 if (notify.checked) {
-                    notify.parentElement.parentElement.parentElement.remove();
+                    listNotifyRemove.push(notify.parentElement.innerText);
                 }
             });
-        };
 
+            async function removeNotify() {
+                listNotifyRemove.forEach(async (notify) => {
+                    const querySnapshot = await getDocs(collection(database, 'Notifications'));
+                    querySnapshot.forEach((doc) => {
+                        if (doc.data().title === notify) {
+                            deleteDoc(doc.ref);
+                        }
+                    });
+                });
+            }
+            removeNotify();
+        };
         // delete footer button with staff
         if (localStorage.getItem('auth') === 'staff') {
             const footer = document.querySelector(`.${styles.notify__footer}`);
@@ -288,10 +307,13 @@ function NotifyList() {
                 notifies.push(doc.data());
             });
 
+            notifies.sort((a, b) => {
+                return new Date(b.date) - new Date(a.date);
+            });
             setListNotify(notifies);
         }
         getNotify();
-    }, []);
+    }, [listNotify]);
 
     return (
         <main className={clsx(styles.notify_list)}>
@@ -314,7 +336,10 @@ function NotifyList() {
                                     </li>
 
                                     <div className={clsx(styles.row6)}>
-                                        <h4>{notify.title}</h4>
+                                        <h4>
+                                            {notify.title}
+                                            <input type="checkbox" />
+                                        </h4>
                                         <p>{notify.content}</p>
                                     </div>
                                 </div>
@@ -398,6 +423,7 @@ function DashboardAdmin() {
     // get age of patients from firebase
     const [countAge, setCountAge] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [quantityPatient, setQuantityPatient] = useState([0, 0, 0, 0, 0]);
+    const [countBlood, setCountBlood] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     useEffect(() => {
         async function getAge() {
@@ -438,7 +464,57 @@ function DashboardAdmin() {
             setCountAge([cntAge[0], cntAge[1], cntAge[2], cntAge[3], cntAge[4], cntAge[5], cntAge[6]]);
             setQuantityPatient(quantityPatient);
         }
-        
+
+        async function getBlood() {
+            const querySnapshot = await getDocs(collection(database, 'blood'));
+            let cntBlood = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            querySnapshot.forEach((doc) => {
+                console.log(doc.data().type,doc.data().quantity);
+                // count age
+                cntBlood[16]++;
+                switch (doc.data().type) {
+                    case 'A+':
+                        cntBlood[0]+= doc.data().quantity;
+                        break;
+                    case 'A-':
+                        cntBlood[1]+= doc.data().quantity;
+                        break;
+                    case 'B+':
+                        cntBlood[2]+= doc.data().quantity;
+                        break;
+                    case 'B-':
+                        cntBlood[3]+= doc.data().quantity;
+                        break;
+                    case 'O+':
+                        cntBlood[4]+= doc.data().quantity;
+                        break;
+                    case 'O-':
+                        cntBlood[5]+= doc.data().quantity;
+                        break;
+                    case 'AB+':
+                        cntBlood[6]+= doc.data().quantity;
+                        break;
+                    case 'AB-':
+                        cntBlood[7]+= doc.data().quantity;
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            cntBlood[8] = ((cntBlood[0] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[9] = ((cntBlood[1] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[10] = ((cntBlood[2] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[11] = ((cntBlood[3] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[12] = ((cntBlood[4] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[13] = ((cntBlood[5] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[14] = ((cntBlood[6] / cntBlood[16]) * 100).toFixed(0);
+            cntBlood[15] = ((cntBlood[7] / cntBlood[16]) * 100).toFixed(0);
+
+            setCountBlood(cntBlood);
+        }
+        getBlood();
         getAge();
     }, []);
 
@@ -446,7 +522,7 @@ function DashboardAdmin() {
         <div className={clsx(styles.wrapper)}>
             {/* quantity patient and notification board */}
             <div className={clsx(styles.row1)}>
-                <PatientQuantity countAge={countAge} quantityPatient={quantityPatient} />
+                <PatientQuantity countAge={countAge} countBlood={countBlood} quantityPatient={quantityPatient} />
 
                 {/* Notification board */}
                 <div className={clsx(styles.boardNotifyWraper)}>

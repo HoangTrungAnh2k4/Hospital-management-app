@@ -377,11 +377,15 @@
 
         .row6 {
             padding: 1.5rem 0.5rem 0.5rem;
+            color: #000;
             h4 {
                 margin-bottom: 1rem;
                 font-weight: bolder;
             }
-            color: #000;
+            input{
+                float: right;
+               
+            }
         }
     }
 

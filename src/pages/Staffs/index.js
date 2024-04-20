@@ -70,6 +70,9 @@ function StaffsDisplay() {
             setOwnPatients(patients);
             setArrCalendar(tmp.calendar);
             setInfor(tmp);
+            setHasInfor(true);
+
+            return;
         }
         // --------------------- get nurses----------------------------------------
         const q2 = query(collection(database, 'Nurses'), where('id', '==', id));
@@ -80,7 +83,7 @@ function StaffsDisplay() {
             setArrCalendar(tmp.calendar);
             setInfor(tmp);
         }
-
+        setOwnPatients([{ ID: 'Không có bệnh nhân', Name: '' }]);
         setHasInfor(true);
     }
 
@@ -194,11 +197,10 @@ function StaffsDisplay() {
 
 //--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
 function PatientInfo({ patients }) {
-    useEffect(() => {
-        patients.sort((a, b) => {
-            return a.ID - b.ID;
-        });
-    }, [patients]);
+    
+    patients.sort((a, b) => {
+        return a.ID - b.ID;
+    });
 
     return (
         <div>
@@ -356,11 +358,7 @@ function AddStaffs() {
                                             <label for="email" class="form-label">
                                                 Họ và tên:
                                             </label>
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                name="fullName"
-                                            />
+                                            <input type="text" class="form-control" name="fullName" />
                                         </div>
                                         {/* ----------------gender--------------- */}
                                         <div class="mb-3" className={clsx(style.gender)}>
@@ -391,7 +389,7 @@ function AddStaffs() {
                                                 </label>
                                             </div>
                                         </div>
-                                        
+
                                         {/* -----------role-------------------- */}
                                         <div class="mb-3">
                                             <label class="form-label">Vai trò: </label>
@@ -439,40 +437,35 @@ function AddStaffs() {
                                             <label for="birthDay" class="form-label">
                                                 Ngày tháng năm sinh:
                                             </label>
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                id="birthDay"
-                                                name="birthdate"
-                                            />
+                                            <input type="text" class="form-control" id="birthDay" name="birthdate" />
                                         </div>
                                         {/* ----------------certificate */}
                                         <div class="mb-3 ">
                                             <label for="degree" class="form-label">
                                                 Bằng cấp:
                                             </label>
-                                            <input type="text" class="form-control"  name="degree" />
+                                            <input type="text" class="form-control" name="degree" />
                                         </div>
                                         {/* ----------------email---------------- */}
                                         <div class="mb-3">
                                             <label for="email" class="form-label">
                                                 Email:
                                             </label>
-                                            <input type="text" class="form-control"  name="email" />
+                                            <input type="text" class="form-control" name="email" />
                                         </div>
                                         {/* ----------------phone---------------- */}
                                         <div class="mb-3">
                                             <label for="email" class="form-label">
                                                 SĐT:
                                             </label>
-                                            <input type="text" class="form-control"  name="phone" />
+                                            <input type="text" class="form-control" name="phone" />
                                         </div>
                                         {/* ----------------hometown---------------- */}
                                         <div class="mb-3">
                                             <label for="email" class="form-label">
                                                 Quê quán:
                                             </label>
-                                            <input type="text" class="form-control"  name="hometown" />
+                                            <input type="text" class="form-control" name="hometown" />
                                         </div>
 
                                         {/* ----------------address---------------- */}
@@ -480,7 +473,7 @@ function AddStaffs() {
                                             <label for="email" class="form-label">
                                                 Địa chỉ:
                                             </label>
-                                            <input type="text" class="form-control"  name="address" />
+                                            <input type="text" class="form-control" name="address" />
                                         </div>
                                     </div>
                                 </div>
@@ -633,7 +626,7 @@ function AddCalendar({ addCalendar }) {
                 </button>
             </div>
             {showModal && (
-                <div id="myModal" className={clsx(style.modal,style.addCalendar)}>
+                <div id="myModal" className={clsx(style.modal, style.addCalendar)}>
                     <div className={clsx(style.modalContent)}>
                         <div className={clsx(style.modalHeader)}>
                             <span onClick={handleCloseModal} className={clsx(style.close)}>
@@ -643,28 +636,34 @@ function AddCalendar({ addCalendar }) {
                         </div>
                         <div className={clsx(style.modalBody)}>
                             <form>
-                                {/* --------------fullName--------------- */}
+                                {/* --------------name task--------------- */}
+                                <div class="mb-3 mt-1">
+                                    <label for="email" class="form-label">
+                                        Tên công việc:
+                                    </label>
+                                    <input type="text" class="form-control" name="job_name" />
+                                </div>
+                                {/* --------------time--------------- */}
                                 <div class="mb-3 mt-3">
-                                            <label for="email" class="form-label">
-                                                Họ và tên:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                name="fullName"
-                                            />
-                                        </div>
-                                        {/* --------------fullName--------------- */}
-                                        <div class="mb-3 mt-3">
-                                            <label for="email" class="form-label">
-                                                Họ và tên:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                name="fullName"
-                                            />
-                                        </div>
+                                    <label for="email" class="form-label">
+                                        Thời gian:
+                                    </label>
+                                    <input type="text" class="form-control" name="job_time" />
+                                </div>
+                                {/* --------------place--------------- */}
+                                <div class="mb-3 mt-3">
+                                    <label for="email" class="form-label">
+                                        Địa điểm:
+                                    </label>
+                                    <input type="text" class="form-control" name="job_place" />
+                                </div>
+                                {/* --------------place--------------- */}
+                                <div class="mb-3 mt-3">
+                                    <label for="email" class="form-label">
+                                        Ngày tháng:
+                                    </label>
+                                    <input type="text" class="form-control" name="job_date" placeholder="mm/dd/yyyy" />
+                                </div>
                             </form>
                         </div>
                         <div className={clsx(style.modalFooter)}>
@@ -681,16 +680,6 @@ function AddCalendar({ addCalendar }) {
 
 //----------------------------------------------------edit staff ---------------------------------------------------------------
 function EditInfoStaff({ id, reloadPage }) {
-    const [showModal, setShowModal] = useState(false);
-
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
     if (id === undefined) {
         return <div></div>;
     }
@@ -719,7 +708,7 @@ function EditInfoStaff({ id, reloadPage }) {
 
     return (
         <div className={clsx(style.EditStaff)}>
-            <div>
+            {/* <div>
                 <div className={clsx(style.EditButton)}>
                     <button onClick={handleOpenModal} className={clsx(style.editButton)}>
                         Chỉnh sửa
@@ -778,7 +767,7 @@ function EditInfoStaff({ id, reloadPage }) {
                         </div>
                     </div>
                 )}
-            </div>
+            </div> */}
             <div className={clsx(style.ClearButton)}>
                 <button className={clsx(style.clearButton)} onClick={handleRemove}>
                     Xóa
