@@ -513,7 +513,7 @@ function DashboardAdmin() {
         <div className={clsx(styles.wrapper)}>
             {/* quantity patient and notification board */}
             <div className={clsx(styles.row1)}>
-                <PatientQuantity countAge={countAge} countBlood={countBlood} quantityPatient={quantityPatient} />
+              <PatientQuantity countAge={countAge} countBlood={countBlood} quantityPatient={quantityPatient} />
 
                 {/* Notification board */}
                 <div className={clsx(styles.boardNotifyWraper)}>
