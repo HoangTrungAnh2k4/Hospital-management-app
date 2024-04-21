@@ -22,7 +22,7 @@ const storage = getStorage();
 
 function getTime(){
     const time = new Date();
-    return `${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+    return `${time.getDate()}/${time.getMonth()+1}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
 }
 
 async function addMedicine(medicine) {
@@ -171,7 +171,6 @@ async function queryByFirstChar_blood(startChar, onChange) {
 async function queryMedByName(medicineName, onChange) {
     const medicinesCollectionRef = collection(database, "medicines");
     const q = query(medicinesCollectionRef, where("name", "==", medicineName));
-
     try {
         const querySnapshot = await getDocs(q);
         const medicines = querySnapshot.docs.map(doc => ({

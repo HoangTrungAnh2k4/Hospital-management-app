@@ -115,12 +115,18 @@ function Equipment() {
 
     function submitFixCata1(event){
         event.preventDefault();
+        if ( fixCata == ""){
+            return;
+        }
         updateCatalogue1Name(event.target.id, fixCata);
         setFixCate("");
     }
 
     function submitFixCata2(event) {
         event.preventDefault();
+        if ( fixCata == ""){
+            return;
+        }
         const button = event.target;
         const parentid = button.dataset.parentid;
         const id = button.dataset.id;
@@ -132,16 +138,7 @@ function Equipment() {
     function submitDelCata1(event){
         event.preventDefault();
         const catalogueId = event.target.id;
-        
-        deleteCatalogue1(catalogueId)
-            .then(() => {
-                // Cập nhật state để loại bỏ catalogue này khỏi danh sách
-                const updatedCatalogues = catalogues.filter(catalogue => catalogue.id !== catalogueId);
-                setCatalogues(updatedCatalogues);
-            })
-            .catch(error => {
-                console.error("Failed to delete catalogue:", error);
-            });
+        deleteCatalogue1(catalogueId);
     }
     
 
