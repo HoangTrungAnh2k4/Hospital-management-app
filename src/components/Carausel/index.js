@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import styles from "./Carasel.module.scss"
+import styles from "./Carousel.module.scss"
 import ECard from './Equip_Card';
 import MCard from './Medi_Card';
 
-function Carausel(props){
+function Carousel(props){
       
     function carousel() {
         const chunkedArray = [];
@@ -51,4 +51,4 @@ function Carausel(props){
          </div>
     );
 }
-export default Carausel;
+export default Carousel;

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import styles from "./Equipment.module.scss"
 import Slicebar from '~/components/Slicebar';
 import { useState } from 'react';
-import Carausel from '~/components/Carausel';
+import Carousel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -54,11 +54,12 @@ function Equipment() {
     
         if (name === "img_url" && files[0]) {
             try {
-                const downloadURL = await uploadImage(files[0], "equipments");
-                setAddItem(prevState => ({
-                    ...prevState,
-                    [name]: downloadURL
-                }));
+                uploadImage(files[0], "equipments", (downloadURL) => {
+                    setAddItem(prevState => ({
+                        ...prevState,
+                        [name]: downloadURL
+                    }));
+                });
             } catch (error) {
                 alert('Upload failed: ' + error.message);
             }
@@ -72,6 +73,7 @@ function Equipment() {
     
     function submitAdd(event){
         event.preventDefault();
+        console.log(addItem);
         if ( !addItem.catalogue_1 || !addItem.catalogue_2 || !addItem.name ||
             !addItem.produce || !addItem.expiry || !addItem.img_url
         ){
@@ -93,7 +95,7 @@ function Equipment() {
 
           return <div class="d-flex justify-content-center p-5"><h1>Không tìm thấy thông tin...</h1></div>;
         }
-        return <Carausel elements={data} option="equipment"/>;
+        return <Carousel elements={data} option="equipment"/>;
     }
 
     function changeSearch(event){
@@ -188,9 +190,9 @@ function Equipment() {
                         <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="name" placeholder="Tên thiết bị" value={addItem.name} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="produce" placeholder="Nơi sản xuất" value={addItem.produce} onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeAddItem}/>
-                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
                     </div>
                     <div className={"modal-footer"}>
                         <button type="button" className={"btn btn-lg btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>

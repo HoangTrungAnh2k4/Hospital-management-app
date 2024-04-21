@@ -5,7 +5,7 @@ import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 import { useState, useEffect } from 'react';
 import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
-import Carausel from '~/components/Carausel';
+import Carousel from '~/components/Carausel';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
 import { addMedicine, getMedicine, queryByFirstChar, queryMedByName, queryMedByCatOrAct} from '~/firebase';
 import { uploadImage, deleteImage, getHistory } from '~/firebase';
@@ -73,7 +73,7 @@ function Medicine() {
         if (data.length === 0) {
           return <div class="d-flex justify-content-center p-5"><h1>Không tìm thấy thông tin...</h1></div>;
         }
-        return <Carausel elements={data} option="medicine" />;
+        return <Carousel elements={data} option="medicine" />;
     }
     function changeInput(event){
         setSearchItem(event.target.value);
@@ -101,11 +101,12 @@ function Medicine() {
     
         if (name === "img_url" && files[0]) {
             try {
-                const downloadURL = await uploadImage(files[0], "medicines");
-                setAddItem(prevState => ({
-                    ...prevState,
-                    [name]: downloadURL
-                }));
+                uploadImage(files[0], "medicines", (downloadURL) => {
+                    setAddItem(prevState => ({
+                        ...prevState,
+                        [name]: downloadURL
+                    }));
+                });
             } catch (error) {
                 alert('Upload failed: ' + error.message);
             }
@@ -212,10 +213,10 @@ function Medicine() {
                         <input className={"form-control form-control-lg m-2"} type="text" name="catelogue" placeholder="Danh mục" value={addItem.catelogue} onChange={changeSaveItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="type" placeholder="Dạng bào chế" value={addItem.type} onChange={changeSaveItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="packing" placeholder="Đóng gói" value={addItem.packing} onChange={changeSaveItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeSaveItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="expiry" placeholder="Hạng sử dụng" value={addItem.expiry} onChange={changeSaveItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="active_element" placeholder="Hoạt chất" value={addItem.active_element} onChange={changeSaveItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="produce" placeholder="Công ty sản xuất" value={addItem.produce} onChange={changeSaveItem}/>
-                        <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeSaveItem}/>
                         <div class="input-group m-2">
                             <span className={"input-group-text"} id="basic-addon1">đ</span>
                             <input type="number" className={"form-control form-control-lg"} name="price" placeholder="Giá bán" value={addItem.price} onChange={changeSaveItem}/>
