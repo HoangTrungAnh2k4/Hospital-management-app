@@ -18,8 +18,6 @@ function Equipment() {
         }
     }, []);
     const initialState = {
-        catalogue_1: "",
-        catalogue_2: "",
         name: "",
         produce: "",
         expiry: "",
@@ -27,9 +25,14 @@ function Equipment() {
         quantity: 0,
         win_bid: []
     }
+    const initCata = {
+        catalogue_1: "",
+        catalogue_2: ""
+    }
     const [data, setData] = useState([]);
     const [catalogues, setCatalogues] = useState([]);
     const [addItem, setAddItem] = useState(initialState);
+    const [addCata, setAddCata] = useState(initCata);
     const [target, setTarget] = useState([null, null]);
     const [searchItem, setSearchItem] = useState('');
     const [fixCata, setFixCate] = useState("");
@@ -53,15 +56,20 @@ function Equipment() {
         const { name, value, files } = event.target;
     
         if (name === "img_url" && files[0]) {
+            const file = files[0];
+            const addQuipBtn = document.getElementById("addEquipbtn");
+            addQuipBtn.setAttribute('disabled', true);
             try {
-                uploadImage(files[0], "equipments", (downloadURL) => {
+                await uploadImage(file, "equipments", (downloadURL) => {
                     setAddItem(prevState => ({
                         ...prevState,
                         [name]: downloadURL
                     }));
                 });
             } catch (error) {
-                alert('Upload failed: ' + error.message);
+                alert('Tải ảnh không thành công: ' + error.message);
+            } finally {
+                addQuipBtn.removeAttribute('disabled');
             }
         } else {
             setAddItem(prevState => ({
@@ -70,18 +78,26 @@ function Equipment() {
             }));
         }
     }
+    async function changeAddCata(event){
+        const {name, value} = event.target;
+        setAddCata(prevState => ({
+            ...prevState,
+            [name] : value
+        }))
+    }
     
     function submitAdd(event){
         event.preventDefault();
         console.log(addItem);
-        if ( !addItem.catalogue_1 || !addItem.catalogue_2 || !addItem.name ||
+        if ( !addCata.catalogue_1 || !addCata.catalogue_2 || !addItem.name ||
             !addItem.produce || !addItem.expiry || !addItem.img_url
         ){
             alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
             return;
         }
-        addEquipment( addItem.catalogue_1, addItem.catalogue_2, addItem).then(() => {
+        addEquipment( addCata.catalogue_1, addCata.catalogue_2, addItem).then(() => {
             setAddItem(initialState);
+            setAddCata(initCata);
         })
     }
 
@@ -115,7 +131,7 @@ function Equipment() {
 
     function submitFixCata1(event){
         event.preventDefault();
-        if ( fixCata == ""){
+        if ( fixCata === ""){
             return;
         }
         updateCatalogue1Name(event.target.id, fixCata);
@@ -124,7 +140,7 @@ function Equipment() {
 
     function submitFixCata2(event) {
         event.preventDefault();
-        if ( fixCata == ""){
+        if ( fixCata === ""){
             return;
         }
         const button = event.target;
@@ -184,8 +200,8 @@ function Equipment() {
                         <button type="button" className={"btn-close"} data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelAdd}></button>
                     </div>
                     <div className={"modal-body"}>
-                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddItem}/>
-                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddItem}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_1" placeholder="Danh mục lớn" value={addItem.catalogue_1} onChange={changeAddCata}/>
+                        <input className={"form-control form-control-lg m-2"} type="text" name="catalogue_2" placeholder="Danh mục nhỏ" value={addItem.catalogue_2} onChange={changeAddCata}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="name" placeholder="Tên thiết bị" value={addItem.name} onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="file" name="img_url" placeholder="Link ảnh" onChange={changeAddItem}/>
                         <input className={"form-control form-control-lg m-2"} type="text" name="produce" placeholder="Nơi sản xuất" value={addItem.produce} onChange={changeAddItem}/>
@@ -193,7 +209,7 @@ function Equipment() {
                     </div>
                     <div className={"modal-footer"}>
                         <button type="button" className={"btn btn-lg btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
-                        <button type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
+                        <button id="addEquipbtn" type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
                     </div>
                     </div>
                 </div>

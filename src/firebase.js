@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // import { getDatabase } from 'firebase/database';
-import { getFirestore, collection, doc, setDoc, onSnapshot,deleteDoc, query, where, orderBy, getDocs, updateDoc, arrayUnion, getDoc, addDoc, limit} from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc, onSnapshot,deleteDoc, query, where, orderBy, getDocs, updateDoc, arrayUnion, getDoc, addDoc, limit, serverTimestamp} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -368,7 +368,7 @@ async function deleteWinBid_blood(documentId, index) {
     }
 }
 
-async function uploadImage(file, field) {
+async function uploadImage(file, field, onChange) {
     if (!file) {
         throw new Error("No file provided");
     }
@@ -376,12 +376,7 @@ async function uploadImage(file, field) {
     try {
         const snapshot = await uploadBytes(storageRef, file);
         const downloadURL = await getDownloadURL(snapshot.ref);
-        addHistory({
-            field: "Thêm",
-            time: getTime(),
-            content: `Thêm ảnh vào ${field}.`
-        }, (field === "medicines"));
-        return downloadURL;
+        onChange(downloadURL);
     } catch (error) {
         throw new Error('Upload failed: ' + error.message);
     }
@@ -406,41 +401,39 @@ function deleteImage(img_url, field){
     }
     const imageRef = ref(storage, img_url);
     deleteObject(imageRef);
-    addHistory({
-        field: "Xóa",
-        time: getTime(),
-        content: `Xóa ảnh thuộc ${field}.`
-    }, (field === "medicines"));
 }
 
 async function addEquipment(catalogue_1, catalogue_2, equipment) {
     try {
-        // Kiểm tra xem liệu catalogue_1 đã tồn tại hay chưa
-        let catalogue1Ref;
+        let catalogue1Id, catalogue2Id;
+
+        // Check if catalogue_1 exists
         const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue_1));
         const catalogue1Snapshot = await getDocs(catalogue1Query);
         if (!catalogue1Snapshot.empty) {
-            // Nếu tồn tại, lấy tham chiếu đến document đầu tiên
-            catalogue1Ref = catalogue1Snapshot.docs[0].ref;
+            catalogue1Id = catalogue1Snapshot.docs[0].id;
         } else {
-            // Nếu không tồn tại, tạo mới
-            catalogue1Ref = await addDoc(collection(database, 'equipments'), { name: catalogue_1 });
+            // If not exists, create new
+            const catalogue1Ref = await addDoc(collection(database, 'equipments'), { name: catalogue_1 });
+            catalogue1Id = catalogue1Ref.id;
         }
 
-        // Kiểm tra xem liệu catalogue_2 đã tồn tại trong subcollection 'details' của catalogue_1 hay chưa
-        let catalogue2Ref;
-        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue_2));
+        // Check if catalogue_2 exists in the 'details' of catalogue_1
+        const catalogue2Query = query(collection(database, `equipments/${catalogue1Id}/details`), where("name", "==", catalogue_2));
         const catalogue2Snapshot = await getDocs(catalogue2Query);
         if (!catalogue2Snapshot.empty) {
-            // Nếu tồn tại, lấy tham chiếu đến document đầu tiên
-            catalogue2Ref = catalogue2Snapshot.docs[0].ref;
+            catalogue2Id = catalogue2Snapshot.docs[0].id;
         } else {
-            // Nếu không tồn tại, tạo mới
-            catalogue2Ref = await addDoc(collection(database, `equipments/${catalogue1Ref.id}/details`), { name: catalogue_2 });
+            // If not exists, create new
+            const catalogue2Ref = await addDoc(collection(database, `equipments/${catalogue1Id}/details`), { name: catalogue_2 });
+            catalogue2Id = catalogue2Ref.id;
         }
 
-        // Thêm equipment vào sub-subcollection 'equipment' của catalogue_2
-        await addDoc(collection(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`), equipment);
+        // Append the IDs to the equipment data
+        const fullEquipmentData = { ...equipment, catalogue1Id, catalogue2Id };
+
+        // Add equipment to the 'equipment' collection under catalogue_2
+        await addDoc(collection(database, `equipments/${catalogue1Id}/details/${catalogue2Id}/equipment`), fullEquipmentData);
         addHistory({
             field: "Thêm",
             time: getTime(),
@@ -451,31 +444,29 @@ async function addEquipment(catalogue_1, catalogue_2, equipment) {
     }
 }
 
-function getEquipmentByCatalogue(catalogue_1, catalogue_2, onChange) {
+function getEquipmentByCatalogue(catalogue1Id, catalogue2Id, onChange) {
     try {
-        const equipmentsQuery = query(collection(database, 'equipments'), catalogue_1 ? where("name", "==", catalogue_1) : limit(1));
-        onSnapshot(equipmentsQuery, (equipmentsSnapshot) => {
-            if (!equipmentsSnapshot.empty) {
-                const catalogue1Ref = equipmentsSnapshot.docs[0].ref;
-                const detailsQuery = query(collection(database, `equipments/${catalogue1Ref.id}/details`), catalogue_2 ? where("name", "==", catalogue_2) : limit(1));
-                onSnapshot(detailsQuery, (detailsSnapshot) => {
-                    if (!detailsSnapshot.empty) {
-                        const catalogue2Ref = detailsSnapshot.docs[0].ref;
-                        const equipmentQuery = collection(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`);
-                        onSnapshot(equipmentQuery, (equipmentSnapshot) => {
-                            const equipmentList = equipmentSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                            onChange(equipmentList);
-                        });
-                    } else {
-                        onChange([]);
-                    }
-                });
+        // Ensure the catalogue IDs are present
+        if (!catalogue1Id || !catalogue2Id) {
+            console.error("Catalogue IDs must be provided");
+            onChange([]);
+            return;
+        }
+
+        // Directly access the 'details' collection using the catalogue1Id and catalogue2Id
+        const equipmentQuery = collection(database, `equipments/${catalogue1Id}/details/${catalogue2Id}/equipment`);
+        
+        // Set up a listener for the equipment collection under the specified catalogue
+        onSnapshot(equipmentQuery, (equipmentSnapshot) => {
+            if (!equipmentSnapshot.empty) {
+                const equipmentList = equipmentSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                onChange(equipmentList);
             } else {
-                onChange([]);
+                onChange([]);  // Handle the case where no equipments are found
             }
         });
     } catch (error) {
-        console.error("Error setting up listeners:", error);
+        console.error("Error fetching equipment by catalogue IDs:", error);
         onChange([]);
     }
 }
@@ -516,87 +507,84 @@ function getCatalogue(onChange) {
     });
 }
 
-async function updateEquipment(catalogue_1, catalogue_2, equipmentId, newData) {
+async function updateEquipment(catalogue1Id, catalogue2Id, equipmentId, newData) {
     try {
-        const equipmentRef = doc(database, `equipments/${catalogue_1}/details/${catalogue_2}/equipment/${equipmentId}`);
-        const docSnap = await getDoc(equipmentRef);
-        const equipmentName = docSnap.data().name;
-        addHistory({
-            field: "Cập nhật",
-            time: getTime(),
-            content: `Cập nhật dữ liệu cho ${equipmentName}.`
-        }, false);
-        await updateDoc(equipmentRef, newData);
-    } catch (error) {
-        alert('Error updating data: ', error);
-    }
-}
+        // Reference the equipment document directly using the provided IDs
+        const equipmentRef = doc(database, `equipments/${catalogue1Id}/details/${catalogue2Id}/equipment`, equipmentId);
 
-async function addWinBidEquipment(catalogue_1, catalogue_2, equipmentId, winBid) {
-    try {
-        // Locate the catalogue_1
-        const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue_1));
-        const catalogue1Snapshot = await getDocs(catalogue1Query);
-        if (catalogue1Snapshot.empty) {
-            throw new Error("Catalogue 1 not found");
-        }
-        const catalogue1Ref = catalogue1Snapshot.docs[0].ref;
-
-        // Locate the catalogue_2
-        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue_2));
-        const catalogue2Snapshot = await getDocs(catalogue2Query);
-        if (catalogue2Snapshot.empty) {
-            throw new Error("Catalogue 2 not found");
-        }
-        const catalogue2Ref = catalogue2Snapshot.docs[0].ref;
-
-        // Locate the specific equipment
-        const equipmentRef = doc(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`, equipmentId);
+        // Check if the equipment document exists
         const equipmentSnap = await getDoc(equipmentRef);
         if (!equipmentSnap.exists()) {
             throw new Error("Equipment not found");
         }
 
-        // Extract existing data
-        const existingData = equipmentSnap.data();
+        // Fetch names for catalogue 1 and catalogue 2
+        const catalogue1Ref = doc(database, `equipments/${catalogue1Id}`);
+        const catalogue1Snap = await getDoc(catalogue1Ref);
+        if (!catalogue1Snap.exists()) {
+            throw new Error("Catalogue 1 not found");
+        }
 
+        const catalogue2Ref = doc(database, `equipments/${catalogue1Id}/details/${catalogue2Id}`);
+        const catalogue2Snap = await getDoc(catalogue2Ref);
+        if (!catalogue2Snap.exists()) {
+            throw new Error("Catalogue 2 not found");
+        }
+
+        // Update the equipment data
+        await updateDoc(equipmentRef, newData);
+
+        // Record this action in a history log with names instead of IDs
         addHistory({
-            field: "Thêm",
+            field: "Cập nhật",
             time: getTime(),
-            content: `Đấu thầu thành công cho vật tư ${existingData.name}.`
+            content: `Cập nhật dữ liệu cho thiết bị ${equipmentSnap.data().name} trong danh mục ${catalogue2Snap.data().name} của ${catalogue1Snap.data().name}`
         }, false);
-        // Add or update the win bid and quantity
-        await updateDoc(equipmentRef, {
-            win_bid: arrayUnion(winBid),
-            quantity: Number(existingData.quantity) + Number(winBid.wquantity)
-        });
-
-        console.log("Win bid added successfully to the equipment!");
     } catch (error) {
-        console.error("Error adding win bid to equipment:", error);
+        console.error("Error updating equipment: ", error);
+        throw new Error(`Error updating equipment: ${error.message}`);
     }
 }
 
-async function deleteWinBidEquipment(catalogue1Name, catalogue2Name, equipmentId, bidIndex) {
+async function addWinBidEquipment(catalogue1Id, catalogue2Id, equipmentId, winBid) {
     try {
-        // Query for the catalogue1 document using its name
-        const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue1Name));
-        const catalogue1Snapshot = await getDocs(catalogue1Query);
-        if (catalogue1Snapshot.empty) {
-            throw new Error("Catalogue 1 not found");
+        // Directly reference the equipment using the provided catalogue IDs
+        const equipmentRef = doc(database, `equipments/${catalogue1Id}/details/${catalogue2Id}/equipment`, equipmentId);
+        const equipmentSnap = await getDoc(equipmentRef);
+        if (!equipmentSnap.exists()) {
+            throw new Error("Equipment not found");
         }
-        const catalogue1Ref = catalogue1Snapshot.docs[0].ref;
 
-        // Query for the catalogue2 document using its name within the specific catalogue1
-        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue2Name));
-        const catalogue2Snapshot = await getDocs(catalogue2Query);
-        if (catalogue2Snapshot.empty) {
-            throw new Error("Catalogue 2 not found");
-        }
-        const catalogue2Ref = catalogue2Snapshot.docs[0].ref;
+        // Extract the existing equipment data
+        const existingData = equipmentSnap.data();
 
-        // Access the specific equipment document
-        const equipmentRef = doc(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`, equipmentId);
+        // Prepare the updated win bid and quantity
+        const updatedWinBids = [...(existingData.win_bid || []), winBid];
+        const updatedQuantity = Number(existingData.quantity) + Number(winBid.wquantity);
+
+        // Update the equipment document with the new win bids and adjusted quantity
+        await updateDoc(equipmentRef, {
+            win_bid: updatedWinBids,
+            quantity: updatedQuantity
+        });
+
+        // Log the successful addition to history for record-keeping
+        addHistory({
+            field: "Thêm đấu thầu",
+            time: getTime(),
+            content: `Thêm đấu thầu thành công cho vật tư ${existingData.name} với số lượng ${winBid.wquantity}.`
+        }, false);
+
+    } catch (error) {
+        console.error("Error adding win bid to equipment:", error.message);
+        throw new Error(`Error adding win bid to equipment: ${error.message}`);
+    }
+}
+
+async function deleteWinBidEquipment(catalogue1Id, catalogue2Id, equipmentId, bidIndex) {
+    try {
+        // Directly reference the specific equipment document
+        const equipmentRef = doc(database, `equipments/${catalogue1Id}/details/${catalogue2Id}/equipment`, equipmentId);
         const equipmentSnap = await getDoc(equipmentRef);
         if (!equipmentSnap.exists()) {
             throw new Error("Equipment not found");
@@ -607,24 +595,16 @@ async function deleteWinBidEquipment(catalogue1Name, catalogue2Name, equipmentId
         if (bidIndex < 0 || bidIndex >= equipmentData.win_bid.length) {
             throw new Error("Invalid index!");
         }
-        const winBid = equipmentData.win_bid[bidIndex];
 
         // Ensure there is enough quantity to remove the win bid
+        const winBid = equipmentData.win_bid[bidIndex];
         if (equipmentData.quantity < winBid.wquantity) {
             throw new Error("Insufficient quantity to remove this win bid!");
         }
 
-        // Create the history entry before modifying the equipment
-        addHistory({
-            field: "Xóa",
-            time: getTime(),
-            content: `Xóa lượt đấu thầu thành công cho thiết bị ${equipmentData.name}.`
-        }, false);
-
         // Remove the bid from the array and update the quantity
-        const updatedWinBids = [...equipmentData.win_bid];
-        updatedWinBids.splice(bidIndex, 1);
-        const updatedQuantity = Number(equipmentData.quantity) - Number(winBid.wquantity);
+        const updatedWinBids = equipmentData.win_bid.filter((_, index) => index !== bidIndex);
+        const updatedQuantity = equipmentData.quantity - winBid.wquantity;
 
         // Update the document with the new win bids array and adjusted quantity
         await updateDoc(equipmentRef, {
@@ -632,48 +612,50 @@ async function deleteWinBidEquipment(catalogue1Name, catalogue2Name, equipmentId
             quantity: updatedQuantity
         });
 
-        console.log("Win bid removed successfully from the equipment!");
+        // Log the successful deletion to history for record-keeping
+        addHistory({
+            field: "Xóa đấu thầu",
+            time: getTime(),
+            content: `Xóa đấu thầu thành công cho vật tư ${equipmentData.name}, lượng bớt: ${winBid.wquantity}.`
+        }, false);
 
     } catch (error) {
-        console.error("Error removing win bid from equipment:", error);
-        alert("Error removing win bid: " + error.message);
+        console.error("Error removing win bid from equipment:", error.message);
+        throw new Error(`Error removing win bid: ${error.message}`);
     }
 }
 
-async function deleteEquipment(catalogue1Name, catalogue2Name, equipmentId) {
+async function deleteEquipment(catalogue1Id, catalogue2Id, equipmentId) {
     try {
-        // Locate the catalogue_1 by name
-        const catalogue1Query = query(collection(database, 'equipments'), where("name", "==", catalogue1Name));
-        const catalogue1Snapshot = await getDocs(catalogue1Query);
-        if (catalogue1Snapshot.empty) {
-            throw new Error("Catalogue 1 not found");
-        }
-        const catalogue1Ref = catalogue1Snapshot.docs[0].ref;
+        // Reference to the catalogue1
+        const catalogue1Ref = doc(database, 'equipments', catalogue1Id);
 
-        // Locate the catalogue_2 by name within the found catalogue_1
-        const catalogue2Query = query(collection(database, `equipments/${catalogue1Ref.id}/details`), where("name", "==", catalogue2Name));
-        const catalogue2Snapshot = await getDocs(catalogue2Query);
-        if (catalogue2Snapshot.empty) {
-            throw new Error("Catalogue 2 not found");
-        }
-        const catalogue2Ref = catalogue2Snapshot.docs[0].ref;
+        // Reference to the catalogue2 within catalogue1
+        const catalogue2Ref = doc(database, `equipments/${catalogue1Ref.id}/details`, catalogue2Id);
 
-        // Create a reference to the equipment document
+        // Create a reference to the specific equipment document
         const equipmentRef = doc(database, `equipments/${catalogue1Ref.id}/details/${catalogue2Ref.id}/equipment`, equipmentId);
 
+        // Check if the equipment exists before attempting to delete
         const equipmentSnap = await getDoc(equipmentRef);
+        if (!equipmentSnap.exists()) {
+            throw new Error("Equipment not found");
+        }
         const equipmentName = equipmentSnap.data().name;
-        addHistory({
+
+        // Log the deletion
+        await addHistory({
             field: "Xóa",
             time: getTime(),
-            content: `Xóa vật tư ${equipmentName}.`
+            content: `Xóa vật tư '${equipmentName}'.`
         }, false);
+
         // Delete the equipment document
         await deleteDoc(equipmentRef);
 
-        console.log("Equipment has been successfully deleted.");
     } catch (error) {
         console.error("Error deleting equipment:", error);
+        throw new Error(`Error deleting equipment: ${error.message}`);
     }
 }
 
@@ -765,7 +747,7 @@ async function deleteCatalogue2(catalogue1Id, catalogue2Id) {
             }, false);
             await deleteDoc(catalogue2Ref);
         } else {
-            alert("Catalogue_2 not deleted because it contains equipment items.");
+            alert("Không thể xóa vì danh mục chứa nhiều thiết bị.");
         }
     } catch (error) {
         alert("Error in deleting catalogue_2:", error);
@@ -790,7 +772,7 @@ async function deleteCatalogue1(catalogue1Id) {
             }, false);
             await deleteDoc(catalogue1Ref);
         } else {
-            alert("Catalogue_1 not deleted because it contains `catalogue_2` documents.");
+            alert("Không thể xóa vì danh mục không trống.");
         }
     } catch (error) {
         alert("Error in deleting catalogue_1:", error);
@@ -800,8 +782,10 @@ async function deleteCatalogue1(catalogue1Id) {
 async function addHistory(history, flag) {
     try {
         const docRef = doc(collection(database, flag?"medhistory":"equiphistory"));
-        await setDoc(docRef, history);
-        console.log("Data saved successfully!")
+        await setDoc(docRef, {
+            ...history,
+            createdAt: serverTimestamp()
+        });
     } catch (error) {
         console.log("Error saving data: ", error);
     }
@@ -809,8 +793,8 @@ async function addHistory(history, flag) {
 
 async function getHistory(flag, onChange) {
     const collectionRef = collection(database, flag?"medhistory":"equiphistory");
-
-    onSnapshot(collectionRef, (querySnapshot) => {
+    const queryRef = query(collectionRef, orderBy("createdAt", "desc"));
+    onSnapshot(queryRef, (querySnapshot) => {
         const documents = [];
         querySnapshot.forEach((doc) => {
             documents.push({ id: doc.id, ...doc.data() });

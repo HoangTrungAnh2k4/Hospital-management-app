@@ -9,7 +9,7 @@ function Catalogue(props) {
             <div class="collapse" id={`${props.catalogues.id}-collapse`}>
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 ps-4 small">
                     { props.catalogues.details.map( (item, index) => {
-                        return <SubCatalogue key={index} catalogues={item} setTarget={props.setTarget} parentName={props.catalogues.name}/>
+                        return <SubCatalogue key={index} catalogues={item} setTarget={props.setTarget} parentId={props.catalogues.id}/>
                     })}
                 </ul>
             </div>

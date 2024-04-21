@@ -100,15 +100,20 @@ function Medicine() {
         const { name, value, files } = event.target;
     
         if (name === "img_url" && files[0]) {
+            const file = files[0];
+            const addMedBtn = document.getElementById("addMedbtn");
+            addMedBtn.setAttribute('disabled', true);
             try {
-                uploadImage(files[0], "medicines", (downloadURL) => {
+                await uploadImage(file, "medicines", (downloadURL) => {
                     setAddItem(prevState => ({
                         ...prevState,
                         [name]: downloadURL
                     }));
                 });
             } catch (error) {
-                alert('Upload failed: ' + error.message);
+                alert('Tải ảnh không thành công: ' + error.message);
+            } finally {
+                addMedBtn.removeAttribute('disabled');
             }
         } else {
             setAddItem(prevState => ({
@@ -226,7 +231,7 @@ function Medicine() {
                     </div>
                     <div className={"modal-footer"}>
                         <button type="button" className={"btn btn-lg btn-secondary"} data-bs-dismiss="modal" onClick={submitCancelAdd}>Hủy</button>
-                        <button type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
+                        <button id="addMedbtn" type="button" className={"btn btn-lg btn-primary"} data-bs-dismiss="modal" onClick={submitAdd}>Lưu</button>
                     </div>
                     </div>
                 </div>

@@ -13,45 +13,49 @@ function ECard(props){
     const [fixItem, setFixItem] =useState({});
     const [newWin_bid, setNewWin_bid] = useState(initWinBid);
     useEffect(() => {
-        setFixItem(props.medicine);
-    }, [props.medicine]);
+        setFixItem(props.equipment);
+    }, [props.equipment]);
     const [prevImg, setPrevImg] = useState(props.equipment.img_url);
 
     function changeFixItem(event) {
         const { name, value, files } = event.target;
         if (name === "img_url" && files && files.length > 0) {
             const file = files[0];
+            const fixQuipBtn = document.getElementById("fixQuipbtn");
+            fixQuipBtn.setAttribute('disabled', true);
+    
             uploadImage(file, "equipments", (downloadURL) => {
-                setFixItem(prevState => {
-                    return {
-                        ...prevState,
-                        [name]: downloadURL
-                    };
-                });
+                setFixItem(prevState => ({
+                    ...prevState,
+                    [name]: downloadURL
+                }));
+                fixQuipBtn.removeAttribute('disabled');
+            }).catch(error => {
+                console.error("Error uploading image: ", error);
+                fixQuipBtn.removeAttribute('disabled');
             });
         } else {
-            setFixItem(prevState => {
-                if (name === "quantity") {
-                    return {
-                        ...prevState,
-                        [name]: Number(value)
-                    };
-                } else {
-                    return {
-                        ...prevState,
-                        [name]: value
-                    };
-                }
-            });
+            setFixItem(prevState => ({
+                ...prevState,
+                [name]: name === "quantity" ? Number(value) : value
+            }));
         }
     }
+    
     function submitFixItem(event){
         event.preventDefault();
-        if ( fixItem.img_url != prevImg){
+        if (fixItem.img_url !== prevImg){
             deleteImage(prevImg, "equipments");
             setPrevImg(fixItem.img_url);
         }
-        updateEquipment(props.equipment.catelogue_1, props.equipment.catelogue_2, props.equipmentid, fixItem);
+        updateEquipment(props.equipment.catalogue1Id, props.equipment.catalogue2Id, props.equipment.id, fixItem);
+    }
+    
+    function submitCancelFix(event){
+        if ( fixItem.img_url !== prevImg){
+            deleteImage(fixItem.img_url, "equipments");
+            fixItem.img_url = prevImg;
+        }
     }
     function changFixWinBid(event, index){
         const { name, value } = event.target;
@@ -67,7 +71,7 @@ function ECard(props){
     function submitDelEquip(event){
         event.preventDefault();
         deleteImage(props.equipment.img_url, "equipments");
-        deleteEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 , props.equipment.id)
+        deleteEquipment(props.equipment.catalogue1Id, props.equipment.catalogue2Id , props.equipment.id)
     }
     function changeNewBid(event){
         const {name, value} = event.target;
@@ -92,13 +96,13 @@ function ECard(props){
             alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
             return;
         }
-        addWinBidEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 , props.equipment.id, newWin_bid).then(() => {
+        addWinBidEquipment(props.equipment.catalogue1Id, props.equipment.catalogue2Id , props.equipment.id, newWin_bid).then(() => {
             setNewWin_bid(initWinBid);
         })
     }
     function submitDelBid(event, bidId){
         event.preventDefault();
-        deleteWinBidEquipment(props.equipment.catalogue_1, props.equipment.catalogue_2 ,props.equipment.id, bidId);
+        deleteWinBidEquipment(props.equipment.catalogue1Id, props.equipment.catalogue2Id ,props.equipment.id, bidId);
     }
     return (
         <div class="col-md-3 col-sm-6" >
@@ -180,12 +184,10 @@ function ECard(props){
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelFix}></button>
                     </div>
                     <div class="modal-body">
                         <form class="form-floating">
-                            <input class="form-control form-control-lg m-2" type="text" name="catelogue_1" placeholder="Danh mục lớn" defaultValue={props.equipment.catalogue_1} onChange={changeFixItem}/>
-                            <input class="form-control form-control-lg m-2" type="text" name="catelogue_2" placeholder="Danh mục nhỏ" defaultValue={props.equipment.catalogue_2} onChange={changeFixItem}/>
                             <input class="form-control form-control-lg m-2" type="text" name="name" placeholder="Tên thiết bị" defaultValue={props.equipment.name} onChange={changeFixItem}/>
                             <input class="form-control form-control-lg m-2" type="text" name="produce" placeholder="Nơi sản xuất" defaultValue={props.equipment.produce} onChange={changeFixItem}/>
                             <input class="form-control form-control-lg m-2" type="text" name="expiry" placeholder="Hạng sử dụng" defaultValue={props.equipment.expiry} onChange={changeFixItem}/>
@@ -207,8 +209,8 @@ function ECard(props){
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitCancelFix}>Hủy</button>
+                        <button id="fixQuipbtn" type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
                     </div>
                     </div>
                 </div>
@@ -222,10 +224,10 @@ function ECard(props){
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <input type="date" name="date" class="form-control form-control-lg" placeholder="Ngày nhập" value={newWin_bid.date} onChange={changeNewBid}/>
-                            <input type="number" name="wprice" class="form-control form-control-lg" placeholder="Giá nhập" value={newWin_bid.wprice} onChange={changeNewBid}/>
-                            <input type="number" name="wquantity" class="form-control form-control-lg" placeholder="Số lượng" value={newWin_bid.wquantity} onChange={changeNewBid}/>
-                            <input type="text" name="wunit" class="form-control form-control-lg" placeholder="Đơn vị" value={newWin_bid.wunit} onChange={changeNewBid}/>
+                            <input type="date" name="date" class="form-control form-control-lg" placeholder="Ngày nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wprice" class="form-control form-control-lg" placeholder="Giá nhập" onChange={changeNewBid}/>
+                            <input type="number" name="wquantity" class="form-control form-control-lg" placeholder="Số lượng" onChange={changeNewBid}/>
+                            <input type="text" name="wunit" class="form-control form-control-lg" placeholder="Đơn vị" onChange={changeNewBid}/>
                         </div>
                     </div>
                     <div class="modal-footer">

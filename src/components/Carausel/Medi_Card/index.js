@@ -28,6 +28,8 @@ function MCard(props){
         const { name, value, files } = event.target;
         if (name === "img_url" && files && files.length > 0) {
             const file = files[0];
+            const fixMedBtn = document.getElementById("fixMedbtn");
+            fixMedBtn.setAttribute('disabled', true);
             uploadImage(file, "medicines", (downloadURL) => {
                 setFixItem(prevState => {
                     return {
@@ -35,6 +37,10 @@ function MCard(props){
                         [name]: downloadURL
                     };
                 });
+                fixMedBtn.removeAttribute('disabled');
+            }).catch(error => {
+                console.error("Error uploading image: ", error);
+                fixMedBtn.removeAttribute('disabled');
             });
         } else {
             setFixItem(prevState => {
@@ -72,11 +78,17 @@ function MCard(props){
     
     function submitFixItem(event){
         event.preventDefault();
-        if ( fixItem.img_url != prevImg){
+        if ( fixItem.img_url !== prevImg){
             deleteImage(prevImg, "medicines");
             setPrevImg(fixItem.img_url);
         }
         updateMedicine(props.medicine.id, fixItem);
+    }
+    function submitCancelFix(event){
+        if ( fixItem.img_url !== prevImg){
+            deleteImage(fixItem.img_url, "medicines");
+            fixItem.img_url = prevImg;
+        }
     }
     function submitDelete(event){
         event.preventDefault();
@@ -102,8 +114,14 @@ function MCard(props){
     }
     function submitNewBid(event) {
         event.preventDefault();
-        addWinBidMedicine(props.medicine.id, newWin_bid);
-        setNewWin_bid(initWinBid);
+        console.log(newWin_bid);
+        if ( !newWin_bid.date || !newWin_bid.wquantity || !newWin_bid.wunit){
+            alert("Vui lòng điền đầy đủ thông tin các trường bắt buộc.");
+            return;
+        }
+        addWinBidMedicine(props.medicine.id, newWin_bid).then(() => {
+            setNewWin_bid(initWinBid);
+        })
     }
     function submitDelBid(event, bidId){
         event.preventDefault();
@@ -229,7 +247,7 @@ function MCard(props){
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={submitCancelFix}></button>
                     </div>
                     <div class="modal-body">
                         <form class="form-floating">
@@ -265,8 +283,8 @@ function MCard(props){
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`}>Hủy</button>
-                        <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
+                        <button type="button" class="btn btn-lg btn-secondary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitCancelFix}>Hủy</button>
+                        <button id="fixMedbtn" type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target={`#${props.medicine.id}Backdrop`} onClick={submitFixItem}>Lưu</button>
                     </div>
                     </div>
                 </div>
