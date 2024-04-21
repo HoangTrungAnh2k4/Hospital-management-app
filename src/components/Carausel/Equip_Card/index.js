@@ -197,10 +197,10 @@ function ECard(props){
                             {
                                 props.equipment.win_bid.map((item, index) => (
                                     <div className="input-group m-2" key={index}>
-                                        <input type="date" className="form-control form-control-lg" name="date" defaultValue={item.date} onChange={changFixWinBid}/>
-                                        <input type="number" className="form-control form-control-lg" name="wprice" defaultValue={item.wprice} onChange={changFixWinBid}/>
-                                        <input type="number" className="form-control form-control-lg" name="wquantity" defaultValue={item.wquantity} onChange={changFixWinBid}/>
-                                        <input type="text" className="form-control form-control-lg" name="wunit" defaultValue={item.wunit} onChange={changFixWinBid}/>
+                                        <input type="date" className="form-control form-control-lg" name="date" defaultValue={item.date} onChange={(e) => changFixWinBid(e, index)}/>
+                                        <input type="number" className="form-control form-control-lg" name="wprice" defaultValue={item.wprice} onChange={(e) => changFixWinBid(e, index)}/>
+                                        <input type="number" className="form-control form-control-lg" name="wquantity" defaultValue={item.wquantity} onChange={(e) => changFixWinBid(e, index)}/>
+                                        <input type="text" className="form-control form-control-lg" name="wunit" defaultValue={item.wunit} onChange={(e) => changFixWinBid(e, index)}/>
                                         <button className="btn btn-lg btn-outline-secondary" type="button" onClick={(e) => submitDelBid(e, index)} data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}Backdrop`}>Xóa</button>
                                     </div>
                                 ))
