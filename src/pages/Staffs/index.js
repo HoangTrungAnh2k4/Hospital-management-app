@@ -23,6 +23,36 @@ function StaffsDisplay() {
         setReload(!reload);
     }
 
+    function reloadPageWithRemove(){
+        async function getDoctors() {
+            const querySnapshot = await getDocs(collection(database, 'Doctors'));
+            let doctors = [];
+
+            querySnapshot.forEach((doc) => {
+                doctors.push(doc.data());
+            });
+
+            setDoctorsData(doctors);
+        }
+
+        async function getNurses() {
+            const querySnapshot = await getDocs(collection(database, 'Nurses'));
+            let nurses = [];
+
+            querySnapshot.forEach((doc) => {
+                nurses.push(doc.data());
+            });
+            setNursesData(nurses);
+        }
+
+        getNurses();
+        getDoctors();
+
+        setReload(!reload);
+        setHasInfor(false);
+        setInfor({});
+    }
+
     useEffect(() => {
         async function getDoctors() {
             const querySnapshot = await getDocs(collection(database, 'Doctors'));
@@ -48,8 +78,7 @@ function StaffsDisplay() {
         getNurses();
         getDoctors();
 
-        setHasInfor(false);
-        setInfor({});
+        
     }, [reload]);
 
     async function showInfor(id) {
@@ -103,6 +132,7 @@ function StaffsDisplay() {
             await updateDoc(docRef, {
                 calendar: [newCalendar, ...querySnapshot.docs[0].data().calendar],
             });
+            showInfor(infor.id);
             return;
         }
         // --------------------- add to nurses----------------------------------------
@@ -114,6 +144,7 @@ function StaffsDisplay() {
             await updateDoc(docRef2, {
                 calendar: [newCalendar, ...querySnapshot2.docs[0].data().calendar],
             });
+            showInfor(infor.id);
         }
     }
 
@@ -124,7 +155,7 @@ function StaffsDisplay() {
                 <div className={clsx(style.headerBox)}>
                     <h2>Bác sĩ</h2>
                 </div>
-                <AddStaffs />
+                <AddStaffs reloadPage={reloadPage} />
                 <SortTable data={doctors_data} showInfor={showInfor} />
                 <div className={clsx(style.headerBox)}>
                     <h2>Y tá</h2>
@@ -169,7 +200,7 @@ function StaffsDisplay() {
                                     <span className={clsx(style.textInfor)}>{infor.address}</span> <br />
                                 </div>
                             </div>
-                            <EditInfoStaff id={infor.id} reloadPage={reloadPage} />
+                            <EditInfoStaff id={infor.id} reloadPageWithRemove={reloadPageWithRemove} />
                         </div>
                     </div>
                 </div>
@@ -197,7 +228,6 @@ function StaffsDisplay() {
 
 //--------------------------------------------------Thông tin bệnh nhân --------------------------------------------------------
 function PatientInfo({ patients }) {
-    
     patients.sort((a, b) => {
         return a.ID - b.ID;
     });
@@ -230,7 +260,7 @@ function PatientInfo({ patients }) {
     );
 }
 //-------------------------------------------------- ADD ------------------------------------------------------------------
-function AddStaffs() {
+function AddStaffs({ reloadPage }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -321,7 +351,7 @@ function AddStaffs() {
                 id: newId,
                 fullName: fullName,
                 gender: gender,
-                faculty: faculty,
+                faculty: 'Điều dưỡng',
                 degree: degree,
                 birthdate: birthdate,
                 email: email,
@@ -331,6 +361,7 @@ function AddStaffs() {
                 calendar: [],
             });
         }
+        reloadPage();
     }
 
     return (
@@ -679,7 +710,7 @@ function AddCalendar({ addCalendar }) {
 }
 
 //----------------------------------------------------edit staff ---------------------------------------------------------------
-function EditInfoStaff({ id, reloadPage }) {
+function EditInfoStaff({ id, reloadPageWithRemove }) {
     if (id === undefined) {
         return <div></div>;
     }
@@ -690,7 +721,7 @@ function EditInfoStaff({ id, reloadPage }) {
 
         if (querySnapshot.empty === false) {
             await deleteDoc(doc(database, 'Doctors', querySnapshot.docs[0].id));
-            reloadPage();
+            reloadPageWithRemove();
             return;
         }
 
@@ -701,7 +732,7 @@ function EditInfoStaff({ id, reloadPage }) {
 
         if (querySnapshot2.empty === false) {
             await deleteDoc(doc(database, 'Nurses', querySnapshot2.docs[0].id));
-            reloadPage();
+            reloadPageWithRemove();
             return;
         }
     }

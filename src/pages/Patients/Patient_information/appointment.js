@@ -101,6 +101,7 @@ function Appointment({patient}){
                             </div>
                             <div className={clsx(style.BodyRecord)}>
                                 <h2>Các thông số sức khỏe</h2>
+                                <h3>Chưa có thông tin...</h3>
                             </div>
                         </div>  
                     </div>
