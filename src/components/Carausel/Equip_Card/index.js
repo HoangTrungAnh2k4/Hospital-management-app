@@ -125,7 +125,7 @@ function ECard(props){
                         <p>Số lượng còn lại: {props.equipment.quantity}</p>
                         <div class="d-flex align-items-center">
                             <h5 class="me-3">Đấu thầu thành công:</h5>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#win_bidBackdrop">Nhập hàng</button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}win_bid`}>Nhập hàng</button>
                         </div>
                         <table class="table table-striped">
                         <thead>
@@ -150,15 +150,15 @@ function ECard(props){
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
-                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#fixEquipModal">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}delete`}>Xóa</button>
+                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target={`#${props.equipment.id}fixquip`}>Chỉnh sửa</button>
                         </div>
                         <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.equipment.id}delete`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border border-danger border-2">
                     <div class="modal-header">
@@ -175,7 +175,7 @@ function ECard(props){
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="fixEquipModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.equipment.id}fixquip`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -213,7 +213,7 @@ function ECard(props){
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="win_bidBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.equipment.id}win_bid`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">

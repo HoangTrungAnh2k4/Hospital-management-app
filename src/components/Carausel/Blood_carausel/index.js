@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import styles from "./Blood_carausel.module.scss"
+import styles from "./Blood_carousel.module.scss"
 import BloodCard from './Blood_Card';
 
 function BloodMCarausel(props){

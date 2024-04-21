@@ -152,7 +152,7 @@ function BloodCard(props){ // blood_card
                         <p>Giá bán công khai: {props.blood.price}đ/{props.blood.unit}</p>
                         <div class="d-flex align-items-center">
                             <h5 class="me-3">Đấu thầu thành công:</h5>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#win_bidBackdrop">Nhập hàng</button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}win_bid`}>Nhập hàng</button>
                         </div>
                         <table class="table table-striped">
                             <thead>
@@ -177,15 +177,15 @@ function BloodCard(props){ // blood_card
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Xóa</button>
-                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#fixMedModal">Chỉnh sửa</button>
+                            <button type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}delete`}>Xóa</button>
+                            <button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target={`#${props.blood.id}fixblood`}>Chỉnh sửa</button>
                         </div>
                         <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.blood.id}delete`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border border-danger border-2">
                     <div class="modal-header">
@@ -202,7 +202,7 @@ function BloodCard(props){ // blood_card
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="win_bidBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.blood.id}win_bid`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -224,7 +224,7 @@ function BloodCard(props){ // blood_card
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="fixMedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id={`${props.blood.id}fixblood`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
