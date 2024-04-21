@@ -59,43 +59,43 @@ function Chart1({ countAge }) {
 }
 
 function Chart2({ countBlood }) {
-    console.log(countBlood);
+
     return (
         <div className={clsx(styles.chart_2)}>
-            <p className={clsx(styles.header)}>Kho máu</p>
+            <p className={clsx(styles.header)}>Kho máu : (đầy 100l)</p>
 
             {/* chart */}
             <div className={clsx(styles.chart2)}>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[0]}}></div>
                     <p className={clsx(styles.type)}>A+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[1]}}></div>
                     <p className={clsx(styles.type)}>A-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[2]}}></div>
                     <p className={clsx(styles.type)}>B+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[3]}}></div>
                     <p className={clsx(styles.type)}>B-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[4]}}></div>
                     <p className={clsx(styles.type)}>O+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[5]}}></div>
                     <p className={clsx(styles.type)}>O-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[6]}}></div>
                     <p className={clsx(styles.type)}>AB+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)}></div>
+                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[7]}}></div>
                     <p className={clsx(styles.type)}>AB-</p>
                 </div>
             </div>
@@ -106,28 +106,28 @@ function Chart2({ countBlood }) {
                         <div className={clsx(styles.dot)}></div>
                         <span>A+</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[0]}%</span>
                 </div>
                 <div className={clsx(styles.item)}>
                     <div className={clsx(styles.wrap)}>
                         <div className={clsx(styles.dot)}></div>
                         <span>B+</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[2]}%</span>
                 </div>
                 <div className={clsx(styles.item)}>
                     <div className={clsx(styles.wrap)}>
                         <div className={clsx(styles.dot)}></div>
                         <span>O+</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[4]}%</span>
                 </div>
                 <div className={clsx(styles.item)}>
                     <div className={clsx(styles.wrap)}>
                         <div className={clsx(styles.dot)}></div>
                         <span>AB+</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[6]}%</span>
                 </div>
 
                 <div className={clsx(styles.item)}>
@@ -135,7 +135,7 @@ function Chart2({ countBlood }) {
                         <div className={clsx(styles.dot)}></div>
                         <span>A-</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[1]}%</span>
                 </div>
 
                 <div className={clsx(styles.item)}>
@@ -143,7 +143,7 @@ function Chart2({ countBlood }) {
                         <div className={clsx(styles.dot)}></div>
                         <span>B-</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[3]}%</span>
                 </div>
 
                 <div className={clsx(styles.item)}>
@@ -151,14 +151,14 @@ function Chart2({ countBlood }) {
                         <div className={clsx(styles.dot)}></div>
                         <span>O-</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[5]}%</span>
                 </div>
                 <div className={clsx(styles.item)}>
                     <div className={clsx(styles.wrap)}>
                         <div className={clsx(styles.dot)}></div>
                         <span>AB-</span>
                     </div>
-                    <span className={clsx(styles.quantity)}>23% (427)</span>
+                    <span className={clsx(styles.quantity)}>{countBlood[7]}%</span>
                 </div>
             </div>
         </div>
@@ -467,12 +467,11 @@ function DashboardAdmin() {
 
         async function getBlood() {
             const querySnapshot = await getDocs(collection(database, 'blood'));
-            let cntBlood = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            let cntBlood = [0, 0, 0, 0, 0, 0, 0, 0,];
 
             querySnapshot.forEach((doc) => {
-                console.log(doc.data().type,doc.data().quantity);
+               
                 // count age
-                cntBlood[16]++;
                 switch (doc.data().type) {
                     case 'A+':
                         cntBlood[0]+= doc.data().quantity;
@@ -503,15 +502,7 @@ function DashboardAdmin() {
                 }
             });
 
-            cntBlood[8] = ((cntBlood[0] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[9] = ((cntBlood[1] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[10] = ((cntBlood[2] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[11] = ((cntBlood[3] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[12] = ((cntBlood[4] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[13] = ((cntBlood[5] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[14] = ((cntBlood[6] / cntBlood[16]) * 100).toFixed(0);
-            cntBlood[15] = ((cntBlood[7] / cntBlood[16]) * 100).toFixed(0);
-
+           
             setCountBlood(cntBlood);
         }
         getBlood();
