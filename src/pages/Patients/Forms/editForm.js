@@ -263,6 +263,10 @@ export default function EditForm({
         let temp = { ...errors }
         if ('Name' in fieldValues)
             temp.Name = fieldValues.Name ? "" : "Không được bỏ trống."
+        if ('Address' in fieldValues)
+            temp.Address = fieldValues.Address ? "" : "Không được bỏ trống."
+        if ('City' in fieldValues)
+            temp.City = fieldValues.City ? "" : "Không được bỏ trống."
         if ('Doctor' in fieldValues)
             temp.Doctor = fieldValues.Doctor ? "" : "Không được bỏ trống."
         if ('PhoneNumber' in fieldValues)
