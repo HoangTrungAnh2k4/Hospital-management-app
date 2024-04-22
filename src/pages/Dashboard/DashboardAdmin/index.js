@@ -59,7 +59,6 @@ function Chart1({ countAge }) {
 }
 
 function Chart2({ countBlood }) {
-
     return (
         <div className={clsx(styles.chart_2)}>
             <p className={clsx(styles.header)}>Kho máu : (đầy 100l)</p>
@@ -67,35 +66,35 @@ function Chart2({ countBlood }) {
             {/* chart */}
             <div className={clsx(styles.chart2)}>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[0]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[0] }}></div>
                     <p className={clsx(styles.type)}>A+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[1]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[1] }}></div>
                     <p className={clsx(styles.type)}>A-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[2]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[2] }}></div>
                     <p className={clsx(styles.type)}>B+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[3]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[3] }}></div>
                     <p className={clsx(styles.type)}>B-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[4]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[4] }}></div>
                     <p className={clsx(styles.type)}>O+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[5]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[5] }}></div>
                     <p className={clsx(styles.type)}>O-</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[6]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[6] }}></div>
                     <p className={clsx(styles.type)}>AB+</p>
                 </div>
                 <div className={clsx(styles.bloodWrap)}>
-                    <div className={clsx(styles.bloodCol)} style={{height:countBlood[7]}}></div>
+                    <div className={clsx(styles.bloodCol)} style={{ height: countBlood[7] }}></div>
                     <p className={clsx(styles.type)}>AB-</p>
                 </div>
             </div>
@@ -369,17 +368,17 @@ function ModalAddNotify({ reload }) {
         document.querySelector(`.${styles.addNotify} textarea`).value = '';
         document.querySelector(`.${styles.addNotify} input`).value = '';
 
-        if (title !== '' || content !== '') {
-            await addDoc(collection(database, 'Notifications'), {
-                title: title,
-                content: content,
-                date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
-            });
-
-            reload();
-        } else {
+        if (title === '' || content === '') {
             alert('Hãy nhập đầy đủ thông tin');
+            return;
         }
+        await addDoc(collection(database, 'Notifications'), {
+            title: title,
+            content: content,
+            date: new Date().toLocaleTimeString() + ' ' + new Date().toLocaleDateString(),
+        });
+
+        reload();
     }
 
     return (
@@ -467,42 +466,40 @@ function DashboardAdmin() {
 
         async function getBlood() {
             const querySnapshot = await getDocs(collection(database, 'blood'));
-            let cntBlood = [0, 0, 0, 0, 0, 0, 0, 0,];
+            let cntBlood = [0, 0, 0, 0, 0, 0, 0, 0];
 
             querySnapshot.forEach((doc) => {
-               
                 // count age
                 switch (doc.data().type) {
                     case 'A+':
-                        cntBlood[0]+= doc.data().quantity;
+                        cntBlood[0] += doc.data().quantity;
                         break;
                     case 'A-':
-                        cntBlood[1]+= doc.data().quantity;
+                        cntBlood[1] += doc.data().quantity;
                         break;
                     case 'B+':
-                        cntBlood[2]+= doc.data().quantity;
+                        cntBlood[2] += doc.data().quantity;
                         break;
                     case 'B-':
-                        cntBlood[3]+= doc.data().quantity;
+                        cntBlood[3] += doc.data().quantity;
                         break;
                     case 'O+':
-                        cntBlood[4]+= doc.data().quantity;
+                        cntBlood[4] += doc.data().quantity;
                         break;
                     case 'O-':
-                        cntBlood[5]+= doc.data().quantity;
+                        cntBlood[5] += doc.data().quantity;
                         break;
                     case 'AB+':
-                        cntBlood[6]+= doc.data().quantity;
+                        cntBlood[6] += doc.data().quantity;
                         break;
                     case 'AB-':
-                        cntBlood[7]+= doc.data().quantity;
+                        cntBlood[7] += doc.data().quantity;
                         break;
                     default:
                         break;
                 }
             });
 
-           
             setCountBlood(cntBlood);
         }
         getBlood();
@@ -513,7 +510,7 @@ function DashboardAdmin() {
         <div className={clsx(styles.wrapper)}>
             {/* quantity patient and notification board */}
             <div className={clsx(styles.row1)}>
-              <PatientQuantity countAge={countAge} countBlood={countBlood} quantityPatient={quantityPatient} />
+                <PatientQuantity countAge={countAge} countBlood={countBlood} quantityPatient={quantityPatient} />
 
                 {/* Notification board */}
                 <div className={clsx(styles.boardNotifyWraper)}>
