@@ -104,8 +104,10 @@ const Information = () => {
 {/*-------------------------------------------------------------- Payment ------------------------------------------------------*/}                    
                     <div className={clsx(style.right)}>
                         <Payment
-                            subcollectionPayment={subcollectionPayment} 
+                            subcollectionPayment={subcollectionPayment}
+                            patient={patient} 
                             totalPayment={totalPayment}
+                            getSubcollections={getSubcollections}
                         >
                         </Payment>
                     </div>

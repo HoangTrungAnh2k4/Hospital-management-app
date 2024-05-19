@@ -3,6 +3,7 @@ import style from '../SCSS_module/Patients_Infor.module.scss';
 import React, { useState } from 'react';
 import Popup from '../Action/Popup';
 import Notification from "../Action/Notification";
+import EditPayment from '../Forms/editPaymentForm';
 
 
 
@@ -28,7 +29,7 @@ function Pay(Transaction ,Price){
     )
 }
 
-function Payment({subcollectionPayment, totalPayment}){
+function Payment({patient, subcollectionPayment, totalPayment, getSubcollections}){
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
 
@@ -75,10 +76,19 @@ function Payment({subcollectionPayment, totalPayment}){
                 </div>
             </div>
             <Popup 
+
                 title="Chỉnh sữa thông tin"
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
+                <EditPayment
+                    subcollectionPayment={subcollectionPayment}
+                    patient={patient}
+                    setOpenPopup={setOpenPopup}
+                    setNotify={setNotify}
+                    getSubcollections={getSubcollections}
+                >
+                </EditPayment>
             </Popup>
             <Notification
                 notify={notify}
